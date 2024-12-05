@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.member.MemberMapper">
+
+	<select id="idCheck" parameterType="String" resultType="String">
+	
+		select
+			u_id
+		from
+			user_tbl
+		where
+			u_id = #{u_id}
+	
+	</select>
+	
+	<insert id="join" parameterType="com.project.mallbydh.member.MemberVO">
+	
+    	insert into
+    		user_tbl(u_id, u_pw, u_name, u_phone, u_smsreceive, u_email, u_emailreceive, u_birth, u_gender, u_zipcode, u_addr, u_addr_detail)
+		values
+			(#{u_id}, #{u_pw}, #{u_name}, #{u_phone}, #{u_smsreceive}, #{u_email}, #{u_emailreceive}, #{u_birth}, #{u_gender}, #{u_zipcode}, #{u_addr}, #{u_addr_detail})
+	
+	</insert>
+	
+	<select id="login" parameterType="String" resultType="com.project.mallbydh.member.MemberVO">
+		
+		select
+			u_id, u_pw, u_name, u_phone, u_smsreceive, u_email, u_emailreceive, u_birth, u_gender, u_zipcode, u_addr, u_addr_detail
+		from
+			user_tbl
+		where
+			u_id = #{u_id}
+	
+	</select>
+	
+	<update id="updateLastLogin" parameterType="String">
+		update
+			user_tbl
+		set
+			u_lastlogin = now()
+		where
+			u_id = #{u_id}
+	</update>
+	
+	
+	<select id="modifyView" parameterType="String" resultType="com.project.mallbydh.member.MemberVO">
+	
+		select 
+			u_id, u_pw, u_name, u_phone, u_smsreceive, u_email, u_emailreceive, u_birth, u_gender, u_zipcode, u_addr, u_addr_detail, u_point, u_regdate, u_updatedate, u_lastlogin
+		from 
+			user_tbl 
+		where 
+			u_id = #{u_id}
+	
+	</select>
+	
+	 
+	<update id="modifySave" parameterType="com.project.mallbydh.member.MemberVO">
+	
+		update
+			user_tbl
+	    <set>
+	        u_updatedate = now(),
+	        <if test="u_phone != null">
+	            u_phone = #{u_phone},
+	        </if>
+	        <if test="u_email != null">
+	            u_email = #{u_email},
+	        </if>
+	        <if test="u_zipcode != null">
+	            u_zipcode = #{u_zipcode},
+	        </if>
+	        <if test="u_addr != null">
+	            u_addr = #{u_addr},
+	        </if>
+	        <if test="u_addr_detail != null">
+	            u_addr_detail = #{u_addr_detail},
+	        </if>
+	        <if test="u_pw != null">
+	            u_pw = #{u_pw},
+	        </if>
+	    </set>
+		where
+			u_id = #{u_id}
+	
+	</update>
+	
+</mapper>
