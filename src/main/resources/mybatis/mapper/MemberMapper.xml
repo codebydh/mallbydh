@@ -95,5 +95,33 @@
 			u_id = #{u_id}
 
 	</update>
+
+	<select id="idsearch" parameterType="Map" resultType="String">
+
+		select
+			u_id
+		from
+			user_tbl
+		where
+			u_name = #{u_name}
+		and
+			u_email = #{u_email}
+
+	</select>
+
+	<select id="pwtempComfirm" parameterType="Map" resultType="String">
+
+		select
+			u_email
+		from
+			user_tbl
+		where
+			u_id = #{u_id}
+		and
+			u_name = #{u_name}
+		and
+			u_email = #{u_email}
+
+	</select>
 	
 </mapper>

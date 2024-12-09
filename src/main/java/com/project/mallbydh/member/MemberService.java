@@ -38,4 +38,12 @@ public class MemberService {
 		memberMapper.pwchange(u_id, u_pw);
 	}
 
+	public String idsearch(String u_name, String u_email) {
+		return memberMapper.idsearch(u_name, u_email);
+	}
+
+	public String pwtempComfirm(String u_id, String u_name, String u_email) {
+		return memberMapper.pwtempComfirm(u_id, u_name, u_email);
+	}
+
 }

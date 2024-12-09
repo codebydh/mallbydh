@@ -184,6 +184,67 @@ public class MemberController {
 		entity = new ResponseEntity<String>(msg, HttpStatus.OK);
 		return entity;
 	}
+
+	@GetMapping("/idsearch")
+	public ResponseEntity<String> idsearch(String u_name, String u_email) throws Exception {
+
+		ResponseEntity<String> entity = null;
+
+		String result = "";
+
+		String u_id = memberService.idsearch(u_name, u_email);
+
+		if(u_id != null) {
+
+			// 아이디 메일발송
+			String type = "mail/idsearch";
+
+			EmailDTO dto = new EmailDTO();
+			dto.setReceiverMail(u_email); // 받는사람 메일주소
+			dto.setSubject("codebydh 아이디 찾기결과를 보냅니다.");
+
+			result = "success";
+			emailService.sendMail(type, dto, u_id);
+		}else {
+			result = "fail";
+		}
+
+		entity = new ResponseEntity<String>(result, HttpStatus.OK);
+
+		return entity;
+	}
+
+	@GetMapping("/pwtemp")
+	public ResponseEntity<String> pwtemp(String u_id, String u_name, String u_email) throws Exception {
+
+		ResponseEntity<String> entity = null;
+		String result = "";
+
+		String d_u_email = memberService.pwtempComfirm(u_id, u_name, u_email);
+
+		if(d_u_email != null) {
+			result = "success";
+			String tempPw = emailService.createAuthCode(); // 이메일 인증 함수를 동일하게 사용함.
+
+			memberService.pwchange(u_id, passwordEncoder.encode(tempPw)); // tempPw 암호화
+
+			// 임시 비밀번호 메일 발송
+			String type = "mail/pwtemp";
+
+			EmailDTO dto = new EmailDTO();
+			dto.setReceiverMail(d_u_email);
+			dto.setSubject("mallbydh 임시 비밀번호 안내");
+
+			emailService.sendMail(type, dto, tempPw);
+		}else {
+			result = "fail";
+		}
+
+		entity = new ResponseEntity<String>(result, HttpStatus.OK);
+		return entity;
+
+	}
+
 	// 찜한상품
 	@GetMapping("/wishlist")
 	public void wishlist() throws Exception {

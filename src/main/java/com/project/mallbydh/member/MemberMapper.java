@@ -23,4 +23,10 @@ public interface MemberMapper {
 	// 회원 비밀번호 변경
 	void pwchange(@Param("u_id") String u_id, @Param("u_pw") String u_pw);
 
+	// 아이디 찾기
+	String idsearch(@Param("u_name") String u_name, @Param("u_email") String u_email);
+
+	// 임시비밀번호 발급을 위한 정보 체크
+	String pwtempComfirm(@Param("u_id") String u_id, @Param("u_name") String u_name, @Param("u_email") String u_email);
+
 }
