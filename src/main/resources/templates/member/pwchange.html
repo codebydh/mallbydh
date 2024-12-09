@@ -35,15 +35,57 @@
 			  <div class="mb-3">
 			    <label for="confirm_pw" class="form-label">비밀번호확인</label>
 			    <input type="password" class="form-control" id="confirm_pw" name="confirm_pw">
+				  <div id="pw_mismatch" class="text-danger" style="display: none; font-size: 0.8em;">신규 비밀번호와 입력한 비밀번호가 일치하지 않습니다</div>
 			  </div>
 			  <div class="my-5">
-				<button type="submit" class="btn btn-info">변경</button>
+				<button type="submit" class="btn btn-info" id="btn_pwchange">변경</button>
 			  </div>
 			</form>
 		</div>
 
 	  </div>
 	</div>
-        
   </th:block>
+<th:block layout:fragment="script2">
+	<script th:inline="javascript">
+		$(document).ready(function() {
+			function checkPasswordMatch() {
+				let new_pw = $("#new_pw").val();
+				let confirm_pw = $("#confirm_pw").val();
+
+				if (new_pw === "" || confirm_pw === "") {
+					$("#pw_mismatch").hide();
+				} else if (new_pw !== confirm_pw) {
+					$("#pw_mismatch").show();
+				} else {
+					$("#pw_mismatch").hide();
+				}
+			}
+
+			$('#new_pw, #confirm_pw').on('input', checkPasswordMatch);
+
+			$("#btn_pwchange").on("click", function(e) {
+				e.preventDefault();
+
+				if ($("#new_pw").val() !== $("#confirm_pw").val()) {
+					return;
+				}
+
+				$.ajax({
+					url: "/member/pwchange",
+					type: "POST",
+					data: $("form").serialize(),
+					success: function(response) {
+						if(response === "success") {
+							alert("비밀번호가 성공적으로 변경되었습니다.");
+							window.location.href = "/member/mypage";
+						} else if(response === "fail") {
+							alert("비밀번호를 다시 확인해 주세요.");
+						}
+					}
+				});
+			});
+		});
+	</script>
+</th:block>
 </html>

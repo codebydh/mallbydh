@@ -1,5 +1,7 @@
 package com.project.mallbydh.member;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface MemberMapper {
 
 	String idCheck(String u_id);
@@ -17,5 +19,8 @@ public interface MemberMapper {
 	
 	// 회원수정
 	void modifySave(MemberVO vo);
-	
+
+	// 회원 비밀번호 변경
+	void pwchange(@Param("u_id") String u_id, @Param("u_pw") String u_pw);
+
 }

@@ -1,5 +1,6 @@
 package com.project.mallbydh.member;
 
+import com.project.mallbydh.mail.EmailDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.mallbydh.mail.EmailService;
@@ -151,7 +153,37 @@ public class MemberController {
 	public void pwchange() throws Exception {
 		
 	}
-	
+
+	@PostMapping("/pwchange")
+	public ResponseEntity<String> pwchange(@RequestParam("cur_pw") String u_pw, String new_pw, HttpSession session) throws Exception {
+
+		ResponseEntity<String> entity = null;
+		String msg = "";
+
+		String db_pw = ((MemberVO) session.getAttribute("login_auth")).getU_pw();
+		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
+		String u_email = ((MemberVO) session.getAttribute("login_auth")).getU_email();
+
+		if(passwordEncoder.matches(u_pw, db_pw)) {
+			String encode_new_pw = passwordEncoder.encode(new_pw); // 새 비밀번호를 암호화
+			memberService.pwchange(u_id, encode_new_pw); // 아이디와 암호화된 비밀번호를 DB로 전달
+			msg = "success";
+
+			// 비밀번호 변경 알림 메일 발송
+			String type = "mail/pwchange";
+
+			EmailDTO dto = new EmailDTO();
+			dto.setReceiverMail(u_email);
+			dto.setSubject("mallbydh 회원 비밀번호 변경 안내");
+
+			emailService.sendMail(type, dto, new_pw);
+		}else {
+			msg = "fail";
+		}
+
+		entity = new ResponseEntity<String>(msg, HttpStatus.OK);
+		return entity;
+	}
 	// 찜한상품
 	@GetMapping("/wishlist")
 	public void wishlist() throws Exception {

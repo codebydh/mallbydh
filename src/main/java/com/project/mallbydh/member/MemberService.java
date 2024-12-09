@@ -34,4 +34,8 @@ public class MemberService {
 		memberMapper.modifySave(vo);
 	}
 
+	public void pwchange(String u_id, String u_pw) {
+		memberMapper.pwchange(u_id, u_pw);
+	}
+
 }
