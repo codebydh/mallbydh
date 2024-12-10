@@ -229,4 +229,7 @@ $RECYCLE.BIN/
 /src/main/resources/mail/email.properties
 /src/main/resources/application.properties
 
+# ckeditor
+/src/main/resources/static/ckeditor/*
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij+iml,visualstudiocode,eclipse,java
