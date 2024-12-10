@@ -229,7 +229,8 @@ $RECYCLE.BIN/
 /src/main/resources/mail/email.properties
 /src/main/resources/application.properties
 
-# ckeditor
-/src/main/resources/static/ckeditor/*
+# 특정 경로
+/target/
+/src/main/resources/static/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij+iml,visualstudiocode,eclipse,java
