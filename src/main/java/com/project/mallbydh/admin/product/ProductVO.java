@@ -1,4 +1,4 @@
-package com.project.mallbydh.category;
+package com.project.mallbydh.admin.product;
 
 import lombok.Getter;
 import lombok.Setter;

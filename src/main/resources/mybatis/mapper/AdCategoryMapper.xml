@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.admin.category.AdCategoryMapper">
+
+    <select id="getFirstCategoryList" resultType="com.project.mallbydh.admin.category.CategoryVO">
+
+        select
+            cate_id, cate_parentid, cate_name
+        from
+            category_tbl
+        where
+            cate_parentid is null
+
+    </select>
+
+    <select id="getSecondCategoryList" parameterType="Integer" resultType="com.project.mallbydh.admin.category.CategoryVO">
+
+        select
+            cate_id, cate_parentid, cate_name
+        from
+            category_tbl
+        where
+            cate_parentid = #{cate_parentid}
+
+    </select>
+
+</mapper>

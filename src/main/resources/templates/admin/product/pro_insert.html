@@ -28,7 +28,7 @@
                 <div class="card card-primary">
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form>
+                    <form action="/admin/product/pro_insert" method="post" enctype="multipart/form-data">
                         <div class="card-body">
                             <div class="form-group">
                                 <label class="mr-5">상품 노출</label>
@@ -49,21 +49,14 @@
                                 <label>카테고리</label>
                                 <div class="row">
                                     <div class = "col-6 pr-1">
-                                        <select class="custom-select" id="cate_parentid" name="cate_parentid">
-                                            <option>option 1</option>
-                                            <option>option 2</option>
-                                            <option>option 3</option>
-                                            <option>option 4</option>
-                                            <option>option 5</option>
+                                        <select class="custom-select" id="btn_firstCategory" name="cate_parentid">
+                                            <option>1차 카테고리 선택</option>
+                                            <option th:each="category : ${cate_list}" th:value="${category.cate_id}" th:text="${category.cate_name}">option 2</option>
                                         </select>
                                     </div>
                                     <div class = "col-6 pl-1">
-                                        <select class="custom-select" id="cate_id" name="cate_id">
-                                            <option>option 1</option>
-                                            <option>option 2</option>
-                                            <option>option 3</option>
-                                            <option>option 4</option>
-                                            <option>option 5</option>
+                                        <select class="custom-select" id="btn_secondCategory" name="cate_id">
+                                            <option>2차 카테고리 선택</option>
                                         </select>
                                     </div>
                                 </div>
@@ -85,24 +78,20 @@
                                 <input type="number" class="form-control" id="prod_amount" name="prod_amount" placeholder="">
                             </div>
                             <div class="form-group">
-                                <label for="prod_img">상품 이미지</label>
+                                <label for="prod_img_upload">상품 이미지</label>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="prod_img" name="prod_img">
-                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Upload</span>
+                                        <input type="file" class="custom-file-input" id="prod_img_upload" name="prod_img_upload">
+                                        <label class="custom-file-label" for="prod_img_upload" id="prod_img_label">Choose file</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="prod_content">상품설명</label>
-                                <input type="textarea" class="form-control" id="prod_content" name="prod_content" placeholder="">
+                                <textarea class="form-control" id="prod_content" name="prod_content" placeholder=""></textarea>
                             </div>
                         </div>
                         <!-- /.card-body -->
-
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -120,9 +109,40 @@
             toolbarCanCollapse : true,
             removePlugins : "elementspath",
             // 업로드 탭 기능 추가 속성. CKEditor에서 파일업로드해서 서버로 전송클릭하면 , 이 주소가 동작된다.
-            filebrowserUploadUrl: '/imageupload'
+            filebrowserUploadUrl: '/admin/product/imageupload'
         }
         CKEDITOR.replace("prod_content", ckeditor_config);
+    </script>
+</th:block>
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function() {
+            // 카테고리 출력
+            $("#btn_firstCategory").on("change", function() {
+                console.log("확인");
+                let firstCategoryCode = $("#btn_firstCategory").val();
+
+                // 2차카테고리 목록을 가져오는 스프링의 매핑주소
+                let url = "/admin/category/secondcategory/" + firstCategoryCode;
+                $.getJSON(url, function(secondCategoryList) {
+                    // 2차카테고리 select태그를 참조
+                    let secondCategoryCode = $("#btn_secondCategory");
+                    let optionStr = "";
+                    for(let i=0; i<secondCategoryList.length; i++) {
+                        optionStr += "<option value='" + secondCategoryList[i].cate_id + "'>" + secondCategoryList[i].cate_name + "</option>";
+                    }
+                    secondCategoryCode.find("option").remove();
+                    secondCategoryCode.append("<option>2차 카테고리 선택</option>");
+                    secondCategoryCode.append(optionStr);
+                });
+            });
+
+            // 파일 업로드 시 파일 선택 창에 해당 이름을 표시.
+            $('#prod_img_upload').on('change', function() {
+                let fileName = $(this).val().split('\\').pop();
+                $('#prod_img_label').html(fileName);
+            });
+        })
     </script>
 </th:block>
 </html>
