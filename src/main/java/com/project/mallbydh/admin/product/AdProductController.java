@@ -1,7 +1,10 @@
 package com.project.mallbydh.admin.product;
 
 import com.project.mallbydh.admin.category.AdCategoryService;
+import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.FileUtils;
+import com.project.mallbydh.common.utils.PageMaker;
+import com.project.mallbydh.common.utils.SearchCriteria;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -87,7 +91,6 @@ public class AdProductController {
             //2)업로드한 파일정보를 클라이언트인 CKEditor로 보내주는 작업.
             // printWriter : 파일정보를 클라이언트쪽에 보낼때 사용하는 객체.
             printWriter = response.getWriter();
-
             // 매핑주소
             String fileUrl = "/admin/product/display/" + fileName;
 
@@ -125,8 +128,38 @@ public class AdProductController {
             ex.printStackTrace();
         }
 
-
         return entity;
 
+    }
+
+    // 상품 목록 페이지
+    @GetMapping("/pro_list")
+    public String pro_list(SearchCriteria cri, Model model) throws Exception {
+        model.addAttribute("currentPage", "pro_list");
+
+        // DB에서 불러오기 작업을 한 다음 Model에 추가
+        List<ProductVO> pro_list = adProductService.pro_list(cri);
+        model.addAttribute("pro_list", pro_list);
+
+        // 날짜폴더 경로의 \를 /로 변환
+        pro_list.forEach(vo -> {
+            vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+        });
+        
+        // 페이징 정보
+        PageMaker pageMaker = new PageMaker();
+        pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
+        cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(adProductService.getTotalCount(cri));
+        model.addAttribute("pageMaker", pageMaker);
+
+        return "admin/product/pro_list";
+    }
+
+    // 상품 목록에 이미지 출력
+    @GetMapping("/image_display")
+    public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
+        return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
     }
 }

@@ -2,11 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mallbydh.admin.product.AdProductMapper">
 
-<insert id="pro_insert" parameterType="com.project.mallbydh.admin.product.ProductVO">
-    insert into
-        product_tbl(cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale)
-    values
-        (#{cate_id}, #{prod_name}, #{prod_price}, #{prod_amount}, #{prod_discount}, #{prod_maker}, #{prod_content}, #{prod_uploadfolder}, #{prod_img}, #{prod_forsale})
-</insert>
+    <insert id="pro_insert" parameterType="com.project.mallbydh.admin.product.ProductVO">
+        insert into
+            product_tbl(cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale)
+        values
+            (#{cate_id}, #{prod_name}, #{prod_price}, #{prod_amount}, #{prod_discount}, #{prod_maker}, #{prod_content}, #{prod_uploadfolder}, #{prod_img}, #{prod_forsale})
+    </insert>
+
+    <select id="pro_list" resultType="com.project.mallbydh.admin.product.ProductVO">
+        select
+            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate
+        from
+            product_tbl
+        order by
+            prod_id desc
+        limit
+            #{pageStart}, #{perPageNum}
+    </select>
+    
+    <select id="getTotalCount" resultType="int">
+        select
+            count(*)
+        from
+            product_tbl
+
+    </select>
 
 </mapper>

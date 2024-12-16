@@ -3,14 +3,12 @@
 <mapper namespace="com.project.mallbydh.admin.AdminMapper">
 
     <select id="adLoginPass" parameterType="String" resultType="com.project.mallbydh.admin.AdminDTO">
-
         select
             admin_id, admin_pw
         from
             admin_tbl
         where
             admin_id = #{admin_id}
-
     </select>
 
     <update id="updateAdminLastLogin" parameterType="String">
@@ -21,5 +19,7 @@
         where
             admin_id = #{admin_id}
     </update>
+
+
 
 </mapper>
