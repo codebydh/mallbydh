@@ -163,9 +163,17 @@ public class AdProductController {
 
     // 체크박스에 선택된 상품 삭제
     @PostMapping("/pro_check_delete")
-    public ResponseEntity<String> pro_check_delete(@RequestParam("prod_id_arr") int[] prod_id_arr) throws Exception {
+    public ResponseEntity<String> pro_check_delete(@RequestParam("prod_id_arr") int[] prod_id_arr, @RequestParam("prod_uploadfolder_arr") String[] prod_uploadfolder, @RequestParam("prod_img_arr") String[] prod_img) throws Exception {
         ResponseEntity<String> entity = null;
+
+        // DB에서 상품 정보 삭제
         adProductService.pro_check_delete(prod_id_arr);
+
+        // 서버의 경로에서 이미지파일 삭제
+        for(int i=0; i < prod_id_arr.length; i++) {
+            fileUtils.delete(uploadPath, prod_uploadfolder[i], prod_img[i], "image");
+        }
+
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }

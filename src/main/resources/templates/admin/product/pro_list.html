@@ -89,7 +89,11 @@
                         </thead>
                         <tbody>
                             <tr th:each="productVO:${pro_list}">
-                                <td class="text-center"><input type="checkbox" name="check" th:value="${productVO.prod_id}"></td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="check" th:value="${productVO.prod_id}">
+                                    <input type="hidden" name="prod_uploadfolder" th:value="${productVO.prod_uploadfolder}">
+                                    <input type="hidden" name="prod_img" th:value="|s_${productVO.prod_img}|">
+                                </td>
                                 <td class="text-center">[[${productVO.prod_id}]]</td>
                                 <td class="product-info">
                                     <div class="product-container d-flex align-items-center">
@@ -169,17 +173,20 @@
                 }
 
                 const prod_id_arr = []; // 배열초기화.
-                const prod_up_folder_arr = [];
+                const prod_uploadfolder_arr = [];
                 const prod_img_arr = [];
 
                 $("input[name='check']:checked").each(function() {
+                    const $row = $(this).closest('tr'); // 체크박스가 있는 행을 선택
                     prod_id_arr.push($(this).val());
+                    prod_uploadfolder_arr.push($row.find('input[name="prod_uploadfolder"]').val());
+                    prod_img_arr.push($row.find('input[name="prod_img"]').val());
                 });
 
                 $.ajax({
                     url: '/admin/product/pro_check_delete',
                     type: 'post',
-                    data : {prod_id_arr : prod_id_arr},
+                    data: {prod_id_arr: prod_id_arr, prod_uploadfolder_arr: prod_uploadfolder_arr, prod_img_arr: prod_img_arr},
                     dataType: 'text',
                     success: function(result) {
                         if(result == 'success') {
