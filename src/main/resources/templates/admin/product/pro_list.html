@@ -59,18 +59,18 @@
                 <div class="card-body">
                     <div class="mb-2 d-flex justify-content-between align-items-center">
                         <div>
-                            <button type="button" class="btn btn-outline-danger">선택삭제</button>
+                            <button type="button" class="btn btn-outline-danger" id="btnCheckDelete">선택삭제</button>
                         </div>
                         <form action="/admin/product/pro_list" method="get">
                             <div class="d-flex">
-                                <select class="form-control mr-2" style="width: 150px;">
+                                <select class="form-control mr-2" style="width: 150px;" name="searchType">
                                     <option selected>검색옵션</option>
-                                    <option value="1">상품명+제조사</option>
-                                    <option value="2">상품명</option>
-                                    <option value="3">제조사</option>
-                                    <option value="4">상품코드</option>
+                                    <option value="nm">상품명+제조사</option>
+                                    <option value="n">상품명</option>
+                                    <option value="m">제조사</option>
+                                    <option value="c">상품코드</option>
                                 </select>
-                                <input class="form-control mr-2" type="search" placeholder="" aria-label="Search" style="width: 200px;">
+                                <input class="form-control mr-2" type="search" placeholder="" aria-label="Search" style="width: 200px;" name="keyword">
                                 <button class="btn btn-outline-success px-3" type="submit">검색</button>
                             </div>
                         </form>
@@ -89,7 +89,7 @@
                         </thead>
                         <tbody>
                             <tr th:each="productVO:${pro_list}">
-                                <td class="text-center"><input type="checkbox" name="check"></td>
+                                <td class="text-center"><input type="checkbox" name="check" th:value="${productVO.prod_id}"></td>
                                 <td class="text-center">[[${productVO.prod_id}]]</td>
                                 <td class="product-info">
                                     <div class="product-container d-flex align-items-center">
@@ -155,6 +155,37 @@
                 $("input[name='check']").each(function() {
                     if(!$(this).is(":checked")) {
                         $("#checkAll").prop("checked", false);
+                    }
+                });
+            });
+
+            // 체크박스를 통한 상품 삭제
+            $("#btnCheckDelete").on("click", function() {
+                if(!confirm("선택하신 상품을 삭제하겠습니까?")) return;
+
+                if($("input[name='check']:checked").length == 0) {
+                    alert("삭제할 상품을 선택하세요.");
+                    return;
+                }
+
+                const prod_id_arr = []; // 배열초기화.
+                const prod_up_folder_arr = [];
+                const prod_img_arr = [];
+
+                $("input[name='check']:checked").each(function() {
+                    prod_id_arr.push($(this).val());
+                });
+
+                $.ajax({
+                    url: '/admin/product/pro_check_delete',
+                    type: 'post',
+                    data : {prod_id_arr : prod_id_arr},
+                    dataType: 'text',
+                    success: function(result) {
+                        if(result == 'success') {
+                            alert("선택된 상품이 삭제되었습니다.");
+                            location.href = "/admin/product/pro_list";
+                        }
                     }
                 });
             });

@@ -10,4 +10,6 @@ public interface AdProductMapper {
     List<ProductVO> pro_list(SearchCriteria cri) throws Exception;
 
     int getTotalCount(SearchCriteria cri);
+
+    void pro_check_delete(int[] prod_id_arr);
 }

@@ -9,15 +9,17 @@
             (#{cate_id}, #{prod_name}, #{prod_price}, #{prod_amount}, #{prod_discount}, #{prod_maker}, #{prod_content}, #{prod_uploadfolder}, #{prod_img}, #{prod_forsale})
     </insert>
 
-    <select id="pro_list" resultType="com.project.mallbydh.admin.product.ProductVO">
+    <select id="pro_list" resultType="com.project.mallbydh.admin.product.ProductVO" parameterType="com.project.mallbydh.common.utils.SearchCriteria">
         select
             prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate
         from
             product_tbl
+        where
+            prod_id > 0
+            <include refid="search"></include>
         order by
             prod_id desc
-        limit
-            #{pageStart}, #{perPageNum}
+        limit #{pageStart}, #{perPageNum}
     </select>
     
     <select id="getTotalCount" resultType="int">
@@ -25,7 +27,38 @@
             count(*)
         from
             product_tbl
-
+        where
+            prod_id > 0
+            <include refid="search"></include>
     </select>
+
+    <sql id="search">
+        <if test="searchType != null">
+            <if test="searchType == 'n'.toString()">
+                and prod_name like concat('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'c'.toString()">
+                and prod_id like concat('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'm'.toString()">
+                and prod_maker like concat('%', #{keyword}, '%')
+            </if>
+            <if test="searchType == 'nm'.toString()">
+                and (prod_name like concat('%', #{keyword}, '%')
+                or
+                prod_maker like concat('%', #{keyword}, '%'))
+            </if>
+        </if>
+    </sql>
+
+    <delete id="pro_check_delete">
+        delete from
+            product_tbl
+        where
+            prod_id in
+            <foreach collection="prod_id_arr" item="item" open="("  separator="," close=")" >
+                #{item}
+            </foreach>
+    </delete>
 
 </mapper>

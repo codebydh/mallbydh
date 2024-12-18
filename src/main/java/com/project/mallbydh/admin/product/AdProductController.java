@@ -10,13 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
@@ -134,32 +132,41 @@ public class AdProductController {
 
     // 상품 목록 페이지
     @GetMapping("/pro_list")
-    public String pro_list(SearchCriteria cri, Model model) throws Exception {
+    public void pro_list(SearchCriteria cri, Model model) throws Exception {
         model.addAttribute("currentPage", "pro_list");
+
+        cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
 
         // DB에서 불러오기 작업을 한 다음 Model에 추가
         List<ProductVO> pro_list = adProductService.pro_list(cri);
-        model.addAttribute("pro_list", pro_list);
 
         // 날짜폴더 경로의 \를 /로 변환
         pro_list.forEach(vo -> {
             vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
         });
+
+        model.addAttribute("pro_list", pro_list);
         
         // 페이징 정보
         PageMaker pageMaker = new PageMaker();
         pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
-        cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
         pageMaker.setCri(cri);
         pageMaker.setTotalCount(adProductService.getTotalCount(cri));
         model.addAttribute("pageMaker", pageMaker);
-
-        return "admin/product/pro_list";
     }
 
     // 상품 목록에 이미지 출력
     @GetMapping("/image_display")
     public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
         return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+    }
+
+    // 체크박스에 선택된 상품 삭제
+    @PostMapping("/pro_check_delete")
+    public ResponseEntity<String> pro_check_delete(@RequestParam("prod_id_arr") int[] prod_id_arr) throws Exception {
+        ResponseEntity<String> entity = null;
+        adProductService.pro_check_delete(prod_id_arr);
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+        return entity;
     }
 }

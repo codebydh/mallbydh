@@ -23,4 +23,8 @@ public class AdProductService {
     public int getTotalCount(SearchCriteria cri) {
         return adProductMapper.getTotalCount(cri);
     }
+
+    void pro_check_delete(int[] prod_id_arr) {
+        adProductMapper.pro_check_delete(prod_id_arr);
+    }
 }
