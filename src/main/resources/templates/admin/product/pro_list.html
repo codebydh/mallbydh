@@ -113,13 +113,27 @@
                                 <td class="text-center">[[${productVO.prod_amount}]]</td>
                                 <td class="text-center">[[${#dates.format(productVO.prod_regdate, 'yyyy-MM-dd HH:mm:ss')}]]</td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-warning">수정</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">삭제</button>
+                                    <button type="button" class="btn btn-sm btn-warning" th:data-prod_id="${productVO.prod_id}" name="btn_proEdit">수정</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                            th:data-prod_id="${productVO.prod_id}"
+                                            th:data-prod_uploadfolder="${productVO.prod_uploadfolder}"
+                                            th:data-prod_img="${productVO.prod_img}"
+                                            name="btn_proDelete">삭제</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <!-- 페이징 및 검색 파라미터 정보 : 현재 목록상태를 작업(수정,삭제)을 하고 돌아왔을 때 유지. -->
+                <form id="criteriaForm" action="" method="get">
+                    <!-- 페이징,검색 파라미터 -->
+                    <input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}" />
+                    <input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}" />
+                    <input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}" />
+                    <input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}" />
+                    <!-- 수정상품코드 -->
+                    <input type="hidden" name="prod_id" id="prod_id">
+                </form>
                 <!-- /.card-body -->
                 <nav aria-label="Page navigation example" style="margin-top: -12px;">
                     <ul class="pagination justify-content-center">
@@ -197,7 +211,29 @@
                 });
             });
 
+            let criteriaForm = $("#criteriaForm");
 
+            // 관리-삭제 버튼을 통한 상품 삭제
+            $("button[name='btn_proDelete']").on("click", function() {
+                if(!confirm("상품을 삭제하겠습니까?")) return;
+
+                let prod_id = $(this).data("prod_id");
+                let prod_uploadfolder = $(this).data("prod_uploadfolder");
+                let prod_img = $(this).data("prod_img");
+
+                $.ajax({
+                    url: '/admin/product/pro_delete',
+                    type: 'post',
+                    data: {prod_id: prod_id, prod_uploadfolder: prod_uploadfolder, prod_img: prod_img},
+                    dataType: 'text',
+                    success: function(result) {
+                        if(result == 'success') {
+                            alert("상품이 삭제되었습니다.");
+                            location.href = "/admin/product/pro_list";
+                        }
+                    }
+                });
+            });
         })
     </script>
 </th:block>

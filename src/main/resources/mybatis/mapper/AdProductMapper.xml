@@ -61,4 +61,11 @@
             </foreach>
     </delete>
 
+    <delete id="pro_delete">
+        delete from
+            product_tbl
+        where
+            prod_id = #{prod_id}
+    </delete>
+
 </mapper>

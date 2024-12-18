@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -163,7 +164,10 @@ public class AdProductController {
 
     // 체크박스에 선택된 상품 삭제
     @PostMapping("/pro_check_delete")
-    public ResponseEntity<String> pro_check_delete(@RequestParam("prod_id_arr") int[] prod_id_arr, @RequestParam("prod_uploadfolder_arr") String[] prod_uploadfolder, @RequestParam("prod_img_arr") String[] prod_img) throws Exception {
+    public ResponseEntity<String> pro_check_delete(
+            @RequestParam("prod_id_arr") int[] prod_id_arr,
+            @RequestParam("prod_uploadfolder_arr") String[] prod_uploadfolder,
+            @RequestParam("prod_img_arr") String[] prod_img) throws Exception {
         ResponseEntity<String> entity = null;
 
         // DB에서 상품 정보 삭제
@@ -173,6 +177,24 @@ public class AdProductController {
         for(int i=0; i < prod_id_arr.length; i++) {
             fileUtils.delete(uploadPath, prod_uploadfolder[i], prod_img[i], "image");
         }
+
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+        return entity;
+    }
+
+    // 관리-삭제 버튼을 통한 상품 삭제
+    @PostMapping("/pro_delete")
+    public ResponseEntity<String> pro_delete(
+            @RequestParam("prod_id") int prod_id,
+            @RequestParam("prod_uploadfolder") String prod_uploadfolder,
+            @RequestParam("prod_img") String prod_img) throws Exception {
+        ResponseEntity<String> entity = null;
+
+        // DB에서 상품 정보 삭제
+        adProductService.pro_delete(prod_id);
+
+        // 서버의 경로에서 이미지파일 삭제
+        fileUtils.delete(uploadPath, prod_uploadfolder, prod_img, "image");
 
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;

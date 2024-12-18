@@ -27,4 +27,8 @@ public class AdProductService {
     void pro_check_delete(int[] prod_id_arr) {
         adProductMapper.pro_check_delete(prod_id_arr);
     }
+
+    void pro_delete(Integer prod_id) {
+        adProductMapper.pro_delete(prod_id);
+    }
 }
