@@ -19,4 +19,8 @@ public class AdCategoryService {
         return adCategoryMapper.getSecondCategoryList(cate_parentid);
     }
 
+    public CategoryVO getFirstCategoryBySecondCategory(int secondCategory) {
+        return adCategoryMapper.getFirstCategoryBySecondCategory(secondCategory);
+    }
+
 }

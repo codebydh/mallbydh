@@ -6,4 +6,5 @@ public interface AdCategoryMapper {
 
     List<CategoryVO> getFirstCategoryList();
     List<CategoryVO> getSecondCategoryList(Integer cate_parentid);
+    CategoryVO getFirstCategoryBySecondCategory(int secondCategory);
 }

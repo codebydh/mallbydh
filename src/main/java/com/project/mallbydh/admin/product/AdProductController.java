@@ -1,6 +1,7 @@
 package com.project.mallbydh.admin.product;
 
 import com.project.mallbydh.admin.category.AdCategoryService;
+import com.project.mallbydh.admin.category.CategoryVO;
 import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.FileUtils;
 import com.project.mallbydh.common.utils.PageMaker;
@@ -198,5 +199,27 @@ public class AdProductController {
 
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
+    }
+
+    // 상품 수정 폼
+    @GetMapping("/pro_edit")
+    public String pro_edit(@ModelAttribute("cri") SearchCriteria cri, Integer prod_id, Model model) throws Exception {
+
+        // 1차 카테고리 목록
+        model.addAttribute("cate_list", adCategoryService.getFirstCategoryList());
+        ProductVO productVO = adProductService.pro_edit(prod_id);
+        // 경로의 역슬래시(\)를 /로 치환
+        productVO.setProd_uploadfolder(productVO.getProd_uploadfolder().replace("\\", "/"));
+        model.addAttribute("productVO", productVO);
+
+        // 2차 카테고리 정보
+        int secondCategory = productVO.getCate_id();
+        CategoryVO categoryVO = adCategoryService.getFirstCategoryBySecondCategory(secondCategory);
+        model.addAttribute("categoryVO", categoryVO);
+
+        int firstCategory = categoryVO.getCate_parentid();
+        model.addAttribute("secondCategoryVO", adCategoryService.getSecondCategoryList(firstCategory));
+
+        return "/admin/product/pro_edit";
     }
 }

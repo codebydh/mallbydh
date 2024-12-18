@@ -68,4 +68,13 @@
             prod_id = #{prod_id}
     </delete>
 
+    <select id="pro_edit" resultType="com.project.mallbydh.admin.product.ProductVO" parameterType="com.project.mallbydh.common.utils.SearchCriteria">
+        select
+            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate
+        from
+            product_tbl
+        where
+            prod_id = #{prod_id}
+    </select>
+
 </mapper>

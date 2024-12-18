@@ -3,25 +3,30 @@
 <mapper namespace="com.project.mallbydh.admin.category.AdCategoryMapper">
 
     <select id="getFirstCategoryList" resultType="com.project.mallbydh.admin.category.CategoryVO">
-
         select
             cate_id, cate_parentid, cate_name
         from
             category_tbl
         where
             cate_parentid is null
-
     </select>
 
     <select id="getSecondCategoryList" parameterType="Integer" resultType="com.project.mallbydh.admin.category.CategoryVO">
-
         select
             cate_id, cate_parentid, cate_name
         from
             category_tbl
         where
             cate_parentid = #{cate_parentid}
+    </select>
 
+    <select id="getFirstCategoryBySecondCategory" resultType="com.project.mallbydh.admin.category.CategoryVO">
+        select
+            cate_id, cate_parentid, cate_name
+        from
+            category_tbl
+        where
+            cate_id  = #{secondCategory}
     </select>
 
 </mapper>

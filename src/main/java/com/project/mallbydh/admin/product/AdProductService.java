@@ -31,4 +31,9 @@ public class AdProductService {
     void pro_delete(Integer prod_id) {
         adProductMapper.pro_delete(prod_id);
     }
+
+    public ProductVO pro_edit(Integer prod_id) {
+        return adProductMapper.pro_edit(prod_id);
+    }
+
 }
