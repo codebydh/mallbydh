@@ -16,4 +16,6 @@ public interface AdProductMapper {
     void pro_delete(Integer prod_id);
 
     ProductVO pro_edit(Integer prod_id);
+
+    void pro_update(ProductVO vo);
 }

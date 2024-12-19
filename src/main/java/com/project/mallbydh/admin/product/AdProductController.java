@@ -222,4 +222,31 @@ public class AdProductController {
 
         return "/admin/product/pro_edit";
     }
+
+    // 상품 수정 - 완료 폼
+    @PostMapping("/pro_update")
+    public String pro_update(ProductVO vo, SearchCriteria cri, MultipartFile prod_img_upload, RedirectAttributes rttr) throws Exception {
+        // 1)상품이미지를 변경했을 경우
+        if(!prod_img_upload.isEmpty()) {
+            // 기존이미지 삭제.
+            fileUtils.delete(uploadPath, vo.getProd_uploadfolder(), "s_" + vo.getProd_img(), "image");
+            // 변경 이미지 업로드.
+            String dateFolder = fileUtils.getDateFolder(); // 상품이미지 업로드되는 날짜폴더이름
+            String saveFileName = fileUtils.uploadFile(uploadPath, dateFolder, prod_img_upload);
+            vo.setProd_uploadfolder(dateFolder);
+            vo.setProd_img(saveFileName);
+        }
+
+        // 상품테이블에 변경(db작업)
+        adProductService.pro_update(vo);
+
+        // 원래상태의 목록으로 주소이동작업.
+        rttr.addAttribute("page", cri.getPage());
+        rttr.addAttribute("perPageNum", cri.getPerPageNum());
+        rttr.addAttribute("searchType", cri.getSearchType());
+        rttr.addAttribute("keyword", cri.getKeyword());
+
+        // http://localhost:8888/admin/product/pro_edit?page=2&perPageNum=2&searchType=n&keyword=테스트&pro_num=13
+        return "redirect:/admin/product/pro_list";
+    }
 }
