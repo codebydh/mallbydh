@@ -23,4 +23,16 @@ public class AdCategoryService {
         return adCategoryMapper.getFirstCategoryBySecondCategory(secondCategory);
     }
 
+    public List<Integer> getSubCategoriesByParentId(Integer cate_parentid) {
+        return adCategoryMapper.getSubCategoriesByParentId(cate_parentid);
+    }
+
+    public CategoryVO getCategoryById(Integer cate_id) {
+        return adCategoryMapper.getCategoryById(cate_id);
+    }
+
+    public List<CategoryVO> getAllCategories() {
+        return adCategoryMapper.getAllCategories();
+    }
+
 }

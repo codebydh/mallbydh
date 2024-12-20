@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.product.ProductMapper">
+
+    <select id="getProductsByCateId" resultType="com.project.mallbydh.admin.product.ProductVO">
+        select
+            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate
+        from
+            product_tbl
+        where
+            prod_forsale = 'Y'
+            and cate_id = #{cate_id}
+        order by
+            prod_id desc
+    </select>
+
+    <select id="getProductsByMultipleCateIds" resultType="com.project.mallbydh.admin.product.ProductVO">
+        select
+            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate
+        from
+            product_tbl
+        where
+            prod_forsale = 'Y'
+            and cate_id in
+            <foreach item="cate_id" collection="list" open="(" separator="," close=")">
+                #{cate_id}
+            </foreach>
+        order by
+            prod_id desc
+    </select>
+
+    <select id="getAllProducts" resultType="com.project.mallbydh.admin.product.ProductVO">
+        select
+            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate
+        from
+            product_tbl
+        where
+            prod_forsale = 'Y'
+        order by
+            prod_id desc
+    </select>
+
+
+</mapper>

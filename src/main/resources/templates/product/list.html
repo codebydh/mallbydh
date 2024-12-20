@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <style>
+        .btn.custom-btn {
+            color: #000;
+            background-color: #eeeeee;
+            border-color: #eeeeee;
+        }
+
+        .btn.custom-btn:hover {
+            color: #000;
+            background-color: #fff;
+            border-color: #000;
+        }
+
+        .btn.custom-btn:active,
+        .btn.custom-btn.active {
+            color: #fff;
+            background-color: #000;
+            border-color: #000;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="content">
+    <section class="text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="font-weight-bolder mb-5">상품페이지</h1>
+            </div>
+            <img src="/temp_img/top_nintendo.jpg" class="d-block w-100 mb-5 img-fluid object-fit-cover" alt="IMG2">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <p>
+                    <a href="#" class="btn custom-btn">All</a>
+                    <a href="#" class="btn custom-btn">Console</a>
+                    <a href="#" class="btn custom-btn">Game</a>
+                    <a href="#" class="btn custom-btn">Accessories</a>
+                </p>
+            </div>
+        </div>
+    </section>
+    <div class="mb-2">
+        <h5>총 5개 제품</h5>
+        <hr>
+    </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <div class="card border-0">
+            <div class="ratio ratio-1x1">
+                <img src="cake.jpg" class="card-img-top rounded object-fit-cover" alt="케이크 이미지">
+            </div>
+            <div class="card-body px-0">
+                <h5 class="card-title fw-bold mb-2" style="font-size: 15px;">마스카포네 티라미수 케이크 - 유선 1차</h5>
+                <p class="text-danger fw-bold mb-2" style="font-size: 17px;">10,052원</p>
+                <div class="d-flex gap-2">
+                    <i class="bi bi-cart3 fs-5"></i>
+                    <i class="bi bi-heart fs-5"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</html>

@@ -29,4 +29,31 @@
             cate_id  = #{secondCategory}
     </select>
 
+    <select id="getSubCategoriesByParentId" resultType="Integer">
+        select
+            cate_id
+        from
+            category_tbl
+        where
+            cate_parentid = #{cate_parentid}
+    </select>
+
+    <select id="getCategoryById" resultType="com.project.mallbydh.admin.category.CategoryVO">
+        select
+            cate_id, cate_name, cate_parentid
+        from
+            category_tbl
+        where
+            cate_id = #{cate_id}
+    </select>
+
+    <select id="getAllCategories" resultType="com.project.mallbydh.admin.category.CategoryVO">
+        select
+            cate_id, cate_name, cate_parentid
+        from
+            category_tbl
+        order by
+            cate_id asc
+    </select>
+
 </mapper>
