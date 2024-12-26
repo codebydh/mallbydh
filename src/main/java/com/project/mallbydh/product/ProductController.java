@@ -2,7 +2,10 @@ package com.project.mallbydh.product;
 
 import com.project.mallbydh.admin.category.AdCategoryService;
 import com.project.mallbydh.admin.product.ProductVO;
+import com.project.mallbydh.common.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,10 @@ public class ProductController {
 
     private final ProductService productService;
     private final AdCategoryService AdCategoryService;
+    private final FileUtils fileUtils;
+
+    @Value("${com.project.mallbydh.upload.path}")
+    private String uploadPath;
 
     @GetMapping("/list")
     public String getProductList(@RequestParam(required = false) Integer cate_id,
@@ -40,9 +47,19 @@ public class ProductController {
             productList = productService.getAllProducts();
         }
 
+        productList.forEach(vo -> {
+            vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+        });
+
         model.addAttribute("productList", productList);
         model.addAttribute("categories", AdCategoryService.getAllCategories());
         return "product/list";
+    }
+
+    // 이미지 출력
+    @GetMapping("/image_display")
+    public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
+        return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
     }
 
 }
