@@ -63,7 +63,10 @@ public class ProductController {
     }
 
     @GetMapping("/detail")
-    public String getProductDetail(Model model) {
+    public String getProductDetail(Integer prod_id, Model model) {
+        ProductVO productVO = productService.getProductById(prod_id);
+        productVO.setProd_uploadfolder(productVO.getProd_uploadfolder().replace("\\", "/"));
+        model.addAttribute("productVO", productVO);
         return "product/detail";
     }
 

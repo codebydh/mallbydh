@@ -23,4 +23,8 @@ public class ProductService {
     public List<ProductVO> getAllProducts() {
         return productMapper.getAllProducts();
     }
+
+    public ProductVO getProductById(Integer prod_id) {
+        return productMapper.getProductById(prod_id);
+    }
 }
