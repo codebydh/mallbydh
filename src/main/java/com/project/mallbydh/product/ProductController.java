@@ -62,4 +62,9 @@ public class ProductController {
         return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
     }
 
+    @GetMapping("/detail")
+    public String getProductDetail(Model model) {
+        return "product/detail";
+    }
+
 }
