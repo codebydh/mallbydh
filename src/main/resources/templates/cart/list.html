@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="script">
+</th:block>
+
+<th:block layout:fragment="css">
+    <style>
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        .product-info {
+            padding: 10px;
+        }
+
+        .product-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            margin-right: 15px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .manufacturer {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .product-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="content">
+    <section class="text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="font-weight-bolder mb-5">장바구니</h1>
+            </div>
+        </div>
+    </section>
+    <div class="card-body">
+        <div class="mb-2 d-flex justify-content-between align-items-center">
+            <div>
+                <button type="button" class="btn btn-outline-secondary" id="btnCheckDelete">선택삭제</button>
+                <button type="button" class="btn btn-outline-danger" id="btnEmpty">장바구니비우기</button>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead class="text-center">
+            <tr>
+                <th style="width: 5%"><input type="checkbox" id="checkAll"></th>
+                <th style="width: 59%">상품정보</th>
+                <th style="width: 12%">가격</th>
+                <th style="width: 12%">수량</th>
+                <th style="width: 12%">합계</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center">
+                    <input type="checkbox">
+                </td>
+                <td class="product-info ml-3">
+                    <div class="product-container d-flex align-items-center">
+                        <div class="product-image me-3" style="width: 81px; height: 81px;">
+                            <img src="#"
+                                 alt="상품 이미지"
+                                 class="img-fluid rounded product-thumbnail">
+                        </div>
+                        <div class="product-details">
+                            <h4 class="product-name mb-1">상품이름</h4>
+                            <p class="manufacturer mb-2"><small class="text-muted">브랜드</small></p>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-center font-weight-bold" style="color: red;">가격</td>
+                <td class="text-center">수량</td>
+                <td class="text-center">날짜</td>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-end pe-3 py-3 fw-bold" style="background-color: #DEE2E6;">
+                    총 <span class="text-danger fw-bold">xx</span>원
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="mt-5 text-center">
+            <button type="button" class="btn btn-outline-info">선택상품주문</button>
+            <button type="button" class="btn btn-info">전체상품주문</button>
+        </div>
+    </div>
+</th:block>
+</html>
