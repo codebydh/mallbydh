@@ -34,8 +34,12 @@
                 <h5 class="card-title fw-bold mb-2" style="font-size: 15px;" th:text="${product.prod_name}"></h5>
                 <p class="text-danger fw-bold mb-2" style="font-size: 17px;" th:text="${#numbers.formatDecimal(product.prod_price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
                 <div class="d-flex gap-2">
-                    <i class="bi bi-cart3 fs-5"></i>
-                    <i class="bi bi-heart fs-5"></i>
+                    <button type="button" class="btn p-0 border-0" name="addToCart">
+                        <i class="bi bi-cart3 fs-5"></i>
+                    </button>
+                    <button type="button" class="btn p-0 border-0" name="addToWish">
+                        <i class="bi bi-heart fs-5"></i>
+                    </button>
                 </div>
             </div>
         </div>

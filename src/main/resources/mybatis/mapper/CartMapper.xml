@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.cart.CartMapper">
+
+    <insert id="cart_add">
+        insert into
+            cart_tbl(prod_id, u_id, cart_amount)
+        values
+            (#{prod_id}, #{u_id}, #{cart_amount})
+        on duplicate key
+            update cart_amount = cart_amount + #{cart_amount}
+    </insert>
+
+</mapper>
