@@ -34,15 +34,43 @@
                 <h5 class="card-title fw-bold mb-2" style="font-size: 15px;" th:text="${product.prod_name}"></h5>
                 <p class="text-danger fw-bold mb-2" style="font-size: 17px;" th:text="${#numbers.formatDecimal(product.prod_price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn p-0 border-0" name="addToCart">
+                    <button type="button" class="btn p-0 border-0" name="addToCart" th:data-prod_id="${product.prod_id}">
                         <i class="bi bi-cart3 fs-5"></i>
                     </button>
-                    <button type="button" class="btn p-0 border-0" name="addToWish">
+                    <button type="button" class="btn p-0 border-0" name="addToWish" th:data-prod_id="${product.prod_id}">
                         <i class="bi bi-heart fs-5"></i>
                     </button>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+
+    </script>
+</th:block>
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function() {
+            // 상품리스트 - 장바구니 아이콘 클릭 시 추가
+            $("button[name='addToCart']").on("click", function() {
+               let prod_id = $(this).data("prod_id");
+               let cart_amount = 1
+                $.ajax({
+                    url: '/cart/cart_add',
+                    type: 'post',
+                    data: {prod_id : prod_id, cart_amount : cart_amount},
+                    dataType: 'text',
+                    success: function(result) {
+                        if(result == "success") {
+                            alert("장바구니에 등록되었습니다.");
+                            if(confirm("장바구니로 이동하시겠습니까?")) {
+                                location.href = "/cart/";
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </th:block>
 </html>

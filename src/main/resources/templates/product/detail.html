@@ -120,10 +120,10 @@
                         <div class="d-grid gap-2">
                             <button class="btn btn-dark" type="button">구매하기</button>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-outline-dark flex-fill" type="button">
+                                <button class="btn btn-outline-dark flex-fill" type="button" name="addToCart" th:data-prod_id="${productVO.prod_id}">
                                     <i class="bi bi-heart"></i> 찜하기
                                 </button>
-                                <button class="btn btn-outline-dark flex-fill" type="button">
+                                <button class="btn btn-outline-dark flex-fill" type="button" name="addToWish" th:data-prod_id="${productVO.prod_id}">
                                     <i class="bi bi-cart"></i> 장바구니
                                 </button>
                             </div>
@@ -321,6 +321,28 @@
             const totalPrice = quantity * pricePerUnit;
             document.querySelector('.total-price strong').textContent = totalPrice + '원';
         }
+
+        $(document).ready(function() {
+            // 상품페이지 - 장바구니 버튼 클릭 시
+            $("button[name='addToCart']").on("click", function () {
+                let prod_id = $(this).data("prod_id");
+                let cart_amount = $("#quantity").val();
+                $.ajax({
+                    url: '/cart/cart_add',
+                    type: 'post',
+                    data: {prod_id: prod_id, cart_amount: cart_amount},
+                    dataType: 'text',
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("장바구니에 등록되었습니다.");
+                            if (confirm("장바구니로 이동하시겠습니까?")) {
+                                location.href = "/cart/";
+                            }
+                        }
+                    }
+                });
+            });
+        });
     </script>
 </th:block>
 </html>
