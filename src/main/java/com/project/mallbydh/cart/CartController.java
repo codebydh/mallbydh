@@ -1,6 +1,5 @@
 package com.project.mallbydh.cart;
 
-import ch.qos.logback.core.util.FileUtil;
 import com.project.mallbydh.common.utils.FileUtils;
 import com.project.mallbydh.member.MemberVO;
 import jakarta.servlet.http.HttpSession;
@@ -10,9 +9,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequestMapping("/cart/*")
@@ -27,7 +32,16 @@ public class CartController {
     private String uploadPath;
 
     @GetMapping("/")
-    public String cartIndex() {
+    public String cartIndex(HttpSession session, Model model) throws Exception {
+
+        String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
+
+        List<Map<String, Object>> cart_list = cartService.cart_list(u_id);
+        cart_list.forEach(cartVO -> {
+            cartVO.put("prod_uploadfolder", cartVO.get("prod_uploadfolder").toString().replace("\\", "/"));
+        });
+        model.addAttribute("cart_list", cart_list);
+
         return "cart/list";
     }
 
@@ -42,5 +56,31 @@ public class CartController {
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
 
         return entity;
+    }
+
+    // "선택삭제" 버튼
+    @GetMapping("/cart_checkdelete")
+    public String cartCheckDelete(@RequestParam("prod_id") List<Integer> prod_ids, HttpSession session) throws Exception {
+        String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
+
+        for(Integer prod_id : prod_ids) {
+            cartService.cart_checkdelete(u_id, prod_id);
+        }
+
+        return "redirect:/cart/";
+    }
+
+    // "장바구니비우기" 버튼
+    @GetMapping("/cart_empty")
+    public String cartEmpty(HttpSession session) throws Exception {
+        String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
+        cartService.cart_empty(u_id);
+        return "redirect:/cart/";
+    }
+
+    @GetMapping("/image_display")
+    public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
+
+        return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
     }
 }
