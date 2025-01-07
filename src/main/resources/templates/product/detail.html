@@ -77,7 +77,85 @@
             padding: 0 15px;
         }
 
+        .review-detail-box {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .review-content td {
+            background-color: #f8f9fa;
+        }
     </style>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script id="templateReview" type="text/x-handlebars-template">
+        <table class="table" id="reviewTable">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>평점</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each .}}
+                <tr>
+                    <td>{{rev_code}}</td>
+                    <td>{{rateToStar rev_rate}}</td>
+                    <td>{{rev_title}}</td>
+                    <td>{{u_id}}</td>
+                    <td>{{convertDate rev_regdate}}</td>
+                </tr>
+                <tr class="review-content" id="content-{{rev_code}}" style="display: none;">
+                    <td colspan="5">
+                        <div class="review-detail-box">
+                            {{rev_content}}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </script>
+
+    <script th:inline="javascript">
+        // 핸들바 사용자 정의 함수 - 리뷰등록일(rev_regdate) 표시 포맷을 YYYY.MM.DD
+        Handlebars.registerHelper("convertDate", function(reviewDate) {
+            const date = new Date(reviewDate);
+
+            let month = (date.getMonth()+1 < 10 ? "0" + (date.getMonth()+1) : date.getMonth()+1);
+            let day = (date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate());
+            return date.getFullYear() + "." + month + "." + day
+        });
+
+        // 핸들바 사용자 정의 함수 - 리뷰평점(rev_rate) 점수에 따른 별(★)표시
+        Handlebars.registerHelper("rateToStar", function(rating) {
+            let star = "";
+            switch(rating) {
+                case 1:
+                    star = "★☆☆☆☆";
+                    break;
+                case 2:
+                    star = "★★☆☆☆";
+                    break;
+                case 3:
+                    star = "★★★☆☆";
+                    break;
+                case 4:
+                    star = "★★★★☆";
+                    break;
+                case 5:
+                    star = "★★★★★";
+                    break;
+            }
+            return star;
+        });
+    </script>
 </th:block>
 
 <th:block layout:fragment="content">
@@ -120,7 +198,7 @@
                         <div class="d-grid gap-2">
                             <button class="btn btn-dark" type="button">구매하기</button>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-outline-dark flex-fill" type="button" name="addToCart" th:data-prod_id="${productVO.prod_id}">
+                                <button class="btn btn-outline-dark flex-fill" type="button" name="addToCart" th:data-prod_id="${productVO.prod_id}" id="addToCartBtn">
                                     <i class="bi bi-heart"></i> 찜하기
                                 </button>
                                 <button class="btn btn-outline-dark flex-fill" type="button" name="addToWish" th:data-prod_id="${productVO.prod_id}">
@@ -170,8 +248,13 @@
                 </li>
             </ul>
             </ul>
+            <div class="row">
+                <!-- 리뷰내용 -->
+                <div class="col" id="reviewList"></div>
+            </div>
             <div>
-                <h5>상품리뷰</h5>
+                <!-- 리뷰페이징 -->
+                <div class="col" id="reviewPaging"></div>
             </div>
         </div>
 
@@ -355,6 +438,20 @@
                 });
             });
         });
+
+        // 상품후기 - 클릭 시 내용 표시 관련
+        $(document).on('click', 'tr', function() {
+            const reviewCode = $(this).find('td:first').text();
+            const contentRow = $(`#content-${reviewCode}`);
+            $('.review-content').not(contentRow).hide();
+            contentRow.toggle();
+        });
+
+        // 상품후기 작업
+        let prod_id = document.getElementById('addToCartBtn').dataset.prod_id;
+        let reviewPage = 1;
+        let url = "/review/rev_list/" + prod_id + "/" + reviewPage;
+
     </script>
 </th:block>
 </html>
