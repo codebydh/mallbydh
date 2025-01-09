@@ -93,14 +93,26 @@
 <th:block layout:fragment="script">
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script id="templateReview" type="text/x-handlebars-template">
+        <style>
+            #reviewTable {
+                table-layout: fixed;
+                width: 100%;
+                text-align: center;
+            }
+
+            #reviewTable td, #reviewTable th {
+                word-wrap: break-word;
+                overflow: hidden;
+            }
+        </style>
         <table class="table" id="reviewTable">
             <thead>
                 <tr>
-                    <th>번호</th>
-                    <th>평점</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>작성일</th>
+                    <th style="width: 5%">번호</th>
+                    <th style="width: 15%">평점</th>
+                    <th style="width: 60%">제목</th>
+                    <th style="width: 10%">작성자</th>
+                    <th style="width: 10%">작성일</th>
                 </tr>
             </thead>
             <tbody>
@@ -119,6 +131,7 @@
                         </div>
                     </td>
                 </tr>
+            {{/each}}
             </tbody>
         </table>
     </script>
@@ -250,7 +263,9 @@
             </ul>
             <div class="row">
                 <!-- 리뷰내용 -->
-                <div class="col" id="reviewList"></div>
+                <div class="col" id="reviewList">
+                    작성된 리뷰가 없습니다.
+                </div>
             </div>
             <div>
                 <!-- 리뷰페이징 -->
@@ -451,6 +466,57 @@
         let prod_id = document.getElementById('addToCartBtn').dataset.prod_id;
         let reviewPage = 1;
         let url = "/review/rev_list/" + prod_id + "/" + reviewPage;
+
+        getPage(url);
+
+        function getPage(url) {
+            $.getJSON(url, function(data) {
+                fn_displayReviewData(data.rev_list, $("div#reviewList"), $("#templateReview"));
+                fn_displayReviewPaging(data.pageMaker, $("div#reviewPaging"));
+            });
+        }
+
+        function fn_displayReviewData(reviewData, target, template) {
+            let templateObj = Handlebars.compile(template.html());
+            let reviewHtml = templateObj(reviewData);
+
+            target.empty();
+            target.append(reviewHtml);
+        }
+
+        // 페이징 출력 함수
+        function fn_displayReviewPaging(pageData, target) {
+            let pageStr = '<nav aria-label="Page navigation example">';
+            pageStr += '<ul class="pagination pagination-sm justify-content-sm-center">';
+
+            if(pageData.prev) {
+                pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.startPage -1)  + '">Previous</a></li>';
+            }
+
+            for(let i=pageData.startPage; i <= pageData.endPage; i++) {
+                let curPageClass = (pageData.cri.page == i) ? 'active' : '';
+                pageStr += '<li class="page-item ' + curPageClass + '"><a class="page-link" href="' + i + '">' + i + '</a></li>';
+            }
+
+            if(pageData.next) {
+                pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.endPage + 1) + '">Next</a></li>';
+            }
+
+            pageStr += '</ul>';
+            pageStr += '</nav>';
+
+            target.empty();
+            target.append(pageStr);
+        }
+
+        // 페이징 번호 클릭
+        $("div#reviewPaging").on("click", "li a", function(e) {
+            e.preventDefault();
+            reviewPage = $(this).attr("href");  // 페이지번호 읽기.
+            url = "/review/rev_list/" + prod_id + "/" + reviewPage;
+            getPage(url);
+        });
+
 
     </script>
 </th:block>

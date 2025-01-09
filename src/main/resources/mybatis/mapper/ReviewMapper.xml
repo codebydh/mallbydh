@@ -2,5 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mallbydh.review.ReviewMapper">
 
+    <select id="rev_list" resultType="com.project.mallbydh.review.ReviewVO" parameterType="map">
+        select
+            rev_code, u_id, prod_id, rev_title, rev_content, rev_rate, rev_regdate
+        from
+            review_tbl
+        where
+            prod_id = #{prod_id}
+        order by
+            rev_code desc
+        limit
+            #{cri.pageStart}, #{cri.perPageNum}
+    </select>
+
+    <select id="getReviewCountByProdId" resultType="int" parameterType="Integer">
+        select
+            count(*)
+        from
+            review_tbl
+        where
+            prod_id = #{prod_id}
+    </select>
 
 </mapper>
