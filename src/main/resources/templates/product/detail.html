@@ -87,6 +87,15 @@
         .review-content td {
             background-color: #f8f9fa;
         }
+
+        #star-rating a.rev_rate {
+            font-size: 28px;
+            color: lightgrey;
+        }
+
+        #star-rating a.rev_rate.on {
+            color: hotpink;
+        }
     </style>
 </th:block>
 
@@ -104,36 +113,79 @@
                 word-wrap: break-word;
                 overflow: hidden;
             }
+
         </style>
+        {{#if .}}
         <table class="table" id="reviewTable">
             <thead>
-                <tr>
-                    <th style="width: 5%">번호</th>
-                    <th style="width: 15%">평점</th>
-                    <th style="width: 60%">제목</th>
-                    <th style="width: 10%">작성자</th>
-                    <th style="width: 10%">작성일</th>
-                </tr>
+            <tr>
+                <th style="width: 5%">번호</th>
+                <th style="width: 15%">평점</th>
+                <th style="width: 60%">제목</th>
+                <th style="width: 10%">작성자</th>
+                <th style="width: 10%">작성일</th>
+            </tr>
             </thead>
             <tbody>
-                {{#each .}}
-                <tr>
-                    <td>{{rev_code}}</td>
-                    <td>{{rateToStar rev_rate}}</td>
-                    <td>{{rev_title}}</td>
-                    <td>{{u_id}}</td>
-                    <td>{{convertDate rev_regdate}}</td>
-                </tr>
-                <tr class="review-content" id="content-{{rev_code}}" style="display: none;">
-                    <td colspan="5">
-                        <div class="review-detail-box">
-                            {{rev_content}}
-                        </div>
-                    </td>
-                </tr>
+            {{#each .}}
+            <tr>
+                <td>{{rev_code}}</td>
+                <td>{{rateToStar rev_rate}}</td>
+                <td>{{rev_title}}</td>
+                <td>{{u_id}}</td>
+                <td>{{convertDate rev_regdate}}</td>
+            </tr>
+            <tr class="review-content" id="content-{{rev_code}}" style="display: none;">
+                <td colspan="5">
+                    <div class="review-detail-box">
+                        {{rev_content}}
+                    </div>
+                </td>
+            </tr>
             {{/each}}
             </tbody>
         </table>
+        {{else}}
+        <div class="my-3 d-flex flex-column align-items-center">
+            <i class="bi bi-chat-text mb-2" style="font-size: 50px;"></i>
+            <span class="mb-3">아직 작성된 리뷰가 없습니다.</span>
+            <button type="button" class="btn btn-outline-success btn-sm" style="padding: 6px 12px 6px 12px;" data-bs-toggle="modal" data-bs-target="#reviewModal">리뷰 작성하기</button>
+        </div>
+        <!-- 리뷰 작성 모달 -->
+        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewModalLabel">상품리뷰 작성하기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 별점 선택 -->
+                        <div class="text-center mb-4">
+                            <div id="star-rating">
+                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                            </div>
+                            <div class="text-muted small">별을 클릭하면 선택한 점수로 선택됩니다.</div>
+                        </div>
+
+                        <!-- 리뷰 내용 입력 -->
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="6" placeholder="내용을 입력해주세요."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소하기</button>
+                        <button type="button" class="btn btn-dark">등록완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{/if}}
     </script>
 
     <script th:inline="javascript">
@@ -264,7 +316,6 @@
             <div class="row">
                 <!-- 리뷰내용 -->
                 <div class="col" id="reviewList">
-                    작성된 리뷰가 없습니다.
                 </div>
             </div>
             <div>
@@ -385,54 +436,61 @@
 
 <th:block layout:fragment="script2">
     <script>
-        function handleInput(input) {
-            let value = parseInt(input.value);
+        $(document).ready(function() {
+            // 상품후기 남기기 - 별 개수에 따른 색칠
+            $(document).on("click", "div#star-rating a.rev_rate", function(e) {
+                e.preventDefault();
+                $(this).parent().children().removeClass("on");
+                $(this).addClass("on").prevAll("a").addClass("on");
+            });
 
-            // 빈 값이거나 1 미만인 경우 1로 설정
-            if (isNaN(value) || value < 1) {
-                value = 1;
-            }
+            function handleInput(input) {
+                let value = parseInt(input.value);
 
-            input.value = value;
-            updateTotalPrice(value);
-        }
+                // 빈 값이거나 1 미만인 경우 1로 설정
+                if (isNaN(value) || value < 1) {
+                    value = 1;
+                }
 
-        function increment() {
-            const input = document.getElementById('quantity');
-            let value = parseInt(input.value);
-            value++;
-            input.value = value;
-            updateTotalPrice(value);
-        }
-
-        function decrement() {
-            const input = document.getElementById('quantity');
-            let value = parseInt(input.value);
-            if (value > 1) {
-                value--;
                 input.value = value;
                 updateTotalPrice(value);
             }
-        }
 
-        function updateTotalPrice(quantity) {
-            const pricePerUnit = 32;
-            const totalPrice = quantity * pricePerUnit;
-            document.querySelector('.total-price strong').textContent = totalPrice + '원';
-        }
+            function increment() {
+                const input = document.getElementById('quantity');
+                let value = parseInt(input.value);
+                value++;
+                input.value = value;
+                updateTotalPrice(value);
+            }
 
-        // 메뉴 클릭 시 스크롤 위치 조정
-        $('.nav-link').on('click', function(e) {
-            e.preventDefault();  // 기본 동작 중지
-            let targetId = $(this).attr('href');
-            let offset = $(targetId).offset().top - 50;  // 상단 여백 50px
+            function decrement() {
+                const input = document.getElementById('quantity');
+                let value = parseInt(input.value);
+                if (value > 1) {
+                    value--;
+                    input.value = value;
+                    updateTotalPrice(value);
+                }
+            }
 
-            $('html, body').animate({
-                scrollTop: offset
-            }, 300);  // 0.3초 동안 부드럽게 스크롤
-        });
+            function updateTotalPrice(quantity) {
+                const pricePerUnit = 32;
+                const totalPrice = quantity * pricePerUnit;
+                document.querySelector('.total-price strong').textContent = totalPrice + '원';
+            }
 
-        $(document).ready(function() {
+            // 메뉴 클릭 시 스크롤 위치 조정
+            $('.nav-link').on('click', function(e) {
+                e.preventDefault();  // 기본 동작 중지
+                let targetId = $(this).attr('href');
+                let offset = $(targetId).offset().top - 50;  // 상단 여백 50px
+
+                $('html, body').animate({
+                    scrollTop: offset
+                }, 300);  // 0.3초 동안 부드럽게 스크롤
+            });
+
             // 상품페이지 - 장바구니 버튼 클릭 시
             $("button[name='addToCart']").on("click", function () {
                 let prod_id = $(this).data("prod_id");
@@ -452,72 +510,70 @@
                     }
                 });
             });
-        });
 
-        // 상품후기 - 클릭 시 내용 표시 관련
-        $(document).on('click', 'tr', function() {
-            const reviewCode = $(this).find('td:first').text();
-            const contentRow = $(`#content-${reviewCode}`);
-            $('.review-content').not(contentRow).hide();
-            contentRow.toggle();
-        });
-
-        // 상품후기 작업
-        let prod_id = document.getElementById('addToCartBtn').dataset.prod_id;
-        let reviewPage = 1;
-        let url = "/review/rev_list/" + prod_id + "/" + reviewPage;
-
-        getPage(url);
-
-        function getPage(url) {
-            $.getJSON(url, function(data) {
-                fn_displayReviewData(data.rev_list, $("div#reviewList"), $("#templateReview"));
-                fn_displayReviewPaging(data.pageMaker, $("div#reviewPaging"));
+            // 상품후기 - 클릭 시 내용 표시 관련
+            $(document).on('click', 'tr', function() {
+                const reviewCode = $(this).find('td:first').text();
+                const contentRow = $(`#content-${reviewCode}`);
+                $('.review-content').not(contentRow).hide();
+                contentRow.toggle();
             });
-        }
 
-        function fn_displayReviewData(reviewData, target, template) {
-            let templateObj = Handlebars.compile(template.html());
-            let reviewHtml = templateObj(reviewData);
+            // 상품후기 작업
+            let prod_id = document.getElementById('addToCartBtn').dataset.prod_id;
+            let reviewPage = 1;
+            let url = "/review/rev_list/" + prod_id + "/" + reviewPage;
 
-            target.empty();
-            target.append(reviewHtml);
-        }
-
-        // 페이징 출력 함수
-        function fn_displayReviewPaging(pageData, target) {
-            let pageStr = '<nav aria-label="Page navigation example">';
-            pageStr += '<ul class="pagination pagination-sm justify-content-sm-center">';
-
-            if(pageData.prev) {
-                pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.startPage -1)  + '">Previous</a></li>';
-            }
-
-            for(let i=pageData.startPage; i <= pageData.endPage; i++) {
-                let curPageClass = (pageData.cri.page == i) ? 'active' : '';
-                pageStr += '<li class="page-item ' + curPageClass + '"><a class="page-link" href="' + i + '">' + i + '</a></li>';
-            }
-
-            if(pageData.next) {
-                pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.endPage + 1) + '">Next</a></li>';
-            }
-
-            pageStr += '</ul>';
-            pageStr += '</nav>';
-
-            target.empty();
-            target.append(pageStr);
-        }
-
-        // 페이징 번호 클릭
-        $("div#reviewPaging").on("click", "li a", function(e) {
-            e.preventDefault();
-            reviewPage = $(this).attr("href");  // 페이지번호 읽기.
-            url = "/review/rev_list/" + prod_id + "/" + reviewPage;
             getPage(url);
+
+            function getPage(url) {
+                $.getJSON(url, function(data) {
+                    fn_displayReviewData(data.rev_list, $("div#reviewList"), $("#templateReview"));
+                    fn_displayReviewPaging(data.pageMaker, $("div#reviewPaging"));
+                });
+            }
+
+            function fn_displayReviewData(reviewData, target, template) {
+                let templateObj = Handlebars.compile(template.html());
+                let reviewHtml = templateObj(reviewData);
+
+                target.empty();
+                target.append(reviewHtml);
+            }
+
+            // 페이징 출력 함수
+            function fn_displayReviewPaging(pageData, target) {
+                let pageStr = '<nav aria-label="Page navigation example">';
+                pageStr += '<ul class="pagination pagination-sm justify-content-sm-center">';
+
+                if(pageData.prev) {
+                    pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.startPage -1)  + '">Previous</a></li>';
+                }
+
+                for(let i=pageData.startPage; i <= pageData.endPage; i++) {
+                    let curPageClass = (pageData.cri.page == i) ? 'active' : '';
+                    pageStr += '<li class="page-item ' + curPageClass + '"><a class="page-link" href="' + i + '">' + i + '</a></li>';
+                }
+
+                if(pageData.next) {
+                    pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.endPage + 1) + '">Next</a></li>';
+                }
+
+                pageStr += '</ul>';
+                pageStr += '</nav>';
+
+                target.empty();
+                target.append(pageStr);
+            }
+
+            // 페이징 번호 클릭
+            $("div#reviewPaging").on("click", "li a", function(e) {
+                e.preventDefault();
+                reviewPage = $(this).attr("href");  // 페이지번호 읽기.
+                url = "/review/rev_list/" + prod_id + "/" + reviewPage;
+                getPage(url);
+            });
         });
-
-
     </script>
 </th:block>
 </html>
