@@ -121,6 +121,10 @@
             }
         </style>
         {{#if .}}
+        <div class="d-flex justify-content-between align-items-center p-5" style="background-color: #EAEAEA;">
+            <h5 class="my-1 fw-bold">총 <u class="fw-bolder" th:text="${#numbers.formatInteger(productVO.prod_reviewcount, 1, 'COMMA')}"></u>건의 리뷰가 있습니다.</h5>
+            <button type="button" class="btn btn-dark btn-sm" style="padding: 6px 12px 6px 12px;" data-bs-toggle="modal" data-bs-target="#reviewModal">리뷰 작성하기</button>
+        </div>
         <table class="table" id="reviewTable">
             <thead>
             <tr>
@@ -151,47 +155,12 @@
             </tbody>
         </table>
         {{else}}
-        <div class="my-3 d-flex flex-column align-items-center">
+        <div class="d-flex flex-column align-items-center" style="margin-bottom: 16px; margin-top: 64px;">
             <i class="bi bi-chat-text mb-2" style="font-size: 50px;"></i>
             <span class="mb-3">아직 작성된 리뷰가 없습니다.</span>
             <button type="button" class="btn btn-outline-success btn-sm" style="padding: 6px 12px 6px 12px;" data-bs-toggle="modal" data-bs-target="#reviewModal">리뷰 작성하기</button>
         </div>
-        <!-- 리뷰 작성 모달 -->
-        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" style="font-size: 16px;" id="reviewModalLabel">상품리뷰 작성하기</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- 별점 선택 -->
-                        <div class="text-center mb-4">
-                            <div id="star-rating">
-                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
-                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
-                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
-                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
-                                <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
-                            </div>
-                            <div class="text-muted small">별을 클릭하면 선택한 점수로 선택됩니다.</div>
-                        </div>
-                        <!-- 리뷰 제목 -->
-                        <div class="mb-3">
-                            <input type="text" class="form-control" id="reviewTitle" placeholder="제목을 입력해주세요.">
-                        </div>
-                        <!-- 리뷰 내용 -->
-                        <div class="mb-3">
-                            <textarea class="form-control" rows="6" id="reviewContent" placeholder="내용을 입력해주세요."></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal" style="padding: 6px 12px 6px 12px;">취소하기</button>
-                        <button type="button" class="btn btn-dark btn-sm" style="padding: 6px 12px 6px 12px;" id="btnReviewSave" th:data-prod_id="${productVO.prod_id}">등록완료</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         {{/if}}
     </script>
@@ -290,7 +259,7 @@
                     <a class="nav-link active fs-6 py-3" href="#tab-detail">상세정보</a>
                 </li>
                 <li class="nav-item px-4">
-                    <a class="nav-link fs-6 py-3" href="#tab-review">리뷰<span class="text-muted">(0)</span></a>
+                    <a class="nav-link fs-6 py-3" href="#tab-review">리뷰(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_reviewcount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
                     <a class="nav-link fs-6 py-3" href="#tab-inquiry">문의<span class="text-muted">(0)</span></a>
@@ -306,12 +275,12 @@
 
         <!-- 리뷰 탭 -->
         <div id="tab-review-content">
-            <ul id="tab-review" class="nav nav-tabs justify-content-center my-5">
+            <ul id="tab-review" class="nav nav-tabs justify-content-center mt-5">
                 <li class="nav-item px-4">
                     <a class="nav-link fs-6 py-3" href="#tab-detail">상세정보</a>
                 </li>
                 <li class="nav-item px-4">
-                    <a class="nav-link active fs-6 py-3" href="#tab-review">리뷰<span class="text-muted">(0)</span></a>
+                    <a class="nav-link active fs-6 py-3" href="#tab-review">리뷰(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_reviewcount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
                     <a class="nav-link fs-6 py-3" href="#tab-inquiry">문의<span class="text-muted">(0)</span></a>
@@ -324,6 +293,42 @@
             <div class="row">
                 <!-- 리뷰내용 -->
                 <div class="col" id="reviewList">
+                </div>
+                <!-- 리뷰 작성 모달 -->
+                <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" style="font-size: 16px;" id="reviewModalLabel">상품리뷰 작성하기</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 별점 선택 -->
+                                <div class="text-center mb-4">
+                                    <div id="star-rating">
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                    </div>
+                                    <div class="text-muted small">별을 클릭하면 선택한 점수로 선택됩니다.</div>
+                                </div>
+                                <!-- 리뷰 제목 -->
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="reviewTitle" placeholder="제목을 입력해주세요.">
+                                </div>
+                                <!-- 리뷰 내용 -->
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="6" id="reviewContent" placeholder="내용을 입력해주세요."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal" style="padding: 6px 12px 6px 12px;">취소하기</button>
+                                <button type="button" class="btn btn-dark btn-sm" style="padding: 6px 12px 6px 12px;" id="btnReviewSave" th:data-prod_id="${productVO.prod_id}">등록완료</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div>
@@ -339,7 +344,7 @@
                     <a class="nav-link fs-6 py-3" href="#tab-detail">상세정보</a>
                 </li>
                 <li class="nav-item px-4">
-                    <a class="nav-link fs-6 py-3" href="#tab-review">리뷰<span class="text-muted">(0)</span></a>
+                    <a class="nav-link fs-6 py-3" href="#tab-review">리뷰(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_reviewcount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
                     <a class="nav-link active fs-6 py-3" href="#tab-inquiry">문의<span class="text-muted">(0)</span></a>
@@ -360,7 +365,7 @@
                     <a class="nav-link fs-6 py-3" href="#tab-detail">상세정보</a>
                 </li>
                 <li class="nav-item px-4">
-                    <a class="nav-link fs-6 py-3" href="#tab-review">리뷰<span class="text-muted">(0)</span></a>
+                    <a class="nav-link fs-6 py-3" href="#tab-review">리뷰(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_reviewcount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
                     <a class="nav-link fs-6 py-3" href="#tab-inquiry">문의<span class="text-muted">(0)</span></a>
@@ -617,8 +622,7 @@
                    success: function(response) {
                        if(response === "success") {
                            alert("상품 후기가 등록되었습니다.");
-                           reviewPage = 1;
-                           getPage(url);
+                           location.reload();
                        } else {
                            alert("상품 후기 등록에 실패했습니다.");
                        }
