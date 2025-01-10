@@ -218,7 +218,7 @@
                         <!-- 가격 정보 -->
                         <div class="price-info mb-4">
                             <div class="d-flex align-items-center">
-                                <h3 th:text="${#numbers.formatInteger(productVO.prod_price, 1, 'COMMA')} + '원'"></h3>
+                                <h3 id="unitPrice" th:text="${#numbers.formatInteger(productVO.prod_price, 1, 'COMMA')} + '원'"></h3>
                             </div>
                         </div>
 
@@ -233,18 +233,18 @@
 
                         <!-- 총 금액 -->
                         <div class="total-price mb-5">
-                            <h4 class="mb-2">총 합계 금액: <strong style="color: orangered">32원</strong></h4>
+                            <h4 class="mb-2">총 합계 금액: <strong style="color: orangered" th:text="${#numbers.formatInteger(productVO.prod_price, 1, 'COMMA')} + '원'"></strong></h4>
                         </div>
 
                         <!-- 버튼 그룹 -->
                         <div class="d-grid gap-2">
                             <button class="btn btn-dark" type="button">구매하기</button>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-outline-dark flex-fill" type="button" name="addToCart" th:data-prod_id="${productVO.prod_id}" id="addToCartBtn">
-                                    <i class="bi bi-heart"></i> 찜하기
-                                </button>
-                                <button class="btn btn-outline-dark flex-fill" type="button" name="addToWish" th:data-prod_id="${productVO.prod_id}">
+                                <button class="btn btn-outline-dark flex-fill" type="button" name="btnAddToCart" th:data-prod_id="${productVO.prod_id}" id="btnAddToCart">
                                     <i class="bi bi-cart"></i> 장바구니
+                                </button>
+                                <button class="btn btn-outline-dark flex-fill" type="button" name="btnAddToWish" th:data-prod_id="${productVO.prod_id}" id="btnAddToWish">
+                                    <i class="bi bi-heart"></i> 찜하기
                                 </button>
                             </div>
                         </div>
@@ -449,6 +449,45 @@
 
 <th:block layout:fragment="script2">
     <script>
+
+        function handleInput(input) {
+            let value = parseInt(input.value);
+
+            // 빈 값이거나 1 미만인 경우 1로 설정
+            if (isNaN(value) || value < 1) {
+                value = 1;
+            }
+
+            input.value = value;
+            updateTotalPrice(value);
+        }
+
+        function increment() {
+            const input = document.getElementById('quantity');
+            let value = parseInt(input.value);
+            value++;
+            input.value = value;
+            updateTotalPrice(value);
+        }
+
+        function decrement() {
+            const input = document.getElementById('quantity');
+            let value = parseInt(input.value);
+            if (value > 1) {
+                value--;
+                input.value = value;
+                updateTotalPrice(value);
+            }
+        }
+
+        function updateTotalPrice(quantity) {
+            const priceElement = document.getElementById('unitPrice');
+            const priceText = priceElement.textContent;
+            const pricePerUnit = parseInt(priceText.replace(/[^0-9]/g, ''));
+            const totalPrice = quantity * pricePerUnit;
+            document.querySelector('.total-price strong').textContent = totalPrice.toLocaleString() + '원';
+        }
+
         $(document).ready(function() {
             // 상품후기 남기기 - 별 개수에 따른 색칠
             $(document).on("click", "div#star-rating a.rev_rate", function(e) {
@@ -456,42 +495,6 @@
                 $(this).parent().children().removeClass("on");
                 $(this).addClass("on").prevAll("a").addClass("on");
             });
-
-            function handleInput(input) {
-                let value = parseInt(input.value);
-
-                // 빈 값이거나 1 미만인 경우 1로 설정
-                if (isNaN(value) || value < 1) {
-                    value = 1;
-                }
-
-                input.value = value;
-                updateTotalPrice(value);
-            }
-
-            function increment() {
-                const input = document.getElementById('quantity');
-                let value = parseInt(input.value);
-                value++;
-                input.value = value;
-                updateTotalPrice(value);
-            }
-
-            function decrement() {
-                const input = document.getElementById('quantity');
-                let value = parseInt(input.value);
-                if (value > 1) {
-                    value--;
-                    input.value = value;
-                    updateTotalPrice(value);
-                }
-            }
-
-            function updateTotalPrice(quantity) {
-                const pricePerUnit = 32;
-                const totalPrice = quantity * pricePerUnit;
-                document.querySelector('.total-price strong').textContent = totalPrice + '원';
-            }
 
             // 메뉴 클릭 시 스크롤 위치 조정
             $('.nav-link').on('click', function(e) {
@@ -505,7 +508,7 @@
             });
 
             // 상품페이지 - 장바구니 버튼 클릭 시
-            $("button[name='addToCart']").on("click", function () {
+            $("button[name='btnAddToCart']").on("click", function () {
                 let prod_id = $(this).data("prod_id");
                 let cart_amount = $("#quantity").val();
                 $.ajax({
@@ -533,7 +536,7 @@
             });
 
             // 상품후기 작업
-            let prod_id = document.getElementById('addToCartBtn').dataset.prod_id;
+            let prod_id = document.getElementById('btnAddToCart').dataset.prod_id;
             let reviewPage = 1;
             let url = "/review/rev_list/" + prod_id + "/" + reviewPage;
 
