@@ -3,14 +3,14 @@ package com.project.mallbydh.review;
 import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.PageMaker;
 import com.project.mallbydh.common.utils.SearchCriteria;
+import com.project.mallbydh.member.MemberVO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +47,18 @@ public class ReviewController {
 
         entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 
+        return entity;
+    }
+
+    @PostMapping(value = "/save", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity<String> rev_save(@RequestBody ReviewVO vo, HttpSession session) throws Exception {
+        ResponseEntity<String> entity = null;
+
+        String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
+        vo.setU_id(u_id);
+        reviewService.reviewSave(vo);
+
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }
 }

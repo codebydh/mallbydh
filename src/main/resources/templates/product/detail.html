@@ -114,6 +114,11 @@
                 overflow: hidden;
             }
 
+            .form-control::placeholder {
+                color: #6c757d;
+                font-size: 0.875em;
+                opacity: 1;
+            }
         </style>
         {{#if .}}
         <table class="table" id="reviewTable">
@@ -156,7 +161,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="reviewModalLabel">상품리뷰 작성하기</h5>
+                        <h5 class="modal-title" style="font-size: 16px;" id="reviewModalLabel">상품리뷰 작성하기</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -171,15 +176,18 @@
                             </div>
                             <div class="text-muted small">별을 클릭하면 선택한 점수로 선택됩니다.</div>
                         </div>
-
-                        <!-- 리뷰 내용 입력 -->
+                        <!-- 리뷰 제목 -->
                         <div class="mb-3">
-                            <textarea class="form-control" rows="6" placeholder="내용을 입력해주세요."></textarea>
+                            <input type="text" class="form-control" id="reviewTitle" placeholder="제목을 입력해주세요.">
+                        </div>
+                        <!-- 리뷰 내용 -->
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="6" id="reviewContent" placeholder="내용을 입력해주세요."></textarea>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소하기</button>
-                        <button type="button" class="btn btn-dark">등록완료</button>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal" style="padding: 6px 12px 6px 12px;">취소하기</button>
+                        <button type="button" class="btn btn-dark btn-sm" style="padding: 6px 12px 6px 12px;" id="btnReviewSave" th:data-prod_id="${productVO.prod_id}">등록완료</button>
                     </div>
                 </div>
             </div>
@@ -572,6 +580,50 @@
                 reviewPage = $(this).attr("href");  // 페이지번호 읽기.
                 url = "/review/rev_list/" + prod_id + "/" + reviewPage;
                 getPage(url);
+            });
+
+            // 상품후기 등록
+            $(document).on('click', '#btnReviewSave', function() {
+               let prod_id = $(this).data("prod_id"); // 상품코드
+               let rev_title = $("#reviewTitle").val(); // 리뷰제목
+               let rev_content = $("#reviewContent").val(); // 리뷰내용
+                let rev_rate = $("#star-rating .rev_rate.on").length; // 평점(초기 0점)
+
+               if(rev_title == "") {
+                   alert("후기 제목을 작성해주세요.");
+                   return;
+               }
+
+                if(rev_content == "") {
+                    alert("후기 내용을 작성해주세요.");
+                    return;
+                }
+
+                if(rev_rate == 0) {
+                    alert("별 평점을 선택하세요.");
+                    return;
+                }
+
+                let reviewData = {prod_id : prod_id, rev_title : rev_title, rev_content : rev_content, rev_rate : rev_rate};
+
+                $.ajax({
+                   url: '/review/save',
+                   type: 'post',
+                   headers: {
+                       "Content-Type" : "application/json", "X-HTTP-Method-Override" : "POST"
+                   },
+                   data: JSON.stringify(reviewData),
+                   dataType: 'text',
+                   success: function(response) {
+                       if(response === "success") {
+                           alert("상품 후기가 등록되었습니다.");
+                           reviewPage = 1;
+                           getPage(url);
+                       } else {
+                           alert("상품 후기 등록에 실패했습니다.");
+                       }
+                   }
+                });
             });
         });
     </script>

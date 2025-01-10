@@ -10,4 +10,6 @@ public interface ReviewMapper {
     List<ReviewVO> rev_list(@Param("prod_id") Integer prod_id, @Param("cri")SearchCriteria cri);
 
     int getReviewCountByProdId(Integer prod_id);
+
+    void reviewSave(ReviewVO vo);
 }

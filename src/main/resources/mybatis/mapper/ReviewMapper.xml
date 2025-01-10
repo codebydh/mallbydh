@@ -24,4 +24,11 @@
             prod_id = #{prod_id}
     </select>
 
+    <insert id="reviewSave" parameterType="com.project.mallbydh.review.ReviewVO">
+        insert into
+            review_tbl(u_id, prod_id, rev_title, rev_content, rev_rate)
+        values
+            (#{u_id}, #{prod_id}, #{rev_title}, #{rev_content}, #{rev_rate})
+    </insert>
+
 </mapper>

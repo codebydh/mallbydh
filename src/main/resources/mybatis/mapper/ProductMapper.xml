@@ -49,5 +49,13 @@
             prod_id = #{prod_id}
     </select>
 
+    <update id="updateReviewCount" parameterType="Integer">
+        update
+            product_tbl
+        set
+            prod_reviewcount = prod_reviewcount +1
+        where
+            prod_id = #{prod_id}
+    </update>
 
 </mapper>

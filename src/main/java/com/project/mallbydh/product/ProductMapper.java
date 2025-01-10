@@ -9,4 +9,5 @@ public interface ProductMapper {
     List<ProductVO> getProductsByMultipleCateIds(List<Integer> cate_id);
     List<ProductVO> getAllProducts();
     ProductVO getProductById(Integer prod_id);
+    int updateReviewCount(Integer prod_id);
 }

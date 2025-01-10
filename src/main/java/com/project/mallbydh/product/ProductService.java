@@ -27,4 +27,8 @@ public class ProductService {
     public ProductVO getProductById(Integer prod_id) {
         return productMapper.getProductById(prod_id);
     }
+
+    public int updateReviewCount(Integer prod_id) {
+        return productMapper.updateReviewCount(prod_id);
+    }
 }
