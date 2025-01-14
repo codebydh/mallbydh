@@ -24,4 +24,5 @@ public class ProductVO {
     private Date prod_regdate;
     private Date prod_updatedate;
     private int prod_reviewcount;
+    private int prod_wishcount;
 }

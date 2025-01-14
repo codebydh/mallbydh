@@ -3,7 +3,11 @@ package com.project.mallbydh.product;
 import com.project.mallbydh.admin.category.AdCategoryService;
 import com.project.mallbydh.admin.product.ProductVO;
 import com.project.mallbydh.common.utils.FileUtils;
+import com.project.mallbydh.member.MemberVO;
+import com.project.mallbydh.wish.WishService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,7 @@ public class ProductController {
     private final ProductService productService;
     private final AdCategoryService AdCategoryService;
     private final FileUtils fileUtils;
+    private final WishService wishService;
 
     @Value("${com.project.mallbydh.upload.path}")
     private String uploadPath;
@@ -29,7 +34,7 @@ public class ProductController {
     @GetMapping("/list")
     public String getProductList(@RequestParam(required = false) Integer cate_id,
                                  @RequestParam(required = false) Integer parent_id,
-                                 Model model) {
+                                 Model model, HttpSession session) {
 
         List<ProductVO> productList;
 
@@ -53,6 +58,12 @@ public class ProductController {
 
         model.addAttribute("productList", productList);
         model.addAttribute("categories", AdCategoryService.getAllCategories());
+
+        // 찜목록 불러오기
+        String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
+        List<Integer> wishList = wishService.getWishListForUser(u_id);
+        model.addAttribute("wishList", wishList);
+
         return "product/list";
     }
 

@@ -10,4 +10,5 @@ public interface ProductMapper {
     List<ProductVO> getAllProducts();
     ProductVO getProductById(Integer prod_id);
     int updateReviewCount(Integer prod_id);
+    int updateWishCount(Integer prod_id);
 }

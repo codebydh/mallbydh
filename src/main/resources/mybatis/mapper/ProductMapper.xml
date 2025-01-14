@@ -4,7 +4,7 @@
 
     <select id="getProductsByCateId" resultType="com.project.mallbydh.admin.product.ProductVO">
         select
-            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate, prod_reviewcount
+            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate, prod_reviewcount, prod_wishcount
         from
             product_tbl
         where
@@ -16,7 +16,7 @@
 
     <select id="getProductsByMultipleCateIds" resultType="com.project.mallbydh.admin.product.ProductVO">
         select
-            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate, prod_reviewcount
+            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate, prod_reviewcount, prod_wishcount
         from
             product_tbl
         where
@@ -31,7 +31,7 @@
 
     <select id="getAllProducts" resultType="com.project.mallbydh.admin.product.ProductVO">
         select
-            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate, prod_reviewcount
+            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate, prod_reviewcount, prod_wishcount
         from
             product_tbl
         where
@@ -42,7 +42,7 @@
 
     <select id="getProductById" resultType="com.project.mallbydh.admin.product.ProductVO">
         select
-            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate, prod_reviewcount
+            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate, prod_reviewcount, prod_wishcount
         from
             product_tbl
         where
@@ -54,6 +54,15 @@
             product_tbl
         set
             prod_reviewcount = prod_reviewcount +1
+        where
+            prod_id = #{prod_id}
+    </update>
+
+    <update id="updateWishCount" parameterType="Integer">
+        update
+            product_tbl
+        set
+            prod_wishcount = prod_wishcount +1
         where
             prod_id = #{prod_id}
     </update>

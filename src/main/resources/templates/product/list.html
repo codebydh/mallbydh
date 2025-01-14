@@ -38,7 +38,7 @@
                         <i class="bi bi-cart3 fs-5"></i>
                     </button>
                     <button type="button" class="btn p-0 border-0" name="addToWish" th:data-prod_id="${product.prod_id}">
-                        <i class="bi bi-heart fs-5"></i>
+                        <i class="bi" th:classappend="${wishList.contains(product.prod_id)} ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
                     </button>
                 </div>
             </div>
@@ -65,6 +65,30 @@
                             alert("장바구니에 담았습니다.");
                             if(confirm("장바구니로 이동하시겠습니까?")) {
                                 location.href = "/cart/";
+                            }
+                        }
+                    }
+                });
+            });
+
+            $("button[name='addToWish']").on("click", function() {
+                let prod_id = $(this).data("prod_id");
+                let $heartIcon = $(this).find('i.bi');
+                let isWished = $heartIcon.hasClass('bi-heart-fill');
+
+                let url = isWished ? '/wish/wish_remove' : '/wish/wish_add';
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: {prod_id : prod_id},
+                    dataType: 'text',
+                    success: function(result) {
+                        if(result == "success") {
+                            if (isWished) {
+                                $heartIcon.removeClass('bi-heart-fill text-danger').addClass('bi-heart');
+                            } else {
+                                $heartIcon.removeClass('bi-heart').addClass('bi-heart-fill text-danger');
                             }
                         }
                     }
