@@ -18,7 +18,7 @@
         </div>
     </section>
     <div>
-        <h5 th:text="'총 ' + ${#lists.size(productList)} + '개 제품'">
+        <h5 th:text="'총 ' + ${#lists.size(productList)} + '개 제품'"></h5>
     </div>
     <div class="my-4">
         <hr>
@@ -82,9 +82,9 @@
                     url: url,
                     type: 'post',
                     data: {prod_id : prod_id},
-                    dataType: 'text',
+                    dataType: 'json',
                     success: function(result) {
-                        if(result == "success") {
+                        if(result.status === "success") {
                             if (isWished) {
                                 $heartIcon.removeClass('bi-heart-fill text-danger').addClass('bi-heart');
                             } else {

@@ -2,13 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mallbydh.wish.WishMapper">
 
-    <insert id="wishAdd">
-        insert into
-            wish_tbl(prod_id, u_id)
-        values
-            (#{prod_id}, #{u_id})
-    </insert>
-
     <select id="getWishListForUser" resultType="int">
         select
             prod_id
@@ -18,11 +11,25 @@
             u_id = #{u_id}
     </select>
 
-    <delete id="wishRemove">
-        delete from
+    <select id="checkWish" resultType="int">
+        select
+            count(*)
+        from
             wish_tbl
         where
             u_id = #{u_id} and prod_id = #{prod_id}
+    </select>
+
+    <insert id="insertWish">
+        insert into
+            wish_tbl(prod_id, u_id)
+        values
+            (#{prod_id}, #{u_id})
+    </insert>
+
+    <delete id="wishRemove">
+        delete from wish_tbl
+        where u_id = #{u_id} and prod_id = #{prod_id}
     </delete>
 
 </mapper>
