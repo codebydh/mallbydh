@@ -88,6 +88,21 @@
             background-color: #f8f9fa;
         }
 
+        .inquiry-content td {
+            background-color: #f8f9fa;
+        }
+
+        .inquiry-answer td {
+            background-color: lightyellow;
+        }
+
+        .answer-detail-box {
+            padding: 15px;
+            background-color: lightyellow;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
         #star-rating a.rev_rate {
             font-size: 28px;
             color: lightgrey;
@@ -137,14 +152,14 @@
             </thead>
             <tbody>
             {{#each .}}
-            <tr>
+            <tr class="review-row">
                 <td>{{rev_code}}</td>
                 <td>{{rateToStar rev_rate}}</td>
                 <td>{{rev_title}}</td>
                 <td>{{u_id}}</td>
                 <td>{{convertDate rev_regdate}}</td>
             </tr>
-            <tr class="review-content" id="content-{{rev_code}}" style="display: none;">
+            <tr class="review-content" id="review-content-{{rev_code}}" style="display: none;">
                 <td colspan="5">
                     <div class="review-detail-box">
                         {{rev_content}}
@@ -156,12 +171,87 @@
         </table>
         {{else}}
         <div class="d-flex flex-column align-items-center" style="margin-bottom: 16px; margin-top: 64px;">
-            <i class="bi bi-chat-text mb-2" style="font-size: 50px;"></i>
+            <i class="bi bi-chat-heart mb-2" style="font-size: 50px;"></i>
             <span class="mb-3">아직 작성된 리뷰가 없습니다.</span>
             <button type="button" class="btn btn-outline-success btn-sm" style="padding: 6px 12px 6px 12px;" data-bs-toggle="modal" data-bs-target="#reviewModal">리뷰 작성하기</button>
         </div>
 
 
+        {{/if}}
+    </script>
+
+    <script id="templateInquiry" type="text/x-handlebars-template">
+        <style>
+            #inquiryTable {
+                table-layout: fixed;
+                width: 100%;
+                text-align: center;
+            }
+
+            #inquiryTable td, #inquiryTable th {
+                word-wrap: break-word;
+                overflow: hidden;
+            }
+
+            .form-control::placeholder {
+                color: #6c757d;
+                font-size: 0.875em;
+                opacity: 1;
+            }
+        </style>
+        {{#if .}}
+        <div class="d-flex justify-content-between align-items-center p-5" style="background-color: #EAEAEA;">
+            <h5 class="my-1 fw-bold">총 <u class="fw-bolder" th:text="${#numbers.formatInteger(productVO.prod_inquirycount, 1, 'COMMA')}"></u>건의 문의가 있습니다.</h5>
+            <button type="button" class="btn btn-dark btn-sm" style="padding: 6px 12px 6px 12px;" data-bs-toggle="modal" data-bs-target="#inquiryModal">문의 작성하기</button>
+        </div>
+        <table class="table" id="inquiryTable">
+            <thead>
+            <tr>
+                <th style="width: 5%">번호</th>
+                <th style="width: 15%">답변여부</th>
+                <th style="width: 60%">제목</th>
+                <th style="width: 10%">작성자</th>
+                <th style="width: 10%">작성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each .}}
+            <tr class="inquiry-row">
+                <td>{{inq_code}}</td>
+                <td class="{{#if ans_content}}text-danger fw-bold{{else}}text-secondary{{/if}}">
+                    {{#if ans_content}}답변완료{{else}}답변대기{{/if}}
+                </td>
+                <td>{{inq_title}}</td>
+                <td>{{u_id}}</td>
+                <td>{{convertDate inq_regdate}}</td>
+            </tr>
+            <tr class="inquiry-content" id="inquiry-content-{{inq_code}}" style="display: none;">
+                <td colspan="5">
+                    <div class="review-detail-box">
+                        {{inq_content}}
+                    </div>
+                </td>
+            </tr>
+            <tr class="inquiry-answer" id="inquiry-answer-{{inq_code}}" style="display: none;">
+                <td colspan="5">
+                    <div class="answer-detail-box">
+                        {{#if ans_content}}
+                        <strong>{{ans_content}}</strong>
+                        {{else}}
+                        <span>답변이 아직 등록되지 않았습니다.</span>
+                        {{/if}}
+                    </div>
+                </td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <div class="d-flex flex-column align-items-center" style="margin-bottom: 16px; margin-top: 64px;">
+            <i class="bi bi-chat-text mb-2" style="font-size: 50px;"></i>
+            <span class="mb-3">아직 작성된 문의가 없습니다.</span>
+            <button type="button" class="btn btn-outline-success btn-sm" style="padding: 6px 12px 6px 12px;" data-bs-toggle="modal" data-bs-target="#inquiryModal">문의 작성하기</button>
+        </div>
         {{/if}}
     </script>
 
@@ -262,7 +352,7 @@
                     <a class="nav-link fs-6 py-3" href="#tab-review">리뷰(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_reviewcount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
-                    <a class="nav-link fs-6 py-3" href="#tab-inquiry">문의<span class="text-muted">(0)</span></a>
+                    <a class="nav-link fs-6 py-3" href="#tab-inquiry">문의(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_inquirycount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
                     <a class="nav-link fs-6 py-3" href="#tab-shopinfo">구매안내</a>
@@ -283,12 +373,11 @@
                     <a class="nav-link active fs-6 py-3" href="#tab-review">리뷰(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_reviewcount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
-                    <a class="nav-link fs-6 py-3" href="#tab-inquiry">문의<span class="text-muted">(0)</span></a>
+                    <a class="nav-link fs-6 py-3" href="#tab-inquiry">문의(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_inquirycount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
                     <a class="nav-link fs-6 py-3" href="#tab-shopinfo">구매안내</a>
                 </li>
-            </ul>
             </ul>
             <div class="row">
                 <!-- 리뷰내용 -->
@@ -339,7 +428,7 @@
 
         <!-- 문의 탭 -->
         <div id="tab-inquiry-content">
-            <ul id="tab-inquiry" class="nav nav-tabs justify-content-center my-5">
+            <ul id="tab-inquiry" class="nav nav-tabs justify-content-center mt-5">
                 <li class="nav-item px-4">
                     <a class="nav-link fs-6 py-3" href="#tab-detail">상세정보</a>
                 </li>
@@ -347,14 +436,46 @@
                     <a class="nav-link fs-6 py-3" href="#tab-review">리뷰(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_reviewcount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
-                    <a class="nav-link active fs-6 py-3" href="#tab-inquiry">문의<span class="text-muted">(0)</span></a>
+                    <a class="nav-link active fs-6 py-3" href="#tab-inquiry">문의(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_inquirycount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
                     <a class="nav-link fs-6 py-3" href="#tab-shopinfo">구매안내</a>
                 </li>
             </ul>
+            <div class="row">
+                <!-- 문의내용 -->
+                <div class="col" id="inquiryList">
+                </div>
+                <!-- 문의 작성 모달 -->
+                <div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" style="font-size: 16px;" id="inquiryModalLabel">상품 문의하기</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 문의 제목 -->
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="inquiryTitle" placeholder="제목을 입력해주세요.">
+                                </div>
+                                <!-- 리뷰 내용 -->
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="6" id="inquiryContent" placeholder="내용을 입력해주세요."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal" style="padding: 6px 12px 6px 12px;">취소하기</button>
+                                <button type="button" class="btn btn-dark btn-sm" style="padding: 6px 12px 6px 12px;" id="btnInquirySave" th:data-prod_id="${productVO.prod_id}">등록완료</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div>
-                <h5>상품문의</h5>
+                <!-- 문의페이징 -->
+                <div class="col" id="inquiryPaging"></div>
+            </div>
             </div>
         </div>
 
@@ -368,7 +489,7 @@
                     <a class="nav-link fs-6 py-3" href="#tab-review">리뷰(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_reviewcount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
-                    <a class="nav-link fs-6 py-3" href="#tab-inquiry">문의<span class="text-muted">(0)</span></a>
+                    <a class="nav-link fs-6 py-3" href="#tab-inquiry">문의(<span class="text-muted" th:text="${#numbers.formatInteger(productVO.prod_inquirycount, 1, 'COMMA')}"></span>)</a>
                 </li>
                 <li class="nav-item px-4">
                     <a class="nav-link active fs-6 py-3" href="#tab-shopinfo">구매안내</a>
@@ -555,9 +676,9 @@
             });
 
             // 상품후기 - 클릭 시 내용 표시 관련
-            $(document).on('click', 'tr', function() {
+            $(document).on('click', '.review-row', function() {
                 const reviewCode = $(this).find('td:first').text();
-                const contentRow = $(`#content-${reviewCode}`);
+                const contentRow = $(`#review-content-${reviewCode}`);
                 $('.review-content').not(contentRow).hide();
                 contentRow.toggle();
             });
@@ -572,7 +693,7 @@
             function getPage(url) {
                 $.getJSON(url, function(data) {
                     fn_displayReviewData(data.rev_list, $("div#reviewList"), $("#templateReview"));
-                    fn_displayReviewPaging(data.pageMaker, $("div#reviewPaging"));
+                    fn_displayReviewPaging(data.revPageMaker, $("div#reviewPaging"));
                 });
             }
 
@@ -619,15 +740,15 @@
 
             // 상품후기 등록
             $(document).on('click', '#btnReviewSave', function() {
-               let prod_id = $(this).data("prod_id"); // 상품코드
-               let rev_title = $("#reviewTitle").val(); // 리뷰제목
-               let rev_content = $("#reviewContent").val(); // 리뷰내용
+                let prod_id = $(this).data("prod_id"); // 상품코드
+                let rev_title = $("#reviewTitle").val(); // 리뷰제목
+                let rev_content = $("#reviewContent").val(); // 리뷰내용
                 let rev_rate = $("#star-rating .rev_rate.on").length; // 평점(초기 0점)
 
-               if(rev_title == "") {
-                   alert("후기 제목을 작성해주세요.");
-                   return;
-               }
+                if(rev_title == "") {
+                    alert("후기 제목을 작성해주세요.");
+                    return;
+                }
 
                 if(rev_content == "") {
                     alert("후기 내용을 작성해주세요.");
@@ -642,21 +763,121 @@
                 let reviewData = {prod_id : prod_id, rev_title : rev_title, rev_content : rev_content, rev_rate : rev_rate};
 
                 $.ajax({
-                   url: '/review/save',
-                   type: 'post',
-                   headers: {
-                       "Content-Type" : "application/json", "X-HTTP-Method-Override" : "POST"
-                   },
-                   data: JSON.stringify(reviewData),
-                   dataType: 'text',
-                   success: function(response) {
-                       if(response === "success") {
-                           alert("상품 후기가 등록되었습니다.");
-                           location.reload();
-                       } else {
-                           alert("상품 후기 등록에 실패했습니다.");
-                       }
-                   }
+                    url: '/review/save',
+                    type: 'post',
+                    headers: {
+                        "Content-Type" : "application/json", "X-HTTP-Method-Override" : "POST"
+                    },
+                    data: JSON.stringify(reviewData),
+                    dataType: 'text',
+                    success: function(response) {
+                        if(response === "success") {
+                            alert("상품 후기가 등록되었습니다.");
+                            location.reload();
+                        } else {
+                            alert("상품 후기 등록에 실패했습니다.");
+                        }
+                    }
+                });
+            });
+
+            // 상품문의 작업
+            let inquiryPage = 1;
+            let inquiryUrl = "/inquiry/inq_list/" + prod_id + "/" + inquiryPage;
+
+            getInquiryPage(inquiryUrl);
+
+            function getInquiryPage(url) {
+                $.getJSON(url, function(data) {
+                    fn_displayInquiryData(data.inq_list, $("div#inquiryList"), $("#templateInquiry"));
+                    fn_displayInquiryPaging(data.inqPageMaker, $("div#inquiryPaging"));
+                });
+            }
+
+            function fn_displayInquiryData(inquiryData, target, template) {
+                let templateObj = Handlebars.compile(template.html());
+                let inquiryHtml = templateObj(inquiryData);
+
+                target.empty();
+                target.append(inquiryHtml);
+            }
+
+            // 페이징 출력 함수
+            function fn_displayInquiryPaging(pageData, target) {
+                let pageStr = '<nav aria-label="Page navigation example">';
+                pageStr += '<ul class="pagination pagination-sm justify-content-sm-center">';
+
+                if(pageData.prev) {
+                    pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.startPage -1)  + '">Previous</a></li>';
+                }
+
+                for(let i=pageData.startPage; i <= pageData.endPage; i++) {
+                    let curPageClass = (pageData.cri.page == i) ? 'active' : '';
+                    pageStr += '<li class="page-item ' + curPageClass + '"><a class="page-link" href="' + i + '">' + i + '</a></li>';
+                }
+
+                if(pageData.next) {
+                    pageStr += '<li class="page-item"><a class="page-link" href="' + (pageData.endPage + 1) + '">Next</a></li>';
+                }
+
+                pageStr += '</ul>';
+                pageStr += '</nav>';
+
+                target.empty();
+                target.append(pageStr);
+            }
+
+            // 페이징 번호 클릭
+            $("div#inquiryPaging").on("click", "li a", function(e) {
+                e.preventDefault();
+                inquiryPage = $(this).attr("href");  // 페이지번호 읽기.
+                url = "/inquiry/inq_list/" + prod_id + "/" + inquiryPage;
+                getInquiryPage(url);
+            });
+
+            $(document).on('click', '.inquiry-row', function() {
+                const inquiryCode = $(this).find('td:first').text();
+                const contentRow = $(`#inquiry-content-${inquiryCode}`);
+                const answerRow = $(`#inquiry-answer-${inquiryCode}`);
+
+                $('.inquiry-content, .inquiry-answer').not(contentRow).not(answerRow).hide();
+                contentRow.toggle();
+                answerRow.toggle();
+            });
+
+            $(document).on('click', '#btnInquirySave', function() {
+                let prod_id = $(this).data("prod_id"); // 상품코드
+                let inq_title = $("#inquiryTitle").val(); // 문의제목
+                let inq_content = $("#inquiryContent").val(); // 문의내용
+
+                if(inq_title == "") {
+                    alert("문의 제목을 작성해주세요.");
+                    return;
+                }
+
+                if(inq_content == "") {
+                    alert("문의 내용을 작성해주세요.");
+                    return;
+                }
+
+                let inquiryData = {prod_id : prod_id, inq_title : inq_title, inq_content : inq_content};
+
+                $.ajax({
+                    url: '/inquiry/save',
+                    type: 'post',
+                    headers: {
+                        "Content-Type" : "application/json", "X-HTTP-Method-Override" : "POST"
+                    },
+                    data: JSON.stringify(inquiryData),
+                    dataType: 'text',
+                    success: function(response) {
+                        if(response === "success") {
+                            alert("문의가 등록되었습니다.");
+                            location.reload();
+                        } else {
+                            alert("문의 등록에 실패했습니다.");
+                        }
+                    }
                 });
             });
         });

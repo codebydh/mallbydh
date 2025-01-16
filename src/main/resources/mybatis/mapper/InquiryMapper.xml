@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.inquiry.InquiryMapper">
+
+    <select id="inq_list" resultType="com.project.mallbydh.inquiry.InquiryAnswerVO" parameterType="map">
+        select
+            i.inq_code, i.u_id, i.prod_id, i.inq_title, i.inq_content, i.inq_regdate,
+            a.ans_code, a.admin_id, a.ans_content, a.ans_regdate
+        from
+            inquiry_tbl i
+                left join
+            answer_tbl a on i.inq_code = a.inq_code
+        where
+            i.prod_id = #{prod_id}
+        order by
+            i.inq_regdate desc
+        limit
+            #{cri.pageStart}, #{cri.perPageNum}
+    </select>
+
+    <select id="getInquiryCountByProdId" resultType="int" parameterType="Integer">
+        select
+            count(*)
+        from
+            inquiry_tbl
+        where
+            prod_id = #{prod_id}
+    </select>
+
+    <insert id="inquirySave" parameterType="com.project.mallbydh.inquiry.InquiryAnswerVO">
+        insert into
+            inquiry_tbl(u_id, prod_id, inq_title, inq_content)
+        values
+            (#{u_id}, #{prod_id}, #{inq_title}, #{inq_content})
+    </insert>
+
+</mapper>

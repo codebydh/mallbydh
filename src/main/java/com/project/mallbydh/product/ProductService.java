@@ -35,4 +35,8 @@ public class ProductService {
     public int updateWishCount(Integer prod_id) {
         return productMapper.updateWishCount(prod_id);
     }
+
+    public int updateInquiryCount(Integer prod_id) {
+        return productMapper.updateInquiryCount(prod_id);
+    }
 }

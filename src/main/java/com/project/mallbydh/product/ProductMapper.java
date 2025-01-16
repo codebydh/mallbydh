@@ -11,4 +11,5 @@ public interface ProductMapper {
     ProductVO getProductById(Integer prod_id);
     int updateReviewCount(Integer prod_id);
     int updateWishCount(Integer prod_id);
+    int updateInquiryCount(Integer prod_id);
 }

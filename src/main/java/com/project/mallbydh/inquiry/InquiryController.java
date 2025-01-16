@@ -1,4 +1,4 @@
-package com.project.mallbydh.review;
+package com.project.mallbydh.inquiry;
 
 import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.PageMaker;
@@ -17,33 +17,32 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@RestController
 @RequiredArgsConstructor
-@RequestMapping("/review/*")
-public class ReviewController {
+@RequestMapping("/inquiry/*")
+@RestController
+public class InquiryController {
 
-    private final ReviewService reviewService;
+    private final InquiryService inquiryService;
 
-    // 상품 후기 목록 작업
-    @GetMapping("/rev_list/{prod_id}/{page}")
-    public ResponseEntity<Map<String, Object>> rev_list(@PathVariable("prod_id") Integer prod_id, @PathVariable("page") int page) throws Exception {
+    @GetMapping("/inq_list/{prod_id}/{page}")
+    public ResponseEntity<Map<String, Object>> inq_list(@PathVariable("prod_id") Integer prod_id, @PathVariable("page") int page) throws Exception {
         ResponseEntity<Map<String, Object>> entity = null;
         Map<String, Object> map = new HashMap<>();
 
-        // 상품 후기 목록
+        // 문의 목록
         SearchCriteria cri = new SearchCriteria();
         cri.setPage(page);
         cri.setPerPageNum(5);
-        List<ReviewVO> rev_list = reviewService.rev_list(prod_id, cri);
+        List<InquiryAnswerVO> inq_list = inquiryService.inq_list(prod_id, cri);
 
-        // 상품후기 페이징 정보
-        PageMaker revPageMaker = new PageMaker();
-        revPageMaker.setCri(cri);
-        revPageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
-        revPageMaker.setTotalCount(reviewService.getReviewCountByProdId(prod_id));
+        // 문의 페이징 정보
+        PageMaker inqPageMaker = new PageMaker();
+        inqPageMaker.setCri(cri);
+        inqPageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
+        inqPageMaker.setTotalCount(inquiryService.getInquiryCountByProdId(prod_id));
 
-        map.put("rev_list", rev_list);
-        map.put("revPageMaker", revPageMaker);
+        map.put("inq_list", inq_list);
+        map.put("inqPageMaker", inqPageMaker);
 
         entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 
@@ -51,12 +50,12 @@ public class ReviewController {
     }
 
     @PostMapping(value = "/save", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<String> rev_save(@RequestBody ReviewVO vo, HttpSession session) throws Exception {
+    public ResponseEntity<String> inq_save(@RequestBody InquiryAnswerVO vo, HttpSession session) throws Exception {
         ResponseEntity<String> entity = null;
 
         String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
         vo.setU_id(u_id);
-        reviewService.reviewSave(vo);
+        inquiryService.inquirySave(vo);
 
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
