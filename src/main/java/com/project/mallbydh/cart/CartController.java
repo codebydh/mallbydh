@@ -10,12 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,5 +80,20 @@ public class CartController {
     public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
 
         return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+    }
+
+    @PostMapping("/cart_update")
+    public ResponseEntity<Map<String, Object>> cartUpdate(@RequestParam("prod_id") int prod_id,
+                                                          @RequestParam("cart_amount") int cart_amount,
+                                                          HttpSession session) throws Exception {
+        String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
+
+        int subtotal = cartService.cartUpdate(cart_amount, prod_id, u_id);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("subtotal", subtotal);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

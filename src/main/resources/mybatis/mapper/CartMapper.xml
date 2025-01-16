@@ -39,4 +39,20 @@
             u_id = #{u_id}
     </delete>
 
+    <update id="cartUpdate">
+        update
+            cart_tbl
+        set
+            cart_amount = #{cart_amount}
+        where
+            u_id = #{u_id} and prod_id = #{prod_id}
+    </update>
+
+    <select id="getSubtotal" resultType="int">
+        SELECT (c.cart_amount * p.prod_price) AS subtotal
+        FROM cart_tbl c
+                 JOIN product_tbl p ON c.prod_id = p.prod_id
+        WHERE c.u_id = #{u_id} AND c.prod_id = #{prod_id}
+    </select>
+
 </mapper>

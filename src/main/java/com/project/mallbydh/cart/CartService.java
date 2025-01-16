@@ -27,4 +27,9 @@ public class CartService {
     public void cart_empty(String u_id) {
         cartMapper.cart_empty(u_id);
     }
+
+    public int cartUpdate(int cart_amount, int prod_id, String u_id) {
+        cartMapper.cartUpdate(cart_amount, prod_id, u_id);
+        return cartMapper.getSubtotal(prod_id, u_id);
+    }
 }
