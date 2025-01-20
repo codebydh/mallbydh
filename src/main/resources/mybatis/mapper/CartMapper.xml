@@ -22,7 +22,7 @@
         on
             c.prod_id = p.prod_id
         where
-            c.u_id = #{uid}
+            c.u_id = #{u_id}
     </select>
 
     <delete id="cart_checkdelete">
@@ -95,7 +95,7 @@
             c.prod_id = p.prod_id
         where
             c.u_id = #{u_id} and c.prod_id in
-            <foreach item="prodId" collection="prodIds" open="(" separator="," close=")">
+            <foreach item="prod_id" collection="prod_ids" open="(" separator="," close=")">
                 #{prod_id}
             </foreach>
     </select>

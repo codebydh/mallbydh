@@ -26,6 +26,6 @@ public interface CartMapper {
     // 전체 장바구니 주문 시
     List<Map<String, Object>> getCartDetailsByUserId(String u_id);
     // 장바구니 - 선택 상품 주문 시
-    List<Map<String, Object>> getCartDetailsByProdIds(List<Integer> prodIds, String u_id);
+    List<Map<String, Object>> getCartDetailsByProdIds(List<Integer> prod_ids, String u_id);
 
 }

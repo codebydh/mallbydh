@@ -41,7 +41,7 @@ public class CartService {
         return cartMapper.getCartDetailsByUserId(u_id);
     }
 
-    public List<Map<String, Object>> getCartDetailsByProdIds(List<Integer> prodIds, String u_id) {
-        return cartMapper.getCartDetailsByProdIds(prodIds, u_id);
+    public List<Map<String, Object>> getCartDetailsByProdIds(List<Integer> prod_ids, String u_id) {
+        return cartMapper.getCartDetailsByProdIds(prod_ids, u_id);
     }
 }

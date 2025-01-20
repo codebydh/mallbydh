@@ -118,8 +118,8 @@
             </tbody>
         </table>
         <div class="my-5 text-center">
-            <button type="button" class="btn btn-outline-info">선택상품주문</button>
-            <button type="button" class="btn btn-info">전체상품주문</button>
+            <button type="button" class="btn btn-outline-info" id="btnOrderSelected">선택상품주문</button>
+            <button type="button" class="btn btn-info" id="btnOrderAll">전체상품주문</button>
         </div>
     </div>
 </th:block>
@@ -184,6 +184,24 @@
                     }
                 });
             });
+
+            // 장바구니 - 선택상품 주문
+            $("button#btnOrderSelected").on("click", function () {
+                if($("input[type='checkbox']:checked").length == 0) {
+                    alert("주문하실 상품을 선택해주세요.");
+                    return;
+                }
+
+                let checkedItems = $("input[name='check']:checked");
+                let prod_ids = checkedItems.map(function() {
+                    return $(this).val();
+                }).get();
+
+                let params = "type=selected&" + prod_ids.map(id => "prod_ids=" + id).join("&");
+
+                location.href = "/order/order_form?" + params;
+            });
+
         })
 
         // 체크박스 선택 시 총액 계산

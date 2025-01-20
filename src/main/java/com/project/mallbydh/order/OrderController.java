@@ -33,23 +33,23 @@ public class OrderController {
     @GetMapping("/order_form")
     public String orderForm(@RequestParam(required = false) Integer prod_id,
                             @RequestParam(required = false) Integer cart_amount,
-                            @RequestParam(required = false) List<Integer> selectedProdIds, String type, HttpSession session, Model model) {
+                            @RequestParam(required = false) List<Integer> prod_ids, String type, HttpSession session, Model model) {
 
-        CartVO vo = new CartVO();
         String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
-        vo.setU_id(u_id);
 
         List<Map<String, Object>> orderCartDetails;
 
         if(type.equals("direct")) {
             // 상품페이지에서 주문 버튼 클릭 시
-            vo.setProd_id(prod_id);
-            vo.setCart_amount(cart_amount);
-            cartService.cart_add(vo);
+            CartVO newItem = new CartVO();
+            newItem.setU_id(u_id);
+            newItem.setProd_id(prod_id);
+            newItem.setCart_amount(cart_amount);
+            cartService.cart_add(newItem);
             orderCartDetails = cartService.getCartDetailsByProdId(prod_id, u_id);
         } else if(type.equals("selected")) {
             // 장바구니에서 선택 상품 주문 시
-            orderCartDetails = cartService.getCartDetailsByProdIds(selectedProdIds, u_id);
+            orderCartDetails = cartService.getCartDetailsByProdIds(prod_ids, u_id);
         } else {
             // 장바구니 상품 전체 주문
             orderCartDetails = cartService.getCartDetailsByUserId(u_id);
