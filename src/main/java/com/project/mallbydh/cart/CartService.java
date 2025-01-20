@@ -32,4 +32,16 @@ public class CartService {
         cartMapper.cartUpdate(cart_amount, prod_id, u_id);
         return cartMapper.getSubtotal(prod_id, u_id);
     }
+
+    public List<Map<String, Object>> getCartDetailsByProdId(Integer prod_id, String u_id) {
+        return cartMapper.getCartDetailsByProdId(prod_id, u_id);
+    }
+
+    public List<Map<String, Object>> getCartDetailsByUserId(String u_id) {
+        return cartMapper.getCartDetailsByUserId(u_id);
+    }
+
+    public List<Map<String, Object>> getCartDetailsByProdIds(List<Integer> prodIds, String u_id) {
+        return cartMapper.getCartDetailsByProdIds(prodIds, u_id);
+    }
 }

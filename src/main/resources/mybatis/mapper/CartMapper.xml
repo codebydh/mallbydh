@@ -55,4 +55,49 @@
         WHERE c.u_id = #{u_id} AND c.prod_id = #{prod_id}
     </select>
 
+    <select id="getCartDetailsByProdId" resultType="map">
+        select
+            c.prod_id, c.u_id, c.cart_amount, p.prod_name, p.prod_maker, p.prod_price, p.prod_uploadfolder, p.prod_img,
+            c.cart_amount * p.prod_price as subtotal
+        from
+            cart_tbl c
+        join
+            product_tbl p
+        on
+            c.prod_id = p.prod_id
+        where
+            c.u_id = #{u_id} and c.prod_id = #{prod_id}
+    </select>
+
+    <select id="getCartDetailsByUserId" resultType="map">
+        select
+            c.prod_id, c.u_id, c.cart_amount, p.prod_name, p.prod_maker, p.prod_price, p.prod_uploadfolder, p.prod_img,
+            c.cart_amount * p.prod_price as subtotal
+        from
+            cart_tbl c
+        join
+            product_tbl p
+        on
+            c.prod_id = p.prod_id
+        where
+            c.u_id = #{u_id}
+    </select>
+
+    <select id="getCartDetailsByProdIds" resultType="map">
+        select
+            c.prod_id, c.u_id, c.cart_amount, p.prod_name, p.prod_maker, p.prod_price, p.prod_uploadfolder, p.prod_img,
+            c.cart_amount * p.prod_price as subtotal
+        from
+            cart_tbl c
+        join
+            product_tbl p
+        on
+            c.prod_id = p.prod_id
+        where
+            c.u_id = #{u_id} and c.prod_id in
+            <foreach item="prodId" collection="prodIds" open="(" separator="," close=")">
+                #{prod_id}
+            </foreach>
+    </select>
+
 </mapper>

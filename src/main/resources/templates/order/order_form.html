@@ -5,6 +5,42 @@
 
 <th:block layout:fragment="css">
     <style>
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        .product-info {
+            padding: 10px;
+        }
+
+        .product-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            margin-right: 15px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .manufacturer {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .product-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </th:block>
 
@@ -28,11 +64,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td class="text-center">2</td>
-                            <td class="text-center">3</td>
-                            <td class="text-center">4</td>
+                        <tr th:each="item : ${orderCartDetails}">
+                            <td class="product-info ml-3">
+                                <div class="product-container d-flex align-items-center">
+                                    <div class="product-image me-3" style="width: 81px; height: 81px;">
+                                        <img th:src="${'/cart/image_display?dateFolderName=' + item.prod_uploadfolder + '&fileName=s_' + item.prod_img}"}
+                                             alt="상품 이미지"
+                                             class="img-fluid rounded product-thumbnail">
+                                    </div>
+                                    <div class="product-details">
+                                        <h4 class="product-name mb-1" th:text="${item['prod_name']}"></h4>
+                                        <small class="text-muted"><p class="manufacturer mb-2" th:text="${item['prod_maker']}"></p></small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['prod_price'], 1, 'COMMA') + '원'}"></td>
+                            <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['cart_amount'], 1, 'COMMA')}"></td>
+                            <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['subtotal'], 1, 'COMMA') + '원'}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -47,21 +95,21 @@
                             <div class="row mb-3">
                                 <label for="name" class="col-sm-2 col-form-label font-weight-bold">이름</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="name" placeholder="관리자">
+                                    <input type="text" class="form-control" id="name" th:value="${memberVO.u_name}">
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label for="phone" class="col-sm-2 col-form-label font-weight-bold">휴대폰 번호</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="phone" placeholder="010-1111-1111">
+                                    <input type="text" class="form-control" id="phone" th:value="${memberVO.u_phone}">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <label for="email" class="col-sm-2 col-form-label font-weight-bold">이메일 주소</label>
                                 <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="email" placeholder="help@mallbydh.com">
+                                    <input type="email" class="form-control" id="email" th:value="${memberVO.u_email}">
                                 </div>
                             </div>
                         </form>
@@ -96,14 +144,14 @@
                             <div class="row mb-3">
                                 <label for="nameDeliver" class="col-sm-2 col-form-label font-weight-bold">받는분 성함</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="nameDeliver">
+                                    <input type="text" class="form-control" id="nameDeliver" th:value="${memberVO.u_name}">
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label for="phoneDeliver" class="col-sm-2 col-form-label font-weight-bold">받는분 휴대폰</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="phoneDeliver">
+                                    <input type="text" class="form-control" id="phoneDeliver" th:value="${memberVO.u_phone}">
                                 </div>
                             </div>
 
@@ -111,14 +159,14 @@
                                 <label for="phoneDeliver" class="col-sm-2 col-form-label font-weight-bold">받는분 주소</label>
                                 <div class="col-sm-10">
                                     <div class="d-flex mb-2">
-                                        <input type="text" class="form-control w-25 me-2" id="sample2_postcode" name="u_zipcode" placeholder="우편번호">
+                                        <input type="text" class="form-control w-25 me-2" id="sample2_postcode" name="u_zipcode" th:value="${memberVO.u_zipcode}">
                                         <button type="button" class="btn btn-outline-dark" onclick="sample2_execDaumPostcode()">주소검색</button>
                                     </div>
                                     <div class="mb-2">
-                                        <input type="text" class="form-control" id="sample2_address" name="u_addr" placeholder="기본주소">
+                                        <input type="text" class="form-control" id="sample2_address" name="u_addr" th:value="${memberVO.u_addr}">
                                     </div>
                                     <div>
-                                        <input type="text" class="form-control" id="sample2_detailAddress" name="u_addr_detail" placeholder="상세주소를 입력하세요.">
+                                        <input type="text" class="form-control" id="sample2_detailAddress" name="u_addr_detail" th:value="${memberVO.u_addr_detail}">
                                         <input type="hidden" class="form-control" id="sample2_extraAddress" name="u_addr_extra">
                                     </div>
                                 </div>
