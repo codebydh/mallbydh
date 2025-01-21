@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,12 @@ public class OrderController {
         });
 
         model.addAttribute("orderCartDetails", orderCartDetails);
+
+        // 주문 정보의 총 수량, 총 금액 계산
+        int totalQuantity = cartService.calculateTotalQuantity(orderCartDetails);
+        model.addAttribute("totalQuantity", totalQuantity);
+        int totalAmount = cartService.calculateTotalAmount(orderCartDetails);
+        model.addAttribute("totalAmount", totalAmount);
 
         // 로그인한 사용자 정보
         MemberVO memberVO = memberService.modifyView(u_id);

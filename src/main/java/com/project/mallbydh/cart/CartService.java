@@ -3,6 +3,7 @@ package com.project.mallbydh.cart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -43,5 +44,26 @@ public class CartService {
 
     public List<Map<String, Object>> getCartDetailsByProdIds(List<Integer> prod_ids, String u_id) {
         return cartMapper.getCartDetailsByProdIds(prod_ids, u_id);
+    }
+
+    // 주문페이지 - 제품의 총 개수
+    public int calculateTotalQuantity(List<Map<String, Object>> orderCartDetails) {
+        int totalQuantity = 0;
+        for (Map<String, Object> detail : orderCartDetails) {
+            totalQuantity += ((Number) detail.get("cart_amount")).intValue();
+        }
+        return totalQuantity;
+    }
+
+    // 주문페이지 - 주문 제품의 총 금액
+    public int calculateTotalAmount(List<Map<String, Object>> orderCartDetails) {
+        int totalAmount = 0;
+        for (Map<String, Object> detail : orderCartDetails) {
+            Object subtotalObj = detail.get("subtotal");
+            if (subtotalObj instanceof Number) {
+                totalAmount += ((Number) subtotalObj).intValue();
+            }
+        }
+        return totalAmount;
     }
 }
