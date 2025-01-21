@@ -225,7 +225,7 @@
                             <div class="row">
                                 <label for="transferName" class="col-sm-2 col-form-label font-weight-bold">입금자명</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="transferName" placeholder="관리자">
+                                    <input type="text" class="form-control" id="transferName" th:value="${memberVO.u_name}">
                                 </div>
                             </div>
                         </div>

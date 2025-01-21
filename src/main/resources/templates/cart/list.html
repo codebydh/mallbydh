@@ -64,7 +64,7 @@
     <section class="text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="font-weight-bolder mb-5">장바구니</h1>
+                <h1 class="font-weight-bolder">장바구니</h1>
             </div>
         </div>
     </section>
@@ -200,6 +200,17 @@
                 let params = "type=selected&" + prod_ids.map(id => "prod_ids=" + id).join("&");
 
                 location.href = "/order/order_form?" + params;
+            });
+
+            // 장바구니 - 전체상품주문 클릭 시
+            $("button#btnOrderAll").on("click", function() {
+                // 장바구니가 비어있는지 확인
+                if($("input[name='check']").length === 0) {
+                    alert("장바구니가 비어있습니다.");
+                    return;
+                }
+
+                location.href = "/order/order_form?type=all";
             });
 
         })
