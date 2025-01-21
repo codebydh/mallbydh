@@ -27,5 +27,6 @@ public interface CartMapper {
     List<Map<String, Object>> getCartDetailsByUserId(String u_id);
     // 장바구니 - 선택 상품 주문 시
     List<Map<String, Object>> getCartDetailsByProdIds(List<Integer> prod_ids, String u_id);
-
+    // 주문완료된 상품을 장바구니에서 제거
+    void deleteOrderedItems(@Param("prod_ids") List<Integer> prod_ids, @Param("u_id") String u_id);
 }

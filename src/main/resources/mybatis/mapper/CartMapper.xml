@@ -100,4 +100,14 @@
             </foreach>
     </select>
 
+    <delete id="deleteOrderedItems">
+        delete from
+            cart_tbl
+        where
+            u_id = #{u_id} and prod_id in
+            <foreach item="prod_id" collection="prod_ids" open="(" separator="," close=")">
+                #{prod_id}
+            </foreach>
+    </delete>
+
 </mapper>

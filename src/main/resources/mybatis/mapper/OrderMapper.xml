@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.order.OrderMapper">
+
+    <insert id="insertOrder" parameterType="com.project.mallbydh.order.OrderVO" useGeneratedKeys="true" keyProperty="ord_code">
+        insert into
+            order_tbl(u_id, ord_name, ord_phone, ord_zipcode, ord_addr, ord_addr_detail, ord_price)
+        values
+            (#{u_id}, #{ord_name}, #{ord_phone}, #{ord_zipcode}, #{ord_addr}, #{ord_addr_detail}, #{ord_price})
+    </insert>
+
+    <insert id="insertOrderDetail" parameterType="com.project.mallbydh.order.OrderDetailVO">
+        insert into
+            orderdetail_tbl(ord_code, prod_id, ordt_amount, ordt_price)
+        values
+            (#{ord_code}, #{prod_id}, #{ordt_amount}, #{ordt_price})
+    </insert>
+
+</mapper>

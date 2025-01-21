@@ -86,151 +86,155 @@
                     </table>
                 </div>
                 <!-- 주문자 정보 -->
-                <div style="margin-bottom: 64px;">
-                    <div class="mb-3">
-                        <h5 class="border-bottom pb-2 font-weight-bolder border-dark">주문자 정보</h5>
-                    </div>
-                    <div class="row mb-3">
-                        <form>
-                            <div class="row mb-3">
-                                <label for="name" class="col-sm-2 col-form-label font-weight-bold">이름</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="name" th:value="${memberVO.u_name}">
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="phone" class="col-sm-2 col-form-label font-weight-bold">휴대폰 번호</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="phone" th:value="${memberVO.u_phone}">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <label for="email" class="col-sm-2 col-form-label font-weight-bold">이메일 주소</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="email" th:value="${memberVO.u_email}">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- 배송지 정보 -->
-                <div style="margin-bottom: 64px;">
-                    <div class="mb-3">
-                        <h5 class="border-bottom pb-2 font-weight-bolder border-dark">배송지 정보</h5>
-                    </div>
-                    <div class="row mb-3">
-                        <form>
-                            <div class="row mb-3">
-                                <label for="basicAddress" class="col-sm-2 col-form-label font-weight-bold">배송지 선택</label>
-                                <div class="col-sm-10 d-flex align-items-center">
-                                    <div class="form-check me-4">
-                                        <input class="form-check-input" type="radio" name="addressType" id="basicAddress" checked>
-                                        <label class="form-check-label" for="basicAddress">
-                                            기본주소 (주문자 정보와 동일)
-                                        </label>
-                                    </div>
-                                    <div class="form-check me-4">
-                                        <input class="form-check-input" type="radio" name="addressType" id="newAddress">
-                                        <label class="form-check-label" for="newAddress">
-                                            새로운 주소
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="nameDeliver" class="col-sm-2 col-form-label font-weight-bold">받는분 성함</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="nameDeliver" th:value="${memberVO.u_name}">
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="phoneDeliver" class="col-sm-2 col-form-label font-weight-bold">받는분 휴대폰</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="phoneDeliver" th:value="${memberVO.u_phone}">
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="phoneDeliver" class="col-sm-2 col-form-label font-weight-bold">받는분 주소</label>
-                                <div class="col-sm-10">
-                                    <div class="d-flex mb-2">
-                                        <input type="text" class="form-control w-25 me-2" id="sample2_postcode" name="u_zipcode" th:value="${memberVO.u_zipcode}">
-                                        <button type="button" class="btn btn-outline-dark" onclick="sample2_execDaumPostcode()">주소검색</button>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="text" class="form-control" id="sample2_address" name="u_addr" th:value="${memberVO.u_addr}">
-                                    </div>
-                                    <div>
-                                        <input type="text" class="form-control" id="sample2_detailAddress" name="u_addr_detail" th:value="${memberVO.u_addr_detail}">
-                                        <input type="hidden" class="form-control" id="sample2_extraAddress" name="u_addr_extra">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <label for="deliverMessage" class="col-sm-2 col-form-label font-weight-bold">배송 메시지</label>
-                                <div class="col-sm-10">
-                                    <select class="form-select mb-2" aria-label="Default select example" id="deliverMessage">
-                                        <option selected>배송 메시지를 선택해 주세요.</option>
-                                        <option value="1">배송 전에 미리 연락바랍니다.</option>
-                                        <option value="2">부재시 경비실에 맡겨주세요.</option>
-                                        <option value="3">부재시 전화주시거나 문자 남겨주세요.</option>
-                                        <option value="4">직접 입력</option>
-                                    </select>
-                                    <div id="customMessageWrapper" style="display: none;">
-                                        <textarea class="form-control" id="customMessage" rows="3"></textarea>
-                                        <small class="text-muted">배송 시 전달할 메시지를 직접 입력해주세요.(200자 이내)</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- 결제 방식 -->
-                <div style="margin-bottom: 64px;">
-                    <div class="mb-3">
-                        <h5 class="border-bottom pb-2 font-weight-bolder border-dark">결제 방식</h5>
-                    </div>
-                    <form>
+                <form id="orderForm" method="POST" action="/order/order_save">
+                    <div style="margin-bottom: 64px;">
+                        <div class="mb-3">
+                            <h5 class="border-bottom pb-2 font-weight-bolder border-dark">주문자 정보</h5>
+                        </div>
                         <div class="row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label font-weight-bold d-flex align-items-center">결제 방식</label>
-                            <div class="col-sm-10">
-                                <div class="d-flex w-100">
-                                    <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill me-2" data-method="card" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">신용카드</button>
-                                    <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill me-2" data-method="kakao" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">카카오페이</button>
-                                    <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill" data-method="bank" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">무통장입금</button>
+                            <form>
+                                <div class="row mb-3">
+                                    <label for="name" class="col-sm-2 col-form-label font-weight-bold">이름</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="name" th:value="${memberVO.u_name}">
+                                        <input type="hidden" class="form-control" id="paymentMethod" name="paymentMethod">
+                                        <input type="hidden" class="form-control" id="ord_price" name="ord_price" th:value="${totalAmount}">
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div id="bankTransferInfo" style="display: none;">
+                                <div class="row mb-3">
+                                    <label for="phone" class="col-sm-2 col-form-label font-weight-bold">휴대폰 번호</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="phone" th:value="${memberVO.u_phone}">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <label for="email" class="col-sm-2 col-form-label font-weight-bold">이메일 주소</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" id="email" th:value="${memberVO.u_email}">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- 배송지 정보 -->
+                    <div style="margin-bottom: 64px;">
+                        <div class="mb-3">
+                            <h5 class="border-bottom pb-2 font-weight-bolder border-dark">배송지 정보</h5>
+                        </div>
+                        <div class="row mb-3">
+                            <form>
+                                <div class="row mb-3">
+                                    <label for="basicAddress" class="col-sm-2 col-form-label font-weight-bold">배송지 선택</label>
+                                    <div class="col-sm-10 d-flex align-items-center">
+                                        <div class="form-check me-4">
+                                            <input class="form-check-input" type="radio" name="addressType" id="basicAddress" checked>
+                                            <label class="form-check-label" for="basicAddress">
+                                                기본주소 (주문자 정보와 동일)
+                                            </label>
+                                        </div>
+                                        <div class="form-check me-4">
+                                            <input class="form-check-input" type="radio" name="addressType" id="newAddress">
+                                            <label class="form-check-label" for="newAddress">
+                                                새로운 주소
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="ord_name" class="col-sm-2 col-form-label font-weight-bold">받는분 성함</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="ord_name" name="ord_name" th:value="${memberVO.u_name}">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="ord_phone" class="col-sm-2 col-form-label font-weight-bold">받는분 휴대폰</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="ord_phone" name="ord_phone" th:value="${memberVO.u_phone}">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="sample2_postcode" class="col-sm-2 col-form-label font-weight-bold">받는분 주소</label>
+                                    <div class="col-sm-10">
+                                        <div class="d-flex mb-2">
+                                            <input type="text" class="form-control w-25 me-2" id="sample2_postcode" name="ord_zipcode" th:value="${memberVO.u_zipcode}">
+                                            <button type="button" class="btn btn-outline-dark" onclick="sample2_execDaumPostcode()">주소검색</button>
+                                        </div>
+                                        <div class="mb-2">
+                                            <input type="text" class="form-control" id="sample2_address" name="ord_addr" th:value="${memberVO.u_addr}">
+                                        </div>
+                                        <div>
+                                            <input type="text" class="form-control" id="sample2_detailAddress" name="ord_addr_detail" th:value="${memberVO.u_addr_detail}">
+                                            <input type="hidden" class="form-control" id="sample2_extraAddress" name="u_addr_extra">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <label for="ord_message" class="col-sm-2 col-form-label font-weight-bold">배송 메시지</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select mb-2" aria-label="Default select example" id="ord_message">
+                                            <option selected>배송 메시지를 선택해 주세요.</option>
+                                            <option value="1">배송 전에 미리 연락바랍니다.</option>
+                                            <option value="2">부재시 경비실에 맡겨주세요.</option>
+                                            <option value="3">부재시 전화주시거나 문자 남겨주세요.</option>
+                                            <option value="4">직접 입력</option>
+                                        </select>
+                                        <div id="customMessageWrapper" style="display: none;">
+                                            <textarea class="form-control" id="customMessage" rows="3"></textarea>
+                                            <small class="text-muted">배송 시 전달할 메시지를 직접 입력해주세요.(200자 이내)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- 결제 방식 -->
+                    <div style="margin-bottom: 64px;">
+                        <div class="mb-3">
+                            <h5 class="border-bottom pb-2 font-weight-bolder border-dark">결제 방식</h5>
+                        </div>
+                        <form>
                             <div class="row mb-3">
-                                <label for="paymentBankSelect" class="col-sm-2 col-form-label font-weight-bold">입금은행 선택</label>
+                                <label for="name" class="col-sm-2 col-form-label font-weight-bold d-flex align-items-center">결제 방식</label>
                                 <div class="col-sm-10">
-                                    <select class="form-select" aria-label="Default select example" id="paymentBankSelect">
-                                        <option selected>입금하실 계좌를 선택해주세요.</option>
-                                        <option value="1">[농협] 0000000-00-000000 몰바이디에이치</option>
-                                        <option value="2">[국민] 000-00-000000 몰바이디에이치</option>
-                                        <option value="3">[기업] 000000-00-000000 몰바이디에이치</option>
-                                    </select>
+                                    <div class="d-flex w-100">
+                                        <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill me-2" name="btnPaymentMethod" value="card" data-selected="false" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">신용카드</button>
+                                        <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill me-2" name="btnPaymentMethod" value="kakao" data-selected="false" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">카카오페이</button>
+                                        <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill" name="btnPaymentMethod" value="bank" data-selected="false" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">무통장입금</button>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <label for="transferName" class="col-sm-2 col-form-label font-weight-bold">입금자명</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="transferName" th:value="${memberVO.u_name}">
+                            <div id="bankTransferInfo" style="display: none;">
+                                <div class="row mb-3">
+                                    <label for="paymentBankSelect" class="col-sm-2 col-form-label font-weight-bold">입금은행 선택</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" aria-label="Default select example" id="paymentBankSelect">
+                                            <option selected>입금하실 계좌를 선택해주세요.</option>
+                                            <option value="1">[농협] 0000000-00-000000 몰바이디에이치</option>
+                                            <option value="2">[국민] 111-11-111111 몰바이디에이치</option>
+                                            <option value="3">[기업] 222222-22-222222 몰바이디에이치</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <label for="transferName" class="col-sm-2 col-form-label font-weight-bold">입금자명</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="transferName" th:value="${memberVO.u_name}">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                </form>
             </div>
 
 
@@ -240,32 +244,32 @@
                     <!-- 상품 정보 -->
                     <div class="d-flex align-items-center mb-3">
                         <i class="bi bi-box me-2"></i>
-                        <span>전체상품 1개</span>
+                        <span th:text="|전체상품 ${totalQuantity}개|"></span>
                     </div>
                     <!-- 가격 정보 -->
                     <div class="border-bottom border-top pb-3 pt-3">
                         <div class="d-flex justify-content-between mb-2">
                             <span>상품금액</span>
-                            <span>32원</span>
+                            <span th:text="|${#numbers.formatInteger(totalAmount, 0, 'COMMA')}원|"></span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>배송비</span>
-                            <span>+ 5,000원</span>
+                            <span th:text="'+ ' + 0 + '원'"></span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-success">적립금 사용</span>
-                            <span class="text-success">- 0원</span>
+                            <span class="text-success" th:text="'- ' + 0 + '원'"></span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-primary">할인</span>
-                            <span class="text-primary">- 0원</span>
+                            <span class="text-primary" th:text="'- ' + 0 + '원'"></span>
                         </div>
                     </div>
 
                     <!-- 결제 금액 -->
                     <div class="d-flex justify-content-between mt-3 border-bottom pb-3">
                         <span>결제 예정금액</span>
-                        <span class="text-danger fw-bold">5,032원</span>
+                        <span class="text-danger fw-bold" th:text="|${#numbers.formatInteger(totalAmount, 0, 'COMMA')}원|"></span>
                     </div>
 
                     <!-- 체크박스 -->
@@ -277,7 +281,7 @@
                     </div>
 
                     <!-- 결제 버튼 -->
-                    <button class="btn btn-danger w-100 mt-3" style="padding: 12px 0 12px 0;">5,032원 결제하기</button>
+                    <button class="btn btn-danger w-100 mt-3" style="padding: 12px 0 12px 0;" id="btnOrderSubmit" th:text="|${#numbers.formatInteger(totalAmount, 0, 'COMMA')}원 결제하기|"></button>
                 </div>
             </div>
         </div>
@@ -381,7 +385,7 @@
 <th:block layout:fragment="script2">
     <script>
         // 배송 메시지 '직접 입력' 선택 시 입력란 노출
-        document.getElementById('deliverMessage').addEventListener('change', function() {
+        document.getElementById('ord_message').addEventListener('change', function() {
             const customMessageWrapper = document.getElementById('customMessageWrapper');
             if (this.value === '4') {
                 customMessageWrapper.style.display = 'block';
@@ -398,17 +402,52 @@
                 btn.classList.remove('active');
                 btn.classList.remove('btn-dark');
                 btn.classList.add('btn-outline-secondary');
+                btn.setAttribute('data-selected', 'false');
             });
 
             // 선택된 버튼 활성화
             button.classList.add('active');
             button.classList.remove('btn-outline-secondary');
             button.classList.add('btn-dark');
+            button.setAttribute('data-selected', 'true');
 
             // 무통장입금 정보 표시 여부
             const bankInfo = document.getElementById('bankTransferInfo');
-            bankInfo.style.display = button.dataset.method === 'bank' ? 'block' : 'none';
+            bankInfo.style.display = button.value === 'bank' ? 'block' : 'none';
         }
+
+        $(document).ready(function() {
+           let orderAddressValues = {
+               ord_name: $("#ord_name").val(),
+               ord_phone: $("#ord_phone").val(),
+               ord_zipcode: $("input[name='ord_zipcode']").val(),
+               ord_addr: $("input[name='ord_addr']").val(),
+               ord_addr_detail: $("input[name='ord_addr_detail']").val()
+           };
+
+           $("#basicAddress").on("click", function () {
+               $('#ord_name').val(orderAddressValues.ord_name);
+               $('#ord_phone').val(orderAddressValues.ord_phone);
+               $('#sample2_postcode').val(orderAddressValues.ord_zipcode);
+               $('#sample2_address').val(orderAddressValues.ord_addr);
+               $('#sample2_detailAddress').val(orderAddressValues.ord_addr_detail);
+           });
+
+           $("#newAddress").on("click", function() {
+               $("#ord_name, #ord_phone, #sample2_postcode, #sample2_address, #sample2_detailAddress").val('');
+           });
+
+           // 결제하기 버튼 클릭 시
+           $("#btnOrderSubmit").on("click", function() {
+               let paymentMethod = $("button[name='btnPaymentMethod'][data-selected='true']").val();
+
+               if(paymentMethod === "bank") {
+                   $("#paymentMethod").val("무통장입금");
+                   $("#orderForm").submit();
+               }
+           });
+        });
+
     </script>
 </th:block>
 </html>

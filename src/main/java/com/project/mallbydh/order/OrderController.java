@@ -10,11 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +79,12 @@ public class OrderController {
 
         model.addAttribute("orderCartDetails", orderCartDetails);
 
+        // 주문 정보의 총 수량, 총 금액 계산
+        int totalQuantity = cartService.calculateTotalQuantity(orderCartDetails);
+        model.addAttribute("totalQuantity", totalQuantity);
+        int totalAmount = cartService.calculateTotalAmount(orderCartDetails);
+        model.addAttribute("totalAmount", totalAmount);
+
         // 로그인한 사용자 정보
         MemberVO memberVO = memberService.modifyView(u_id);
         model.addAttribute("memberVO", memberVO);
@@ -102,5 +107,28 @@ public class OrderController {
             response.put("existingAmount", 0);
         }
         return response;
+    }
+
+    @PostMapping("/order_save")
+    public String orderSave(@RequestParam List<Integer> prod_ids, OrderVO vo,
+                            HttpSession session, String paymentMethod, String account_transfer, String sender, RedirectAttributes rttr) {
+
+        String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
+        vo.setU_id(u_id);
+
+        orderService.orderProcess(vo, prod_ids, u_id, paymentMethod);
+
+        String p_method_info = paymentMethod + "/" + account_transfer + "/" + sender;
+
+        rttr.addAttribute("ord_code", vo.getOrd_code());
+
+        return "redirect:/order/order_result";
+    }
+
+    @GetMapping("/order_result")
+    public void orderResult(HttpSession session, Model model) {
+
+        String ord_email = ((MemberVO)session.getAttribute("login_auth")).getU_email();
+
     }
 }
