@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentService {
 
-    private final PaymentService paymentService;
+    private final PaymentMapper paymentMapper;
 }

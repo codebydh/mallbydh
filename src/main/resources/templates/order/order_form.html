@@ -53,69 +53,71 @@
             <!-- 각종 주문 정보 -->
             <div class="col-8">
                 <!-- 주문 상품 정보 -->
-                <div style="margin-bottom: 64px;">
-                    <table class="table table-bordered">
-                        <thead class="text-center">
-                        <tr>
-                            <th style="width: 52%">상품정보</th>
-                            <th style="width: 16%">판매가</th>
-                            <th style="width: 16%">수량</th>
-                            <th style="width: 16%">합계</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="item : ${orderCartDetails}">
-                            <td class="product-info ml-3">
-                                <div class="product-container d-flex align-items-center">
-                                    <div class="product-image me-3" style="width: 81px; height: 81px;">
-                                        <img th:src="${'/cart/image_display?dateFolderName=' + item.prod_uploadfolder + '&fileName=s_' + item.prod_img}"}
-                                             alt="상품 이미지"
-                                             class="img-fluid rounded product-thumbnail">
+                <form id="orderForm" method="post" action="/order/order_save">
+                    <div style="margin-bottom: 64px;">
+                        <table class="table table-bordered">
+                            <thead class="text-center">
+                            <tr>
+                                <th style="width: 52%">상품정보</th>
+                                <th style="width: 16%">판매가</th>
+                                <th style="width: 16%">수량</th>
+                                <th style="width: 16%">합계</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item : ${orderCartDetails}">
+                                <td class="product-info ml-3">
+                                    <div class="product-container d-flex align-items-center">
+                                        <div class="product-image me-3" style="width: 81px; height: 81px;">
+                                            <img th:src="${'/cart/image_display?dateFolderName=' + item.prod_uploadfolder + '&fileName=s_' + item.prod_img}"}
+                                                 alt="상품 이미지"
+                                                 class="img-fluid rounded product-thumbnail">
+                                        </div>
+                                        <div class="product-details">
+                                            <h4 class="product-name mb-1" th:text="${item['prod_name']}"></h4>
+                                            <small class="text-muted"><p class="manufacturer mb-2" th:text="${item['prod_maker']}"></p></small>
+                                        </div>
                                     </div>
-                                    <div class="product-details">
-                                        <h4 class="product-name mb-1" th:text="${item['prod_name']}"></h4>
-                                        <small class="text-muted"><p class="manufacturer mb-2" th:text="${item['prod_maker']}"></p></small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['prod_price'], 1, 'COMMA') + '원'}"></td>
-                            <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['cart_amount'], 1, 'COMMA')}"></td>
-                            <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['subtotal'], 1, 'COMMA') + '원'}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- 주문자 정보 -->
-                <form id="orderForm" method="POST" action="/order/order_save">
+                                </td>
+                                <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['prod_price'], 1, 'COMMA') + '원'}"></td>
+                                <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['cart_amount'], 1, 'COMMA')}"></td>
+                                <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['subtotal'], 1, 'COMMA') + '원'}"></td>
+                                <input type="hidden" name="prod_ids" th:value="${item.prod_id}" />
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 주문자 정보 -->
                     <div style="margin-bottom: 64px;">
                         <div class="mb-3">
                             <h5 class="border-bottom pb-2 font-weight-bolder border-dark">주문자 정보</h5>
                         </div>
                         <div class="row mb-3">
-                            <form>
-                                <div class="row mb-3">
-                                    <label for="name" class="col-sm-2 col-form-label font-weight-bold">이름</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="name" th:value="${memberVO.u_name}">
-                                        <input type="hidden" class="form-control" id="paymentMethod" name="paymentMethod">
-                                        <input type="hidden" class="form-control" id="ord_price" name="ord_price" th:value="${totalAmount}">
-                                    </div>
-                                </div>
 
-                                <div class="row mb-3">
-                                    <label for="phone" class="col-sm-2 col-form-label font-weight-bold">휴대폰 번호</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="phone" th:value="${memberVO.u_phone}">
-                                    </div>
+                            <div class="row mb-3">
+                                <label for="name" class="col-sm-2 col-form-label font-weight-bold">이름</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="name" th:value="${memberVO.u_name}">
+                                    <input type="hidden" class="form-control" id="paymentMethod" name="paymentMethod">
+                                    <input type="hidden" class="form-control" id="ord_price" name="ord_price" th:value="${totalAmount}">
                                 </div>
+                            </div>
 
-                                <div class="row">
-                                    <label for="email" class="col-sm-2 col-form-label font-weight-bold">이메일 주소</label>
-                                    <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="email" th:value="${memberVO.u_email}">
-                                    </div>
+                            <div class="row mb-3">
+                                <label for="phone" class="col-sm-2 col-form-label font-weight-bold">휴대폰 번호</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="phone" th:value="${memberVO.u_phone}">
                                 </div>
-                            </form>
+                            </div>
+
+                            <div class="row">
+                                <label for="email" class="col-sm-2 col-form-label font-weight-bold">이메일 주소</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="email" th:value="${memberVO.u_email}">
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -125,73 +127,73 @@
                             <h5 class="border-bottom pb-2 font-weight-bolder border-dark">배송지 정보</h5>
                         </div>
                         <div class="row mb-3">
-                            <form>
-                                <div class="row mb-3">
-                                    <label for="basicAddress" class="col-sm-2 col-form-label font-weight-bold">배송지 선택</label>
-                                    <div class="col-sm-10 d-flex align-items-center">
-                                        <div class="form-check me-4">
-                                            <input class="form-check-input" type="radio" name="addressType" id="basicAddress" checked>
-                                            <label class="form-check-label" for="basicAddress">
-                                                기본주소 (주문자 정보와 동일)
-                                            </label>
-                                        </div>
-                                        <div class="form-check me-4">
-                                            <input class="form-check-input" type="radio" name="addressType" id="newAddress">
-                                            <label class="form-check-label" for="newAddress">
-                                                새로운 주소
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="row mb-3">
-                                    <label for="ord_name" class="col-sm-2 col-form-label font-weight-bold">받는분 성함</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="ord_name" name="ord_name" th:value="${memberVO.u_name}">
+                            <div class="row mb-3">
+                                <label for="basicAddress" class="col-sm-2 col-form-label font-weight-bold">배송지 선택</label>
+                                <div class="col-sm-10 d-flex align-items-center">
+                                    <div class="form-check me-4">
+                                        <input class="form-check-input" type="radio" name="addressType" id="basicAddress" checked>
+                                        <label class="form-check-label" for="basicAddress">
+                                            기본주소 (주문자 정보와 동일)
+                                        </label>
+                                    </div>
+                                    <div class="form-check me-4">
+                                        <input class="form-check-input" type="radio" name="addressType" id="newAddress">
+                                        <label class="form-check-label" for="newAddress">
+                                            새로운 주소
+                                        </label>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <label for="ord_phone" class="col-sm-2 col-form-label font-weight-bold">받는분 휴대폰</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="ord_phone" name="ord_phone" th:value="${memberVO.u_phone}">
-                                    </div>
+                            <div class="row mb-3">
+                                <label for="ord_name" class="col-sm-2 col-form-label font-weight-bold">받는분 성함</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="ord_name" name="ord_name" th:value="${memberVO.u_name}">
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <label for="sample2_postcode" class="col-sm-2 col-form-label font-weight-bold">받는분 주소</label>
-                                    <div class="col-sm-10">
-                                        <div class="d-flex mb-2">
-                                            <input type="text" class="form-control w-25 me-2" id="sample2_postcode" name="ord_zipcode" th:value="${memberVO.u_zipcode}">
-                                            <button type="button" class="btn btn-outline-dark" onclick="sample2_execDaumPostcode()">주소검색</button>
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="text" class="form-control" id="sample2_address" name="ord_addr" th:value="${memberVO.u_addr}">
-                                        </div>
-                                        <div>
-                                            <input type="text" class="form-control" id="sample2_detailAddress" name="ord_addr_detail" th:value="${memberVO.u_addr_detail}">
-                                            <input type="hidden" class="form-control" id="sample2_extraAddress" name="u_addr_extra">
-                                        </div>
-                                    </div>
+                            <div class="row mb-3">
+                                <label for="ord_phone" class="col-sm-2 col-form-label font-weight-bold">받는분 휴대폰</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="ord_phone" name="ord_phone" th:value="${memberVO.u_phone}">
                                 </div>
+                            </div>
 
-                                <div class="row">
-                                    <label for="ord_message" class="col-sm-2 col-form-label font-weight-bold">배송 메시지</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-select mb-2" aria-label="Default select example" id="ord_message">
-                                            <option selected>배송 메시지를 선택해 주세요.</option>
-                                            <option value="1">배송 전에 미리 연락바랍니다.</option>
-                                            <option value="2">부재시 경비실에 맡겨주세요.</option>
-                                            <option value="3">부재시 전화주시거나 문자 남겨주세요.</option>
-                                            <option value="4">직접 입력</option>
-                                        </select>
-                                        <div id="customMessageWrapper" style="display: none;">
-                                            <textarea class="form-control" id="customMessage" rows="3"></textarea>
-                                            <small class="text-muted">배송 시 전달할 메시지를 직접 입력해주세요.(200자 이내)</small>
-                                        </div>
+                            <div class="row mb-3">
+                                <label for="sample2_postcode" class="col-sm-2 col-form-label font-weight-bold">받는분 주소</label>
+                                <div class="col-sm-10">
+                                    <div class="d-flex mb-2">
+                                        <input type="text" class="form-control w-25 me-2" id="sample2_postcode" name="ord_zipcode" th:value="${memberVO.u_zipcode}">
+                                        <button type="button" class="btn btn-outline-dark" onclick="sample2_execDaumPostcode()">주소검색</button>
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="text" class="form-control" id="sample2_address" name="ord_addr" th:value="${memberVO.u_addr}">
+                                    </div>
+                                    <div>
+                                        <input type="text" class="form-control" id="sample2_detailAddress" name="ord_addr_detail" th:value="${memberVO.u_addr_detail}">
+                                        <input type="hidden" class="form-control" id="sample2_extraAddress" name="u_addr_extra">
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+
+                            <div class="row">
+                                <label for="ord_message" class="col-sm-2 col-form-label font-weight-bold">배송 메시지</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select mb-2" aria-label="Default select example" id="ord_message">
+                                        <option selected>배송 메시지를 선택해 주세요.</option>
+                                        <option value="1">배송 전에 미리 연락바랍니다.</option>
+                                        <option value="2">부재시 경비실에 맡겨주세요.</option>
+                                        <option value="3">부재시 전화주시거나 문자 남겨주세요.</option>
+                                        <option value="4">직접 입력</option>
+                                    </select>
+                                    <div id="customMessageWrapper" style="display: none;">
+                                        <textarea class="form-control" id="customMessage" rows="3"></textarea>
+                                        <small class="text-muted">배송 시 전달할 메시지를 직접 입력해주세요.(200자 이내)</small>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -200,39 +202,39 @@
                         <div class="mb-3">
                             <h5 class="border-bottom pb-2 font-weight-bolder border-dark">결제 방식</h5>
                         </div>
-                        <form>
+
+                        <div class="row mb-3">
+                            <label for="name" class="col-sm-2 col-form-label font-weight-bold d-flex align-items-center">결제 방식</label>
+                            <div class="col-sm-10">
+                                <div class="d-flex w-100">
+                                    <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill me-2" name="btnPaymentMethod" value="card" data-selected="false" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">신용카드</button>
+                                    <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill me-2" name="btnPaymentMethod" value="kakao" data-selected="false" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">카카오페이</button>
+                                    <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill" name="btnPaymentMethod" value="bank" data-selected="false" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">무통장입금</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="bankTransferInfo" style="display: none;">
                             <div class="row mb-3">
-                                <label for="name" class="col-sm-2 col-form-label font-weight-bold d-flex align-items-center">결제 방식</label>
+                                <label for="paymentBankSelect" class="col-sm-2 col-form-label font-weight-bold">입금은행 선택</label>
                                 <div class="col-sm-10">
-                                    <div class="d-flex w-100">
-                                        <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill me-2" name="btnPaymentMethod" value="card" data-selected="false" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">신용카드</button>
-                                        <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill me-2" name="btnPaymentMethod" value="kakao" data-selected="false" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">카카오페이</button>
-                                        <button type="button" class="btn btn-outline-secondary payment-method-btn flex-fill" name="btnPaymentMethod" value="bank" data-selected="false" onclick="selectPaymentMethod(this)" style="padding: 12px 0 12px 0;">무통장입금</button>
-                                    </div>
+                                    <select class="form-select" aria-label="Default select example" id="paymentBankSelect">
+                                        <option selected>입금하실 계좌를 선택해주세요.</option>
+                                        <option value="1">[농협] 0000000-00-000000 몰바이디에이치</option>
+                                        <option value="2">[국민] 111-11-111111 몰바이디에이치</option>
+                                        <option value="3">[기업] 222222-22-222222 몰바이디에이치</option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <div id="bankTransferInfo" style="display: none;">
-                                <div class="row mb-3">
-                                    <label for="paymentBankSelect" class="col-sm-2 col-form-label font-weight-bold">입금은행 선택</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-select" aria-label="Default select example" id="paymentBankSelect">
-                                            <option selected>입금하실 계좌를 선택해주세요.</option>
-                                            <option value="1">[농협] 0000000-00-000000 몰바이디에이치</option>
-                                            <option value="2">[국민] 111-11-111111 몰바이디에이치</option>
-                                            <option value="3">[기업] 222222-22-222222 몰바이디에이치</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <label for="transferName" class="col-sm-2 col-form-label font-weight-bold">입금자명</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="transferName" th:value="${memberVO.u_name}">
-                                    </div>
+                            <div class="row">
+                                <label for="transferName" class="col-sm-2 col-form-label font-weight-bold">입금자명</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="transferName" th:value="${memberVO.u_name}">
                                 </div>
                             </div>
-                        </form>
+                        </div>
+
                     </div>
                 </form>
             </div>
@@ -440,6 +442,13 @@
            // 결제하기 버튼 클릭 시
            $("#btnOrderSubmit").on("click", function() {
                let paymentMethod = $("button[name='btnPaymentMethod'][data-selected='true']").val();
+
+               let prod_ids = [];
+               $("input[name='prod_ids']").each(function() {
+                   prod_ids.push($(this).val());
+               })
+
+               $("#orderForm").append('<input type="hidden" name="prod_ids" value="' + prod_ids.join(',') + '">');
 
                if(paymentMethod === "bank") {
                    $("#paymentMethod").val("무통장입금");
