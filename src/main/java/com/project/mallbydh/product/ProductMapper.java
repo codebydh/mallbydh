@@ -12,4 +12,7 @@ public interface ProductMapper {
     int updateReviewCount(Integer prod_id);
     int updateWishCount(Integer prod_id);
     int updateInquiryCount(Integer prod_id);
+
+    // 주문 테이블에서 활용
+    String getProductNameById(Integer prod_id);
 }

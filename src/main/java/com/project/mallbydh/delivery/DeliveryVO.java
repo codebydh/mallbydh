@@ -15,6 +15,7 @@ public class DeliveryVO {
     private String delivery_zipcode;
     private String delivery_addr;
     private String delivery_addr_detail;
+    private String delivery_message;
     private String recipient_name;
     private String recipient_phone;
     private String delivery_status;

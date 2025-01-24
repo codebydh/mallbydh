@@ -4,9 +4,9 @@
 
     <insert id="insertOrder" parameterType="com.project.mallbydh.order.OrderVO" useGeneratedKeys="true" keyProperty="ord_code">
         insert into
-            order_tbl(u_id, ord_name, ord_phone, ord_zipcode, ord_addr, ord_addr_detail, ord_price)
+            order_tbl(u_id, recipient_name, recipient_phone, delivery_zipcode, delivery_addr, delivery_addr_detail, ord_price, delivery_message, ord_name)
         values
-            (#{u_id}, #{ord_name}, #{ord_phone}, #{ord_zipcode}, #{ord_addr}, #{ord_addr_detail}, #{ord_price})
+            (#{u_id}, #{recipient_name}, #{recipient_phone}, #{delivery_zipcode}, #{delivery_addr}, #{delivery_addr_detail}, #{ord_price}, #{delivery_message}, #{ord_name})
     </insert>
 
     <insert id="insertOrderDetail" parameterType="com.project.mallbydh.order.OrderDetailVO">

@@ -5,10 +5,12 @@ import com.project.mallbydh.delivery.DeliveryMapper;
 import com.project.mallbydh.delivery.DeliveryVO;
 import com.project.mallbydh.payment.PaymentMapper;
 import com.project.mallbydh.payment.PaymentVO;
+import com.project.mallbydh.product.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,14 +23,30 @@ public class OrderService {
     private final PaymentMapper paymentMapper;
     private final DeliveryMapper deliveryMapper;
 
+    public String generateOrderName(List<Map<String, Object>> orderedItems) {
+        List<String> prod_names = new ArrayList<>();
+        for (Map<String, Object> item : orderedItems) {
+            String prod_name = (String) item.get("prod_name");
+            prod_names.add(prod_name);
+        }
+
+        if(prod_names.size() == 1) {
+            return prod_names.get(0);
+        } else {
+            return prod_names.get(0) + " 외 " + (prod_names.size() - 1) + "개";
+        }
+    }
+
     @Transactional
     public void orderProcess(OrderVO vo, List<Integer> prod_ids, String u_id, String paymentMethod) {
         // 1) 주문 테이블 DB에 추가
+        List<Map<String, Object>> orderedItems = cartMapper.getCartDetailsByProdIds(prod_ids, u_id);
+        String ord_name = generateOrderName(orderedItems);
+        vo.setOrd_name(ord_name);
         orderMapper.insertOrder(vo);
 
         // 2) 주문상세 테이블 DB에 추가
         Integer ord_code = vo.getOrd_code();
-        List<Map<String, Object>> orderedItems = cartMapper.getCartDetailsByProdIds(prod_ids, u_id);
         for (Map<String, Object> item : orderedItems) {
             OrderDetailVO detailVO = new OrderDetailVO();
             detailVO.setOrd_code(ord_code);
@@ -59,11 +77,12 @@ public class OrderService {
         // 5) 배송 테이블 DB에 추가
         DeliveryVO deliveryVO = new DeliveryVO();
         deliveryVO.setOrd_code(ord_code);
-        deliveryVO.setDelivery_zipcode(vo.getOrd_zipcode());
-        deliveryVO.setDelivery_addr(vo.getOrd_addr());
-        deliveryVO.setDelivery_addr_detail(vo.getOrd_addr_detail());
-        deliveryVO.setRecipient_name(vo.getOrd_name());
-        deliveryVO.setRecipient_phone(vo.getOrd_phone());
+        deliveryVO.setDelivery_zipcode(vo.getDelivery_zipcode());
+        deliveryVO.setDelivery_addr(vo.getDelivery_addr());
+        deliveryVO.setDelivery_addr_detail(vo.getDelivery_addr_detail());
+        deliveryVO.setDelivery_message(vo.getDelivery_message());
+        deliveryVO.setRecipient_name(vo.getRecipient_name());
+        deliveryVO.setRecipient_phone(vo.getRecipient_phone());
         deliveryMapper.insertDelivery(deliveryVO);
     }
 }

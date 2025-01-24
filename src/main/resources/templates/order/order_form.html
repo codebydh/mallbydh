@@ -147,16 +147,16 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="ord_name" class="col-sm-2 col-form-label font-weight-bold">받는분 성함</label>
+                                <label for="recipient_name" class="col-sm-2 col-form-label font-weight-bold">받는분 성함</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="ord_name" name="ord_name" th:value="${memberVO.u_name}">
+                                    <input type="text" class="form-control" id="recipient_name" name="recipient_name" th:value="${memberVO.u_name}">
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label for="ord_phone" class="col-sm-2 col-form-label font-weight-bold">받는분 휴대폰</label>
+                                <label for="recipient_phone" class="col-sm-2 col-form-label font-weight-bold">받는분 휴대폰</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="ord_phone" name="ord_phone" th:value="${memberVO.u_phone}">
+                                    <input type="text" class="form-control" id="recipient_phone" name="recipient_phone" th:value="${memberVO.u_phone}">
                                 </div>
                             </div>
 
@@ -164,36 +164,35 @@
                                 <label for="sample2_postcode" class="col-sm-2 col-form-label font-weight-bold">받는분 주소</label>
                                 <div class="col-sm-10">
                                     <div class="d-flex mb-2">
-                                        <input type="text" class="form-control w-25 me-2" id="sample2_postcode" name="ord_zipcode" th:value="${memberVO.u_zipcode}">
+                                        <input type="text" class="form-control w-25 me-2" id="sample2_postcode" name="delivery_zipcode" th:value="${memberVO.u_zipcode}">
                                         <button type="button" class="btn btn-outline-dark" onclick="sample2_execDaumPostcode()">주소검색</button>
                                     </div>
                                     <div class="mb-2">
-                                        <input type="text" class="form-control" id="sample2_address" name="ord_addr" th:value="${memberVO.u_addr}">
+                                        <input type="text" class="form-control" id="sample2_address" name="delivery_addr" th:value="${memberVO.u_addr}">
                                     </div>
                                     <div>
-                                        <input type="text" class="form-control" id="sample2_detailAddress" name="ord_addr_detail" th:value="${memberVO.u_addr_detail}">
-                                        <input type="hidden" class="form-control" id="sample2_extraAddress" name="u_addr_extra">
+                                        <input type="text" class="form-control" id="sample2_detailAddress" name="delivery_addr_detail" th:value="${memberVO.u_addr_detail}">
+                                        <input type="hidden" class="form-control" id="sample2_extraAddress" name="delivery_addr_extra">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <label for="ord_message" class="col-sm-2 col-form-label font-weight-bold">배송 메시지</label>
+                                <label for="delivery_message" class="col-sm-2 col-form-label font-weight-bold">배송 메시지</label>
                                 <div class="col-sm-10">
-                                    <select class="form-select mb-2" aria-label="Default select example" id="ord_message">
-                                        <option selected>배송 메시지를 선택해 주세요.</option>
-                                        <option value="1">배송 전에 미리 연락바랍니다.</option>
-                                        <option value="2">부재시 경비실에 맡겨주세요.</option>
-                                        <option value="3">부재시 전화주시거나 문자 남겨주세요.</option>
-                                        <option value="4">직접 입력</option>
+                                    <select class="form-select mb-2" aria-label="Default select example" id="delivery_message" name="delivery_message">
+                                        <option value="" selected>배송 메시지를 선택해 주세요.</option>
+                                        <option value="배송 전에 미리 연락바랍니다.">배송 전에 미리 연락바랍니다.</option>
+                                        <option value="부재시 경비실에 맡겨주세요.">부재시 경비실에 맡겨주세요.</option>
+                                        <option value="부재시 전화주시거나 문자 남겨주세요.">부재시 전화주시거나 문자 남겨주세요.</option>
+                                        <option value="manual">직접 입력</option>
                                     </select>
                                     <div id="customMessageWrapper" style="display: none;">
-                                        <textarea class="form-control" id="customMessage" rows="3"></textarea>
+                                        <textarea class="form-control" id="customMessage" rows="3" maxlength="200"></textarea>
                                         <small class="text-muted">배송 시 전달할 메시지를 직접 입력해주세요.(200자 이내)</small>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -386,17 +385,6 @@
 
 <th:block layout:fragment="script2">
     <script>
-        // 배송 메시지 '직접 입력' 선택 시 입력란 노출
-        document.getElementById('ord_message').addEventListener('change', function() {
-            const customMessageWrapper = document.getElementById('customMessageWrapper');
-            if (this.value === '4') {
-                customMessageWrapper.style.display = 'block';
-            } else {
-                customMessageWrapper.style.display = 'none';
-                document.getElementById('customMessage').value = '';
-            }
-        });
-
         // 결제방법 select에 따른 이벤트 변경 + 무통장입금 선택 시 관련 창 표시
         function selectPaymentMethod(button) {
             // 모든 버튼의 active 상태 제거
@@ -419,12 +407,21 @@
         }
 
         $(document).ready(function() {
+            // 배송 메시지 노출 처리
+            $("#delivery_message").change(function() {
+                if ($(this).val() === "manual") {
+                    $("#customMessageWrapper").show();
+                } else {
+                    $("#customMessageWrapper").hide();
+                }
+            });
+
            let orderAddressValues = {
                ord_name: $("#ord_name").val(),
                ord_phone: $("#ord_phone").val(),
-               ord_zipcode: $("input[name='ord_zipcode']").val(),
-               ord_addr: $("input[name='ord_addr']").val(),
-               ord_addr_detail: $("input[name='ord_addr_detail']").val()
+               ord_zipcode: $("input[name='delivery_zipcode']").val(),
+               ord_addr: $("input[name='delivery_addr']").val(),
+               ord_addr_detail: $("input[name='delivery_addr_detail']").val()
            };
 
            $("#basicAddress").on("click", function () {
@@ -449,6 +446,12 @@
                })
 
                $("#orderForm").append('<input type="hidden" name="prod_ids" value="' + prod_ids.join(',') + '">');
+
+               // 배송 메시지 처리
+               if ($("#delivery_message").val() === "manual") {
+                   let customMessage = $("#customMessage").val();
+                   $("#delivery_message").val(customMessage);
+               }
 
                if(paymentMethod === "bank") {
                    $("#paymentMethod").val("무통장입금");

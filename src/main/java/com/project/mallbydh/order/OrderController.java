@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -110,8 +108,14 @@ public class OrderController {
     }
 
     @PostMapping("/order_save")
-    public String orderSave(@RequestParam List<Integer> prod_ids, OrderVO vo,
+    public String orderSave(@RequestParam("prod_ids") String prod_idsString, OrderVO vo,
                             HttpSession session, String paymentMethod, String account_transfer, String sender, RedirectAttributes rttr) {
+
+        List<Integer> prod_ids = new ArrayList<>();
+        String[] prod_idsArray = prod_idsString.split(",");
+        for (String id : prod_idsArray) {
+            prod_ids.add(Integer.parseInt(id.trim()));
+        }
 
         String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
         vo.setU_id(u_id);

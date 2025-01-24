@@ -76,4 +76,13 @@
             prod_id = #{prod_id}
     </update>
 
+    <select id="getProductNameById" resultType="String">
+        select
+            prod_name
+        from
+            product_tbl
+        where
+            prod_id = #{prod_id}
+    </select>
+
 </mapper>

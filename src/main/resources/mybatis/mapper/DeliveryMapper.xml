@@ -4,9 +4,9 @@
 
     <insert id="insertDelivery" parameterType="com.project.mallbydh.delivery.DeliveryVO">
         insert into
-            delivery_tbl(ord_code, delivery_zipcode, delivery_addr, delivery_addr_detail, recipient_name, recipient_phone)
+            delivery_tbl(ord_code, delivery_zipcode, delivery_addr, delivery_addr_detail, recipient_name, recipient_phone, delivery_message)
         values
-            (#{ord_code}, #{delivery_zipcode}, #{delivery_addr}, #{delivery_addr_detail}, #{recipient_name}, #{recipient_phone})
+            (#{ord_code}, #{delivery_zipcode}, #{delivery_addr}, #{delivery_addr_detail}, #{recipient_name}, #{recipient_phone}, #{delivery_message})
     </insert>
 
 </mapper>
