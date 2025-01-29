@@ -85,4 +85,8 @@ public class OrderService {
         deliveryVO.setRecipient_phone(vo.getRecipient_phone());
         deliveryMapper.insertDelivery(deliveryVO);
     }
+
+    public Integer getOrderByOrderCode(Integer ord_code) {
+        return orderMapper.getOrderByOrdCode(ord_code);
+    }
 }

@@ -16,4 +16,13 @@
             (#{ord_code}, #{prod_id}, #{ordt_amount}, #{ordt_price})
     </insert>
 
+    <select id="getOrderByOrdCode" resultType="Integer">
+        select
+            ord_code
+        from
+            order_tbl
+        where
+            ord_code = ${ord_code}
+    </select>
+
 </mapper>

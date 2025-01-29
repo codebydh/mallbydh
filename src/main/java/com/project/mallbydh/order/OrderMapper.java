@@ -6,4 +6,6 @@ public interface OrderMapper {
 
     void insertOrderDetail(OrderDetailVO detailVo);
 
+    Integer getOrderByOrdCode(Integer ord_code);
+
 }

@@ -130,7 +130,17 @@ public class OrderController {
     }
 
     @GetMapping("/order_result")
-    public void orderResult(HttpSession session, Model model) {
+    public void orderResult(@RequestParam("ord_code") Integer ord_code, HttpSession session, Model model) {
+
+        // 클라이언트에 표시할 정보
+        String u_name = ((MemberVO)session.getAttribute("login_auth")).getU_name();
+        model.addAttribute("u_name", u_name);
+
+        Integer orderCode = orderService.getOrderByOrderCode(ord_code);
+        model.addAttribute("ord_code", orderCode);
+
+
+
 
         String ord_email = ((MemberVO)session.getAttribute("login_auth")).getU_email();
 
