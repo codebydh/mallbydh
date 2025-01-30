@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="css">
+    <style>
+        .order-list {
+            border-top: 1px solid #dee2e6;
+        }
+
+        .btn-light {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        .form-control {
+            max-width: 150px;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="content">
+    <div class="container my-5">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+          <div class="list-group">
+            <a href="/member/order" class="list-group-item list-group-item-action active">주문 조회</a>
+            <a href="/member/modify" class="list-group-item list-group-item-action">정보 수정</a>
+            <a href="/member/pwchange" class="list-group-item list-group-item-action">비밀번호 변경</a>
+            <a href="/member/wishlist" class="list-group-item list-group-item-action">찜한상품</a>
+			<a href="/member/myreview" class="list-group-item list-group-item-action">나의 상품리뷰</a>
+			<a href="/member/myinquiry" class="list-group-item list-group-item-action">나의 상품문의</a>
+			<a href="/member/log" class="list-group-item list-group-item-action">로그인 기록</a>
+			<a href="/member/delete" class="list-group-item list-group-item-action">회원탈퇴</a>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="container">
+                <!-- 주문내역 필터 영역 -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0">주문내역</h4>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-dark">전체</button>
+                        <button class="btn btn-light">일주일</button>
+                        <button class="btn btn-light">3개월</button>
+                        <div class="d-flex align-items-center">
+                            <input type="date" class="form-control">
+                            <span class="mx-2">~</span>
+                            <input type="date" class="form-control">
+                            <button class="btn btn-outline-secondary ms-2">조회</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 주문 목록 -->
+                <div style="margin-bottom: 64px;">
+                    <table class="table table-bordered">
+                        <thead class="text-center table-light">
+                        <tr>
+                            <th style="width: 52%">주문정보</th>
+                            <th style="width: 16%">주문총액</th>
+                            <th style="width: 16%">주문일</th>
+                            <th style="width: 16%">주문상태</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="product-info ml-3">
+                                <div class="product-container d-flex align-items-center">
+                                    <div class="product-image me-3" style="width: 81px; height: 81px;">
+                                        <img src="#"}
+                                             alt="상품 이미지"
+                                             class="img-fluid rounded product-thumbnail">
+                                    </div>
+                                    <div class="product-details">
+                                        <p class="product-name mb-1">1234</p>
+                                        <h5 class="text-muted">12345</h5>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center align-middle">1</td>
+                            <td class="text-center align-middle">2</td>
+                            <td class="text-center align-middle">3</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </th:block>
+</html>

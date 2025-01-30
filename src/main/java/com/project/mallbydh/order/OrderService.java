@@ -43,6 +43,11 @@ public class OrderService {
         List<Map<String, Object>> orderedItems = cartMapper.getCartDetailsByProdIds(prod_ids, u_id);
         String ord_name = generateOrderName(orderedItems);
         vo.setOrd_name(ord_name);
+        if(paymentMethod.equals("무통장입금")) {
+            vo.setOrd_status("입금대기");
+        } else {
+            vo.setOrd_status("결제완료");
+        }
         orderMapper.insertOrder(vo);
 
         // 2) 주문상세 테이블 DB에 추가

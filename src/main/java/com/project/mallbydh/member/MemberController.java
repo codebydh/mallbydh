@@ -122,8 +122,8 @@ public class MemberController {
 	}
 	
 	// 마이페이지 메인(주문내역)
-	@GetMapping("/mypage")
-	public void mypage() throws Exception {
+	@GetMapping("/order")
+	public void order() throws Exception {
 		
 	}
 
