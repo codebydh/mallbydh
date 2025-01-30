@@ -25,4 +25,27 @@
             ord_code = ${ord_code}
     </select>
 
+    <select id="getOrdersByUserId" resultType="com.project.mallbydh.order.OrderVO">
+        SELECT o.*,
+               p.payment_status,
+               d.delivery_status,
+               first_prod.prod_uploadfolder,
+               first_prod.prod_img
+        FROM order_tbl o
+                 LEFT JOIN payment_tbl p ON o.ord_code = p.ord_code
+                 LEFT JOIN delivery_tbl d ON o.ord_code = d.ord_code
+                 LEFT JOIN (
+            SELECT od.ord_code, p.prod_uploadfolder, p.prod_img
+            FROM (
+                     SELECT ord_code, prod_id,
+                            ROW_NUMBER() OVER (PARTITION BY ord_code ORDER BY prod_id) as rn
+                     FROM orderdetail_tbl
+                 ) od
+                     JOIN product_tbl p ON od.prod_id = p.prod_id
+            WHERE od.rn = 1
+        ) first_prod ON o.ord_code = first_prod.ord_code
+        WHERE o.u_id = #{u_id}
+        ORDER BY o.ord_date DESC
+    </select>
+
 </mapper>

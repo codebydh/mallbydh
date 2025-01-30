@@ -94,4 +94,9 @@ public class OrderService {
     public Integer getOrderByOrderCode(Integer ord_code) {
         return orderMapper.getOrderByOrdCode(ord_code);
     }
+
+    // 사용자 마이페이지 - 주문내역 조회
+    public List<OrderVO> getOrdersByUserId(String u_id) {
+        return orderMapper.getOrdersByUserId(u_id);
+    }
 }

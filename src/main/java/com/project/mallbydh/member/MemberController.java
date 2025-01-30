@@ -1,6 +1,10 @@
 package com.project.mallbydh.member;
 
+import com.project.mallbydh.common.utils.FileUtils;
 import com.project.mallbydh.mail.EmailDTO;
+import com.project.mallbydh.order.OrderService;
+import com.project.mallbydh.order.OrderVO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,15 +22,22 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RequestMapping("/member/*")
 @Controller
 @Slf4j
 public class MemberController {
+
+	private final FileUtils fileUtils;
+	@Value("${com.project.mallbydh.upload.path}")
+	private String uploadPath;
 	
 	private final EmailService emailService; // 이메일 기능
 	private final PasswordEncoder passwordEncoder; // 비밀번호 암호화 기능
 	private final MemberService memberService;
+	private final OrderService orderService;
 	
 	// 회원가입 페이지
 	@GetMapping("/join")
@@ -123,8 +134,16 @@ public class MemberController {
 	
 	// 마이페이지 메인(주문내역)
 	@GetMapping("/order")
-	public void order() throws Exception {
-		
+	public void order(HttpSession session, Model model) throws Exception {
+		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
+		List<OrderVO> orderList = orderService.getOrdersByUserId(u_id);
+
+		// 경로의 역슬래시를 슬래시로 변환
+		orderList.forEach(vo -> {
+			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+		});
+
+		model.addAttribute("orderList", orderList);
 	}
 
 	
@@ -273,6 +292,12 @@ public class MemberController {
 	@GetMapping("/delete")
 	public void delete() throws Exception {
 		
+	}
+
+	@GetMapping("/image_display")
+	public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
+
+		return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
 	}
 	
 

@@ -66,23 +66,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="item : ${orderList}">
                             <td class="product-info ml-3">
                                 <div class="product-container d-flex align-items-center">
                                     <div class="product-image me-3" style="width: 81px; height: 81px;">
-                                        <img src="#"}
+                                        <img th:src="${'/member/image_display?dateFolderName=' + item.prod_uploadfolder + '&fileName=s_' + item.prod_img}"}
                                              alt="상품 이미지"
                                              class="img-fluid rounded product-thumbnail">
                                     </div>
                                     <div class="product-details">
-                                        <p class="product-name mb-1">1234</p>
-                                        <h5 class="text-muted">12345</h5>
+                                        <p class="product-name mb-1" th:text="${item['ord_code']}"></p>
+                                        <h5 class="text-muted" th:text="${item['ord_name']}"></h5>
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-center align-middle">1</td>
-                            <td class="text-center align-middle">2</td>
-                            <td class="text-center align-middle">3</td>
+                            <td class="text-center align-middle" th:text="${item['ord_price']}"></td>
+                            <td class="text-center align-middle" th:text="${item['ord_date']}"></td>
+                            <td class="text-center align-middle" th:text="${item['ord_status']}"></td>
                         </tr>
                         </tbody>
                     </table>

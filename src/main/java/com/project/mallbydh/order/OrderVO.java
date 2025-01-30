@@ -22,4 +22,8 @@ public class OrderVO {
     private String delivery_message; // (추가)배송메세지
     private String ord_name; // (추가)주문명 (ex. 상품aaa 외 2)
     private String ord_status; // (추가)주문상태(결제대기~배송완료)
+    private String payment_status;
+    private String delivery_status;
+    private String prod_uploadfolder;
+    private String prod_img;
 }
