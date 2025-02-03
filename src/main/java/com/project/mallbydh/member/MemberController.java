@@ -1,6 +1,9 @@
 package com.project.mallbydh.member;
 
+import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.FileUtils;
+import com.project.mallbydh.common.utils.PageMaker;
+import com.project.mallbydh.common.utils.SearchCriteria;
 import com.project.mallbydh.mail.EmailDTO;
 import com.project.mallbydh.order.OrderService;
 import com.project.mallbydh.order.OrderVO;
@@ -134,9 +137,10 @@ public class MemberController {
 	
 	// 마이페이지 메인(주문내역)
 	@GetMapping("/order")
-	public void order(HttpSession session, Model model) throws Exception {
+	public void order(HttpSession session, Model model, SearchCriteria cri) throws Exception {
 		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
-		List<OrderVO> orderList = orderService.getOrdersByUserId(u_id);
+		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
+		List<OrderVO> orderList = orderService.getOrdersByUserId(u_id, cri);
 
 		// 경로의 역슬래시를 슬래시로 변환
 		orderList.forEach(vo -> {
@@ -144,6 +148,13 @@ public class MemberController {
 		});
 
 		model.addAttribute("orderList", orderList);
+
+		// 페이징 정보
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(orderService.getOrderCountByUserId(u_id, cri));
+		model.addAttribute("pageMaker", pageMaker);
 	}
 
 	

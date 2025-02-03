@@ -1,5 +1,7 @@
 package com.project.mallbydh.order;
 
+import com.project.mallbydh.common.utils.SearchCriteria;
+
 import java.util.List;
 
 public interface OrderMapper {
@@ -10,6 +12,8 @@ public interface OrderMapper {
 
     Integer getOrderByOrdCode(Integer ord_code);
 
-    List<OrderVO> getOrdersByUserId(String u_id);
+    List<OrderVO> getOrdersByUserId(String u_id, SearchCriteria cri);
+
+    int getOrderCountByUserId(String u_id, SearchCriteria cri);
 
 }

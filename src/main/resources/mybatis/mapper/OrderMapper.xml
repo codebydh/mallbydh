@@ -46,6 +46,16 @@
         ) first_prod ON o.ord_code = first_prod.ord_code
         WHERE o.u_id = #{u_id}
         ORDER BY o.ord_date DESC
+        limit #{cri.pageStart}, #{cri.perPageNum}
+    </select>
+
+    <select id="getOrderCountByUserId" resultType="int">
+        SELECT
+            count(*)
+        FROM
+            order_tbl
+        WHERE
+            u_id = #{u_id}
     </select>
 
 </mapper>

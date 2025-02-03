@@ -1,6 +1,7 @@
 package com.project.mallbydh.order;
 
 import com.project.mallbydh.cart.CartMapper;
+import com.project.mallbydh.common.utils.SearchCriteria;
 import com.project.mallbydh.delivery.DeliveryMapper;
 import com.project.mallbydh.delivery.DeliveryVO;
 import com.project.mallbydh.payment.PaymentMapper;
@@ -96,7 +97,11 @@ public class OrderService {
     }
 
     // 사용자 마이페이지 - 주문내역 조회
-    public List<OrderVO> getOrdersByUserId(String u_id) {
-        return orderMapper.getOrdersByUserId(u_id);
+    public List<OrderVO> getOrdersByUserId(String u_id, SearchCriteria cri) {
+        return orderMapper.getOrdersByUserId(u_id, cri);
+    }
+
+    public int getOrderCountByUserId(String u_id, SearchCriteria cri) {
+        return orderMapper.getOrderCountByUserId(u_id, cri);
     }
 }
