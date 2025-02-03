@@ -300,6 +300,11 @@ public class MemberController {
 
 	}
 
+	@GetMapping("/order/detail")
+	public String orderDetail() {
+		return "member/orderDetail";
+	}
+
 	// 찜한상품
 	@GetMapping("/wishlist")
 	public void wishlist() throws Exception {
