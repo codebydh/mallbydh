@@ -7,6 +7,24 @@ public class SearchCriteria extends Criteria {
 	
 	private String searchType; // 검색종류(제목, 내용, 작성자 선택)
 	private String keyword;    // 검색어
+	private String startDate; // 날짜검색시작일
+	private String endDate;   // 날짜검색종료일
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 	
 	public String getSearchType() {
 		return searchType;
@@ -24,8 +42,9 @@ public class SearchCriteria extends Criteria {
 	// 부모클래스인 Criteria의 private 필드정보를 읽어오기위한 getter메서드 사용추가함.
 	@Override
 	public String toString() {
-		return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + ", getPage()=" + getPage()
-				+ ", getPerPageNum()=" + getPerPageNum() + "]";
+		return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword +
+				", startDate=" + startDate + ", endDate=" + endDate +
+				", getPage()=" + getPage() + ", getPerPageNum()=" + getPerPageNum() + "]";
 	}
 	
 	

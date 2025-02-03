@@ -13,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.mallbydh.mail.EmailService;
@@ -25,7 +22,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/member/*")
@@ -140,6 +139,7 @@ public class MemberController {
 	public void order(HttpSession session, Model model, SearchCriteria cri) throws Exception {
 		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
 		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
+
 		List<OrderVO> orderList = orderService.getOrdersByUserId(u_id, cri);
 
 		// 경로의 역슬래시를 슬래시로 변환
@@ -155,9 +155,34 @@ public class MemberController {
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(orderService.getOrderCountByUserId(u_id, cri));
 		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("cri", cri);
 	}
 
-	
+	// 주문내역 날짜 범위 검색
+	@PostMapping("/order")
+	public ResponseEntity<?> processOrder(@RequestBody SearchCriteria cri, HttpSession session) {
+		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
+		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
+
+		List<OrderVO> orderList = orderService.getOrdersByUserId(u_id, cri);
+
+		orderList.forEach(vo -> {
+			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+		});
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(orderService.getOrderCountByUserId(u_id, cri));
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("orderList", orderList);
+		response.put("pageMaker", pageMaker);
+
+		return ResponseEntity.ok(response);
+	}
+
+
 	// 회원수정(불러오기)
 	@GetMapping("/modify")
 	public void modify(HttpSession session, Model model) throws Exception {
