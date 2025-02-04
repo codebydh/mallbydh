@@ -106,4 +106,8 @@ public class OrderService {
     public int getOrderCountByUserId(String u_id, SearchCriteria cri) {
         return orderMapper.getOrderCountByUserId(u_id, cri);
     }
+
+    public List<Map<String, Object>> getOrderDetailInfo(Integer ord_code) {
+        return orderMapper.getOrderDetailInfo(ord_code);
+    }
 }

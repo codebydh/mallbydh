@@ -166,7 +166,7 @@
                     <div class="card sticky-top" style="top: 85px;">
                         <!-- 주문번호 영역 (회색 박스) -->
                         <div class="rounded-top" style="padding: 24px 16px 24px 16px; background-color: #f5f5f5">
-                            <p class="text-center mb-1" style="font-size: 16px; font-weight: bolder;">주문번호: 61081-22947-22291</p>
+                            <p class="text-center mb-1" style="font-size: 16px; font-weight: bolder;" th:text="'주문번호 : ' + ${orderInfo[0].ORD_CODE}"></p>
                             <p class="text-center mb-0" style="font-size: 13px; color: #888888">주문일: 2025-02-03</p>
                         </div>
 

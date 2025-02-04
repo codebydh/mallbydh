@@ -183,6 +183,22 @@ public class MemberController {
 	}
 
 
+	@GetMapping("/order/detail")
+	public String orderDetail(Integer ord_code, Model model) {
+		List<Map<String, Object>> orderInfo = orderService.getOrderDetailInfo(ord_code);
+
+		// 역슬래시 - 슬래시로 변환
+		orderInfo.forEach(map -> {
+			String uploadFolder = (String) map.get("prod_uploadfolder");
+			map.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
+		});
+
+		model.addAttribute("orderInfo", orderInfo);
+
+		return "member/order/detail";
+	}
+
+
 	// 회원수정(불러오기)
 	@GetMapping("/modify")
 	public void modify(HttpSession session, Model model) throws Exception {
@@ -300,10 +316,7 @@ public class MemberController {
 
 	}
 
-	@GetMapping("/order/detail")
-	public String orderDetail() {
-		return "member/orderDetail";
-	}
+
 
 	// 찜한상품
 	@GetMapping("/wishlist")
