@@ -17,4 +17,6 @@ public class PaymentVO {
     private int payment_price;
     private String payment_status;
     private Date payment_date;
+    private String account_info;
+    private String deposit_name;
 }

@@ -39,7 +39,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void orderProcess(OrderVO vo, List<Integer> prod_ids, String u_id, String paymentMethod) {
+    public void orderProcess(OrderVO vo, List<Integer> prod_ids, String u_id, String paymentMethod, String deposit_name, String account_info) {
         // 1) 주문 테이블 DB에 추가
         List<Map<String, Object>> orderedItems = cartMapper.getCartDetailsByProdIds(prod_ids, u_id);
         String ord_name = generateOrderName(orderedItems);
@@ -71,6 +71,8 @@ public class OrderService {
 
         if(paymentMethod.equals("무통장입금")) {
             paymentVO.setPayment_status("입금대기");
+            paymentVO.setDeposit_name(deposit_name);
+            paymentVO.setAccount_info(account_info);
         } else {
             paymentVO.setPayment_status("결제완료");
         }

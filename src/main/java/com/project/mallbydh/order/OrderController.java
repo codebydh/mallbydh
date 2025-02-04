@@ -109,7 +109,8 @@ public class OrderController {
 
     @PostMapping("/order_save")
     public String orderSave(@RequestParam("prod_ids") String prod_idsString, OrderVO vo,
-                            HttpSession session, String paymentMethod, String account_transfer, String sender, RedirectAttributes rttr) {
+                            HttpSession session, String paymentMethod, String account_transfer, String sender,
+                            String deposit_name, String account_info, RedirectAttributes rttr) {
 
         List<Integer> prod_ids = new ArrayList<>();
         String[] prod_idsArray = prod_idsString.split(",");
@@ -120,7 +121,7 @@ public class OrderController {
         String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
         vo.setU_id(u_id);
 
-        orderService.orderProcess(vo, prod_ids, u_id, paymentMethod);
+        orderService.orderProcess(vo, prod_ids, u_id, paymentMethod, deposit_name, account_info);
 
         String p_method_info = paymentMethod + "/" + account_transfer + "/" + sender;
 

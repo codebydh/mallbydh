@@ -181,8 +181,7 @@
                                 <label for="delivery_message" class="col-sm-2 col-form-label font-weight-bold">배송 메시지</label>
                                 <div class="col-sm-10">
                                     <select class="form-select mb-2" aria-label="Default select example" id="delivery_message" name="delivery_message">
-                                        <option value="" selected>배송 메시지를 선택해 주세요.</option>
-                                        <option value="배송 전에 미리 연락바랍니다.">배송 전에 미리 연락바랍니다.</option>
+                                        <option value="배송 전에 미리 연락바랍니다." selected>배송 전에 미리 연락바랍니다.</option>
                                         <option value="부재시 경비실에 맡겨주세요.">부재시 경비실에 맡겨주세요.</option>
                                         <option value="부재시 전화주시거나 문자 남겨주세요.">부재시 전화주시거나 문자 남겨주세요.</option>
                                         <option value="manual">직접 입력</option>
@@ -215,21 +214,21 @@
 
                         <div id="bankTransferInfo" style="display: none;">
                             <div class="row mb-3">
-                                <label for="paymentBankSelect" class="col-sm-2 col-form-label font-weight-bold">입금은행 선택</label>
+                                <label for="account_info" class="col-sm-2 col-form-label font-weight-bold">입금은행 선택</label>
                                 <div class="col-sm-10">
-                                    <select class="form-select" aria-label="Default select example" id="paymentBankSelect">
+                                    <select class="form-select" aria-label="Default select example" id="account_info" name="account_info">
                                         <option selected>입금하실 계좌를 선택해주세요.</option>
-                                        <option value="1">[농협] 0000000-00-000000 몰바이디에이치</option>
-                                        <option value="2">[국민] 111-11-111111 몰바이디에이치</option>
-                                        <option value="3">[기업] 222222-22-222222 몰바이디에이치</option>
+                                        <option value="[농협] 0000000-00-000000 몰바이디에이치">[농협] 0000000-00-000000 몰바이디에이치</option>
+                                        <option value="[국민] 111-11-111111 몰바이디에이치">[국민] 111-11-111111 몰바이디에이치</option>
+                                        <option value="[기업] 222222-22-222222 몰바이디에이치">[기업] 222222-22-222222 몰바이디에이치</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <label for="transferName" class="col-sm-2 col-form-label font-weight-bold">입금자명</label>
+                                <label for="deposit_name" class="col-sm-2 col-form-label font-weight-bold">입금자명</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="transferName" th:value="${memberVO.u_name}">
+                                    <input type="text" class="form-control" id="deposit_name" name="deposit_name" th:value="${memberVO.u_name}">
                                 </div>
                             </div>
                         </div>
@@ -437,27 +436,29 @@
            });
 
            // 결제하기 버튼 클릭 시
-           $("#btnOrderSubmit").on("click", function() {
-               let paymentMethod = $("button[name='btnPaymentMethod'][data-selected='true']").val();
+            $("#btnOrderSubmit").on("click", function() {
+                let paymentMethod = $("button[name='btnPaymentMethod'][data-selected='true']").val();
 
-               let prod_ids = [];
-               $("input[name='prod_ids']").each(function() {
-                   prod_ids.push($(this).val());
-               })
+                let prod_ids = [];
+                $("input[name='prod_ids']").each(function() {
+                    prod_ids.push($(this).val());
+                })
 
-               $("#orderForm").append('<input type="hidden" name="prod_ids" value="' + prod_ids.join(',') + '">');
+                $("#orderForm").append('<input type="hidden" name="prod_ids" value="' + prod_ids.join(',') + '">');
 
-               // 배송 메시지 처리
-               if ($("#delivery_message").val() === "manual") {
-                   let customMessage = $("#customMessage").val();
-                   $("#delivery_message").val(customMessage);
-               }
+                // 배송 메시지 처리
+                if ($("#delivery_message").val() === "manual") {
+                    let customMessage = $("#customMessage").val();
+                    // 기존 select 제거 후 hidden input 추가
+                    $("#delivery_message").remove();
+                    $("#orderForm").append('<input type="hidden" name="delivery_message" value="' + customMessage + '">');
+                }
 
-               if(paymentMethod === "bank") {
-                   $("#paymentMethod").val("무통장입금");
-                   $("#orderForm").submit();
-               }
-           });
+                if(paymentMethod === "bank") {
+                    $("#paymentMethod").val("무통장입금");
+                    $("#orderForm").submit();
+                }
+            });
         });
 
     </script>

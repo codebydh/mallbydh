@@ -3,6 +3,42 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="css">
+    .table td, .table th {
+    vertical-align: middle;
+    }
+
+    .product-info {
+    padding: 10px;
+    }
+
+    .product-container {
+    display: flex;
+    align-items: center;
+    }
+
+    .product-image {
+    margin-right: 15px;
+    }
+
+    .product-details {
+    flex-grow: 1;
+    }
+
+    .product-name {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    }
+
+    .manufacturer {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    }
+
+    .product-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
 </th:block>
 
 <th:block layout:fragment="content">
@@ -10,9 +46,170 @@
         <div class="text-center" style="margin-bottom: 48px;">
             <h2 class="mb-0 font-weight-bolder">마이페이지</h2>
         </div>
+        <div class="container">
+            <div class="row">
+                <!-- 각종 주문 정보 -->
+                <div class="col-8">
+                    <!-- 주문 상품 정보 -->
+                        <div style="margin-bottom: 64px;">
+                            <table class="table table-bordered">
+                                <thead class="text-center">
+                                <tr>
+                                    <th style="width: 52%">상품정보</th>
+                                    <th style="width: 16%">판매가</th>
+                                    <th style="width: 16%">수량</th>
+                                    <th style="width: 16%">합계</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="product-info ml-3">
+                                        <div class="product-container d-flex align-items-center">
+                                            <div class="product-image me-3" style="width: 81px; height: 81px;">
+                                                <img src="#"}
+                                                     alt="상품 이미지"
+                                                     class="img-fluid rounded product-thumbnail">
+                                            </div>
+                                            <div class="product-details">
+                                                <h4 class="product-name mb-1">상품명</h4>
+                                                <small class="text-muted"><p class="manufacturer mb-2">제조사</p></small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center font-weight-bold">판매가</td>
+                                    <td class="text-center font-weight-bold">수량</td>
+                                    <td class="text-center font-weight-bold">합계</td>
+                                    <input type="hidden" name="prod_ids">
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-        <div>
-            <h3>주문상세페이지</h3>
+                        <!-- 주문자 정보 -->
+                        <div style="margin-bottom: 64px;">
+                            <div class="mb-3">
+                                <h5 class="border-bottom pb-2 font-weight-bolder border-dark">주문자 정보</h5>
+                            </div>
+                            <dl class="row mb-3">
+                                <div class="row mb-3">
+                                    <dt class="col-sm-2 col-form-label font-weight-bold">이름</dt>
+                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <dt class="col-sm-2 col-form-label font-weight-bold">휴대폰번호</dt>
+                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <dt class="col-sm-2 col-form-label font-weight-bold">이메일주소</dt>
+                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                        <!-- 배송지 정보 -->
+                        <div style="margin-bottom: 64px;">
+                            <div class="mb-3">
+                                <h5 class="border-bottom pb-2 font-weight-bolder border-dark">배송지 정보</h5>
+                            </div>
+                            <div class="row mb-3">
+
+                                <div class="row mb-3">
+                                    <dt class="col-sm-2 col-form-label font-weight-bold">받는분 성함</dt>
+                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <dt class="col-sm-2 col-form-label font-weight-bold">받는분 휴대폰</dt>
+                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <dt class="col-sm-2 col-form-label font-weight-bold">받는분 주소</dt>
+                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                </div>
+
+                                <div class="row">
+                                    <dt class="col-sm-2 col-form-label font-weight-bold">배송 메시지</dt>
+                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 결제 방식 -->
+                        <div style="margin-bottom: 64px;">
+                            <div class="mb-3">
+                                <h5 class="border-bottom pb-2 font-weight-bolder border-dark">결제 방식</h5>
+                            </div>
+
+                            <div class="row mb-3">
+                                <dt class="col-sm-2 col-form-label font-weight-bold">결제수단</dt>
+                                <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                            </div>
+
+                            <div class="row mb-3">
+                                <dt class="col-sm-2 col-form-label font-weight-bold">입금은행</dt>
+                                <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                            </div>
+
+                            <div class="row mb-3">
+                                <dt class="col-sm-2 col-form-label font-weight-bold">입금자명</dt>
+                                <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                            </div>
+                        </div>
+                </div>
+
+
+                <!-- 금액정보 및 결제 -->
+                <div class="col-4">
+                    <div class="card sticky-top" style="top: 85px;">
+                        <!-- 주문번호 영역 (회색 박스) -->
+                        <div class="rounded-top" style="padding: 24px 16px 24px 16px; background-color: #f5f5f5">
+                            <p class="text-center mb-1" style="font-size: 16px; font-weight: bolder;">주문번호: 61081-22947-22291</p>
+                            <p class="text-center mb-0" style="font-size: 13px; color: #888888">주문일: 2025-02-03</p>
+                        </div>
+
+                        <div class="p-4">
+                            <!-- 상품 정보 -->
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-box me-2"></i>
+                                <span>전체상품 2개</span>
+                            </div>
+                            <!-- 가격 정보 -->
+                            <div class="border-bottom border-top pb-3 pt-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>상품금액</span>
+                                    <span>44원</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>배송비</span>
+                                    <span>+ 8,000원</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-success">적립금 사용</span>
+                                    <span class="text-success">0원</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-primary">할인</span>
+                                    <span class="text-primary">- 0원</span>
+                                </div>
+                            </div>
+
+                            <!-- 결제 금액 -->
+                            <div class="d-flex justify-content-between mt-3 pb-3">
+                                <span>총 주문금액</span>
+                                <span class="text-danger fw-bold">8,044원</span>
+                            </div>
+
+                            <!-- 버튼 -->
+                            <button class="btn btn-outline-secondary w-100" style="padding: 12px 0 12px 0;">목록으로</button>
+                            <button class="btn btn-outline-danger w-100 mt-2" style="padding: 12px 0 12px 0;">전체 주문취소</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </th:block>
