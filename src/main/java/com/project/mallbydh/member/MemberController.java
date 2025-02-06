@@ -4,6 +4,8 @@ import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.FileUtils;
 import com.project.mallbydh.common.utils.PageMaker;
 import com.project.mallbydh.common.utils.SearchCriteria;
+import com.project.mallbydh.delivery.DeliveryService;
+import com.project.mallbydh.delivery.DeliveryVO;
 import com.project.mallbydh.mail.EmailDTO;
 import com.project.mallbydh.order.OrderService;
 import com.project.mallbydh.order.OrderVO;
@@ -40,6 +42,7 @@ public class MemberController {
 	private final PasswordEncoder passwordEncoder; // 비밀번호 암호화 기능
 	private final MemberService memberService;
 	private final OrderService orderService;
+	private final DeliveryService deliveryService;
 	
 	// 회원가입 페이지
 	@GetMapping("/join")
@@ -184,10 +187,12 @@ public class MemberController {
 
 
 	@GetMapping("/order/detail")
-	public String orderDetail(Integer ord_code, Model model) {
+	public String orderDetail(HttpSession session, Integer ord_code, Model model) {
+
+		// 주문정보 삽입
 		List<Map<String, Object>> orderInfo = orderService.getOrderDetailInfo(ord_code);
 
-		// 역슬래시 - 슬래시로 변환
+		// 이미지 경로 : 역슬래시 - 슬래시로 변환
 		orderInfo.forEach(map -> {
 			String uploadFolder = (String) map.get("prod_uploadfolder");
 			map.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
@@ -195,7 +200,22 @@ public class MemberController {
 
 		model.addAttribute("orderInfo", orderInfo);
 
+		// 회원정보(페이지 상 주문자 정보)
+		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
+		MemberVO memberInfo = memberService.modifyView(u_id);
+		model.addAttribute("memberInfo", memberInfo);
+
+		// 배송정보
+		DeliveryVO deliveryVO = deliveryService.getDeliveryInfoByOrdCode(ord_code);
+		model.addAttribute("deliveryInfo", deliveryVO);
+
 		return "member/order/detail";
+	}
+
+	@PostMapping("/order/cancel")
+	public ResponseEntity<Void> cancelOrder(@RequestParam("ord_code") Integer ord_code) {
+		orderService.cancelOrder(ord_code);
+		return ResponseEntity.ok().build();
 	}
 
 

@@ -9,4 +9,13 @@
             (#{ord_code}, #{delivery_zipcode}, #{delivery_addr}, #{delivery_addr_detail}, #{recipient_name}, #{recipient_phone}, #{delivery_message})
     </insert>
 
+    <select id="getDeliveryInfoByOrdCode" resultType="com.project.mallbydh.delivery.DeliveryVO">
+        select
+            recipient_name, recipient_phone, delivery_zipcode, delivery_addr, delivery_addr_detail, delivery_message
+        from
+            delivery_tbl
+        where
+            ord_code = #{ord_code}
+    </select>
+
 </mapper>

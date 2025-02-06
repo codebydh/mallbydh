@@ -20,4 +20,6 @@ public interface OrderMapper {
 
     List<Map<String, Object>> getOrderDetailInfo(@Param("ord_code") Integer ord_code);
 
+    void cancelOrder(Integer ord_code);
+
 }

@@ -110,4 +110,8 @@ public class OrderService {
     public List<Map<String, Object>> getOrderDetailInfo(Integer ord_code) {
         return orderMapper.getOrderDetailInfo(ord_code);
     }
+
+    public void cancelOrder(Integer ord_code) {
+        orderMapper.cancelOrder(ord_code);
+    }
 }

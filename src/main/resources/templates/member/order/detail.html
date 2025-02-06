@@ -3,42 +3,44 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <th:block layout:fragment="css">
-    .table td, .table th {
-    vertical-align: middle;
-    }
+    <style>
+        .table td, .table th {
+            vertical-align: middle;
+        }
 
-    .product-info {
-    padding: 10px;
-    }
+        .product-info {
+            padding: 10px;
+        }
 
-    .product-container {
-    display: flex;
-    align-items: center;
-    }
+        .product-container {
+            display: flex;
+            align-items: center;
+        }
 
-    .product-image {
-    margin-right: 15px;
-    }
+        .product-image {
+            margin-right: 15px;
+        }
 
-    .product-details {
-    flex-grow: 1;
-    }
+        .product-details {
+            flex-grow: 1;
+        }
 
-    .product-name {
-    margin: 0 0 5px 0;
-    font-size: 16px;
-    }
+        .product-name {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
 
-    .manufacturer {
-    margin: 0 0 5px 0;
-    font-size: 14px;
-    }
+        .manufacturer {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
 
-    .product-thumbnail {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    }
+        .product-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
 </th:block>
 
 <th:block layout:fragment="content">
@@ -62,24 +64,24 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr th:each="item : ${orderInfo}">
                                     <td class="product-info ml-3">
                                         <div class="product-container d-flex align-items-center">
                                             <div class="product-image me-3" style="width: 81px; height: 81px;">
-                                                <img src="#"}
+                                                <img th:src="@{'/member/image_display?dateFolderName=' + ${item['prod_uploadfolder']} + '&fileName=s_' + ${item['prod_img']}}"
                                                      alt="상품 이미지"
                                                      class="img-fluid rounded product-thumbnail">
                                             </div>
                                             <div class="product-details">
-                                                <h4 class="product-name mb-1">상품명</h4>
-                                                <small class="text-muted"><p class="manufacturer mb-2">제조사</p></small>
+                                                <h4 class="product-name mb-1" th:text="${item['prod_name']}"></h4>
+                                                <small class="text-muted"><p class="manufacturer mb-0" th:text="${item['prod_maker']}"></p></small>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="text-center font-weight-bold">판매가</td>
-                                    <td class="text-center font-weight-bold">수량</td>
-                                    <td class="text-center font-weight-bold">합계</td>
-                                    <input type="hidden" name="prod_ids">
+                                    <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['ORDT_PRICE'], 1, 'COMMA') + '원'}">판매가</td>
+                                    <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['ORDT_AMOUNT'], 1, 'COMMA')}">수량</td>
+                                    <td class="text-center font-weight-bold" th:text="${#numbers.formatInteger(item['subtotal'], 1, 'COMMA') + '원'}">합계</td>
+                                    <input type="hidden" name="prod_ids" th:value="${item['prod_id']}">
                                 </tr>
                                 </tbody>
                             </table>
@@ -93,17 +95,17 @@
                             <dl class="row mb-3">
                                 <div class="row mb-3">
                                     <dt class="col-sm-2 col-form-label font-weight-bold">이름</dt>
-                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                    <dd class="col-sm-10 col-form-label" th:text="${memberInfo.u_name}"></dd>
                                 </div>
 
                                 <div class="row mb-3">
                                     <dt class="col-sm-2 col-form-label font-weight-bold">휴대폰번호</dt>
-                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                    <dd class="col-sm-10 col-form-label" th:text="${memberInfo.u_phone}"></dd>
                                 </div>
 
                                 <div class="row mb-3">
                                     <dt class="col-sm-2 col-form-label font-weight-bold">이메일주소</dt>
-                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                    <dd class="col-sm-10 col-form-label" th:text="${memberInfo.u_email}">어쩌구</dd>
                                 </div>
                             </dl>
                         </div>
@@ -117,22 +119,22 @@
 
                                 <div class="row mb-3">
                                     <dt class="col-sm-2 col-form-label font-weight-bold">받는분 성함</dt>
-                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                    <dd class="col-sm-10 col-form-label" th:text="${deliveryInfo.recipient_name}"></dd>
                                 </div>
 
                                 <div class="row mb-3">
                                     <dt class="col-sm-2 col-form-label font-weight-bold">받는분 휴대폰</dt>
-                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                    <dd class="col-sm-10 col-form-label" th:text="${deliveryInfo.recipient_phone}"></dd>
                                 </div>
 
                                 <div class="row mb-3">
                                     <dt class="col-sm-2 col-form-label font-weight-bold">받는분 주소</dt>
-                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                    <dd class="col-sm-10 col-form-label" th:text="'(' + ${deliveryInfo.delivery_zipcode} + ') ' +${deliveryInfo.delivery_addr} + ' ' + ${deliveryInfo.delivery_addr_detail}"></dd>
                                 </div>
 
                                 <div class="row">
                                     <dt class="col-sm-2 col-form-label font-weight-bold">배송 메시지</dt>
-                                    <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                    <dd class="col-sm-10 col-form-label" th:text="${deliveryInfo.delivery_message}"></dd>
                                 </div>
                             </div>
                         </div>
@@ -145,17 +147,17 @@
 
                             <div class="row mb-3">
                                 <dt class="col-sm-2 col-form-label font-weight-bold">결제수단</dt>
-                                <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                <dd class="col-sm-10 col-form-label" th:text="${orderInfo[0].payment_method}"></dd>
                             </div>
 
                             <div class="row mb-3">
                                 <dt class="col-sm-2 col-form-label font-weight-bold">입금은행</dt>
-                                <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                <dd class="col-sm-10 col-form-label" th:text="${orderInfo[0].account_info}"></dd>
                             </div>
 
                             <div class="row mb-3">
                                 <dt class="col-sm-2 col-form-label font-weight-bold">입금자명</dt>
-                                <dd class="col-sm-10 col-form-label">어쩌구</dd>
+                                <dd class="col-sm-10 col-form-label" th:text="${orderInfo[0].deposit_name}"></dd>
                             </div>
                         </div>
                 </div>
@@ -167,24 +169,24 @@
                         <!-- 주문번호 영역 (회색 박스) -->
                         <div class="rounded-top" style="padding: 24px 16px 24px 16px; background-color: #f5f5f5">
                             <p class="text-center mb-1" style="font-size: 16px; font-weight: bolder;" th:text="'주문번호 : ' + ${orderInfo[0].ORD_CODE}"></p>
-                            <p class="text-center mb-0" style="font-size: 13px; color: #888888">주문일: 2025-02-03</p>
+                            <p class="text-center mb-0" style="font-size: 13px; color: #888888" th:text="'주문일시 : ' + ${#temporals.format(orderInfo[0].ORD_DATE, 'yyyy-MM-dd HH:mm:ss')}"></p>
                         </div>
 
                         <div class="p-4">
                             <!-- 상품 정보 -->
                             <div class="d-flex align-items-center mb-3">
                                 <i class="bi bi-box me-2"></i>
-                                <span>전체상품 2개</span>
+                                <span th:text="'전체상품 ' + ${orderInfo[0].ORDT_AMOUNT} + '개'"></span>
                             </div>
                             <!-- 가격 정보 -->
                             <div class="border-bottom border-top pb-3 pt-3">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>상품금액</span>
-                                    <span>44원</span>
+                                    <span th:text="${#numbers.formatDecimal(orderInfo[0].ORD_PRICE, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>배송비</span>
-                                    <span>+ 8,000원</span>
+                                    <span>+ 0원</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-success">적립금 사용</span>
@@ -199,13 +201,12 @@
                             <!-- 결제 금액 -->
                             <div class="d-flex justify-content-between mt-3 pb-3">
                                 <span>총 주문금액</span>
-                                <span class="text-danger fw-bold">8,044원</span>
+                                <span class="text-danger fw-bold" th:text="${#numbers.formatDecimal(orderInfo[0].ORD_PRICE, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
                             </div>
 
                             <!-- 버튼 -->
-                            <button class="btn btn-outline-secondary w-100" style="padding: 12px 0 12px 0;">목록으로</button>
-                            <button class="btn btn-outline-danger w-100 mt-2" style="padding: 12px 0 12px 0;">전체 주문취소</button>
-
+                            <button class="btn btn-outline-secondary w-100" style="padding: 12px 0 12px 0;" id="btnList">목록으로</button>
+                            <button class="btn btn-outline-danger w-100 mt-2" style="padding: 12px 0 12px 0;" id="btnCancelOrder" th:value="${orderInfo[0].ORD_CODE}">전체 주문취소</button>
                         </div>
                     </div>
                 </div>
@@ -216,6 +217,30 @@
 
 <th:block layout:fragment="script2">
     <script>
+        $(document).ready(function() {
+            $("#btnList").on("click", function() {
+                window.location.href="/member/order";
+            });
+
+            $("#btnCancelOrder").click(function() {
+                var ord_code = $(this).val();
+
+                if (confirm('주문을 취소하시겠습니까?')) {
+                    $.ajax({
+                        url: '/member/order/cancel',
+                        type: 'POST',
+                        data: { ord_code: ord_code },
+                        success: function() {
+                            alert('취소가 완료되었습니다.');
+                            window.location.href = '/member/order';
+                        },
+                        error: function() {
+                            alert('주문 취소 중 오류가 발생했습니다. 다시 시도해주세요.');
+                        }
+                    });
+                }
+            });
+        });
     </script>
 </th:block>
 </html>
