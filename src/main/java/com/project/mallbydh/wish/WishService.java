@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -28,4 +29,14 @@ public class WishService {
         }
         return false;
     }
+
+    public List<Map<String, Object>> getUserWishList(String u_id) {
+        return wishMapper.getWishListWithProductInfo(u_id);
+    }
+
+    public void removeFromWish(String u_id, int prod_id) {
+        wishMapper.wishRemove(u_id, prod_id);
+    }
+
+
 }

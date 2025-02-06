@@ -32,4 +32,15 @@
         where u_id = #{u_id} and prod_id = #{prod_id}
     </delete>
 
+    <select id="getWishListWithProductInfo">
+        select
+            w.prod_id, p.prod_name, p.prod_maker, p.prod_price, p.prod_uploadfolder, p.prod_img
+        from
+            wish_tbl w
+                JOIN product_tbl p
+                ON w.prod_id = p.prod_id
+        WHERE
+            w.u_id = #{u_id}
+    </select>
+
 </mapper>

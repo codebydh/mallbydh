@@ -48,4 +48,12 @@ public class WishController {
 
         return ResponseEntity.ok(response);
     }
+
+    // 마이페이지에서 찜 삭제 시 사용
+    @PostMapping("/remove")
+    public ResponseEntity<Void> removeWish(@RequestParam("prod_id") int prod_id, HttpSession session) {
+        String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
+        wishService.removeFromWish(u_id, prod_id);
+        return ResponseEntity.ok().build();
+    }
 }

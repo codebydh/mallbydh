@@ -9,6 +9,7 @@ import com.project.mallbydh.delivery.DeliveryVO;
 import com.project.mallbydh.mail.EmailDTO;
 import com.project.mallbydh.order.OrderService;
 import com.project.mallbydh.order.OrderVO;
+import com.project.mallbydh.wish.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ import java.util.Map;
 public class MemberController {
 
 	private final FileUtils fileUtils;
+	private final WishService wishService;
 	@Value("${com.project.mallbydh.upload.path}")
 	private String uploadPath;
 	
@@ -336,12 +338,21 @@ public class MemberController {
 
 	}
 
-
-
 	// 찜한상품
 	@GetMapping("/wishlist")
-	public void wishlist() throws Exception {
-		
+	public String wishList(HttpSession session, Model model) throws Exception {
+		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
+		List<Map<String, Object>> wishList = wishService.getUserWishList(u_id);
+
+		wishList.forEach(vo -> {
+			String uploadFolder = (String) vo.get("prod_uploadfolder");
+			if (uploadFolder != null) {
+				vo.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
+			}
+		});
+
+		model.addAttribute("wishList", wishList);
+		return "member/wishlist";
 	}
 	
 	// 나의 상품리뷰
