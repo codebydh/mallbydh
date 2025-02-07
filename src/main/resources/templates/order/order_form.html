@@ -86,6 +86,8 @@
                             </tr>
                             </tbody>
                         </table>
+                        <!-- 생성된 주문 이름을 저장할 hidden input -->
+                        <input type="hidden" id="orderNameInput" name="orderName" />
                     </div>
 
                     <!-- 주문자 정보 -->
@@ -245,6 +247,7 @@
                     <div class="d-flex align-items-center mb-3">
                         <i class="bi bi-box me-2"></i>
                         <span th:text="|전체상품 ${totalQuantity}개|"></span>
+                        <input type="hidden" id="totalQuantity" name="totalQuantity" th:value="${totalQuantity}">
                     </div>
                     <!-- 가격 정보 -->
                     <div class="border-bottom border-top pb-3 pt-3">
@@ -383,7 +386,7 @@
 </th:block>
 
 <th:block layout:fragment="script2">
-    <script>
+    <script th:inline="javascript">
         // 결제방법 select에 따른 이벤트 변경 + 무통장입금 선택 시 관련 창 표시
         function selectPaymentMethod(button) {
             // 모든 버튼의 active 상태 제거
@@ -406,6 +409,11 @@
         }
 
         $(document).ready(function() {
+            let message = [[${message}]];
+            if(message) {
+                alert(message);
+            }
+
             // 배송 메시지 노출 처리
             $("#delivery_message").change(function() {
                 if ($(this).val() === "manual") {
@@ -435,6 +443,36 @@
                $("#ord_name, #ord_phone, #sample2_postcode, #sample2_address, #sample2_detailAddress").val('');
            });
 
+            function generateOrderName() {
+                let orderItems = /*[[${orderCartDetails}]]*/ [];
+                let prodNames = $.map(orderItems, function(item) {
+                    return item.prod_name;
+                });
+
+                if (prodNames.length === 1) {
+                    return prodNames[0];
+                } else {
+                    return prodNames[0] + ' 외 ' + (prodNames.length - 1) + '개';
+                }
+            }
+
+            // 생성된 주문 이름을 hidden input에 설정
+            let orderName = generateOrderName();
+            $('#orderNameInput').val(orderName);
+            console.log("orderName : " + orderName);
+
+            // OrderVO에 매핑될 데이터
+            const orderData = {
+                recipient_name: $('#recipient_name').val(),
+                recipient_phone: $('#recipient_phone').val(),
+                delivery_zipcode: $('#sample2_postcode').val(),
+                delivery_addr: $('#sample2_address').val(),
+                delivery_addr_detail: $('#sample2_detailAddress').val(),
+                delivery_addr_extra: $('#sample2_extraAddress').val(),
+                delivery_message: $('#delivery_message').val(),
+                ord_price: $('#ord_price').val()
+            };
+
            // 결제하기 버튼 클릭 시
             $("#btnOrderSubmit").on("click", function() {
                 let paymentMethod = $("button[name='btnPaymentMethod'][data-selected='true']").val();
@@ -457,6 +495,26 @@
                 if(paymentMethod === "bank") {
                     $("#paymentMethod").val("무통장입금");
                     $("#orderForm").submit();
+                } else if(paymentMethod === "kakao") {
+                    $.ajax({
+                       url: '/kakao/kakaoPay',
+                       type: 'post',
+                       data: {
+                           // 카카오페이 API에서 필요한 정보
+                           item_name: orderName,
+                           quantity: $('#totalQuantity').val(), // 숫자만 추출
+                           total_amount: $('#ord_price').val(),
+                           // 주문정보를 저장할 때 필요한 정보
+                           prod_idsString: $('input[name="prod_ids"]').map(function() { return $(this).val(); }).get().join(','),
+                           paymentMethod: $('#paymentMethod').val(),
+                           deposit_name: $('#deposit_name').val(),
+                           account_info: $('#account_info').val(),
+                           ...orderData
+                       },
+                       success: function(response) {
+                           location.href = response.next_redirect_pc_url;
+                       }
+                    });
                 }
             });
         });

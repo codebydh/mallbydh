@@ -248,5 +248,8 @@ mvnw.cmd
 .project
 plugins/
 
+# 카카오페이 정보
+/src/main/resources/kakaopay/
+
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij+iml,visualstudiocode,eclipse,java

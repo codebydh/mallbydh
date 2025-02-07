@@ -140,16 +140,17 @@
                         </div>
 
                         <!-- 결제 방식 -->
-                        <div style="margin-bottom: 64px;">
-                            <div class="mb-3">
-                                <h5 class="border-bottom pb-2 font-weight-bolder border-dark">결제 방식</h5>
-                            </div>
+                    <div style="margin-bottom: 64px;">
+                        <div class="mb-3">
+                            <h5 class="border-bottom pb-2 font-weight-bolder border-dark">결제 방식</h5>
+                        </div>
 
-                            <div class="row mb-3">
-                                <dt class="col-sm-2 col-form-label font-weight-bold">결제수단</dt>
-                                <dd class="col-sm-10 col-form-label" th:text="${orderInfo[0].payment_method}"></dd>
-                            </div>
+                        <div class="row mb-3">
+                            <dt class="col-sm-2 col-form-label font-weight-bold">결제수단</dt>
+                            <dd class="col-sm-10 col-form-label" th:text="${orderInfo[0].payment_method}"></dd>
+                        </div>
 
+                        <div th:if="${orderInfo[0].payment_method == '무통장입금'}">
                             <div class="row mb-3">
                                 <dt class="col-sm-2 col-form-label font-weight-bold">입금은행</dt>
                                 <dd class="col-sm-10 col-form-label" th:text="${orderInfo[0].account_info}"></dd>
@@ -160,6 +161,7 @@
                                 <dd class="col-sm-10 col-form-label" th:text="${orderInfo[0].deposit_name}"></dd>
                             </div>
                         </div>
+                    </div>
                 </div>
 
 
