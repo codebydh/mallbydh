@@ -59,10 +59,12 @@ public class ProductController {
         model.addAttribute("productList", productList);
         model.addAttribute("categories", AdCategoryService.getAllCategories());
 
-        // 찜목록 불러오기
-        String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
-        List<Integer> wishList = wishService.getWishListForUser(u_id);
-        model.addAttribute("wishList", wishList);
+        // 로그인 상태일 때만 찜목록 처리
+        MemberVO loginUser = (MemberVO) session.getAttribute("login_auth");
+        if (loginUser != null) {
+            List<Integer> wishList = wishService.getWishListForUser(loginUser.getU_id());
+            model.addAttribute("wishList", wishList);
+        }
 
         return "product/list";
     }

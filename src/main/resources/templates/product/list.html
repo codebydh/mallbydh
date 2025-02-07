@@ -34,11 +34,34 @@
                 <h5 class="card-title fw-bold mb-2" style="font-size: 15px;" th:text="${product.prod_name}"></h5>
                 <p class="text-danger fw-bold mb-2" style="font-size: 17px;" th:text="${#numbers.formatDecimal(product.prod_price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn p-0 border-0" name="addToCart" th:data-prod_id="${product.prod_id}">
+                    <!-- 장바구니 버튼 -->
+                    <button th:if="${session.login_auth != null}"
+                            type="button"
+                            class="btn p-0 border-0"
+                            name="addToCart"
+                            th:data-prod_id="${product.prod_id}">
                         <i class="bi bi-cart3 fs-5"></i>
                     </button>
-                    <button type="button" class="btn p-0 border-0" name="addToWish" th:data-prod_id="${product.prod_id}">
-                        <i class="bi" th:classappend="${wishList.contains(product.prod_id)} ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
+                    <button th:unless="${session.login_auth != null}"
+                            type="button"
+                            class="btn p-0 border-0"
+                            onclick="alert('로그인이 필요한 서비스입니다.'); location.href='/member/login';">
+                        <i class="bi bi-cart3 fs-5"></i>
+                    </button>
+
+                    <!-- 찜하기 버튼 -->
+                    <button th:if="${session.login_auth != null}"
+                            type="button"
+                            class="btn p-0 border-0"
+                            name="addToWish"
+                            th:data-prod_id="${product.prod_id}">
+                        <i class="bi" th:classappend="${wishList != null and wishList.contains(product.prod_id)} ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
+                    </button>
+                    <button th:unless="${session.login_auth != null}"
+                            type="button"
+                            class="btn p-0 border-0"
+                            onclick="alert('로그인이 필요한 서비스입니다.'); location.href='/member/login';">
+                        <i class="bi bi-heart"></i>
                     </button>
                 </div>
             </div>
