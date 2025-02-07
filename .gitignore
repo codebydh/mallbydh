@@ -246,7 +246,7 @@ mvnw.cmd
 # 기타 설정 파일
 .classpath
 .project
-
+plugins/
 
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij+iml,visualstudiocode,eclipse,java
