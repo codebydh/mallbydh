@@ -85,4 +85,12 @@
             prod_id = #{prod_id}
     </select>
 
+    <select id="getLatestProducts" resultType="com.project.mallbydh.admin.product.ProductVO">
+        SELECT *
+        FROM product_tbl
+        ORDER BY prod_regdate DESC
+        LIMIT 8
+    </select>
+
+
 </mapper>

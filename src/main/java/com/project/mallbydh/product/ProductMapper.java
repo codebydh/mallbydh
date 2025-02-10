@@ -15,4 +15,7 @@ public interface ProductMapper {
 
     // 주문 테이블에서 활용
     String getProductNameById(Integer prod_id);
+
+    // 메인페이지에서 활용
+    List<ProductVO> getLatestProducts();
 }

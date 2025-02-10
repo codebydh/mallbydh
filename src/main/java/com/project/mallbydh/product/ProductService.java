@@ -39,4 +39,9 @@ public class ProductService {
     public int updateInquiryCount(Integer prod_id) {
         return productMapper.updateInquiryCount(prod_id);
     }
+
+    public List<ProductVO> getLatestProducts() {
+        return productMapper.getLatestProducts();
+    }
+
 }
