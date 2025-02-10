@@ -88,7 +88,7 @@
             <tbody>
             <tr th:each="item : ${cart_list}">
                 <td class="text-center">
-                    <input type="checkbox" name="check" th:value="${item['prod_id']}">
+                    <input type="checkbox" name="prod_id" th:value="${item['prod_id']}">
                 </td>
                 <td class="product-info ml-3">
                     <div class="product-container d-flex align-items-center">

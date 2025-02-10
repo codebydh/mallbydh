@@ -58,10 +58,10 @@ public class CartController {
 
     // "선택삭제" 버튼
     @GetMapping("/cart_checkdelete")
-    public String cartCheckDelete(@RequestParam("prod_id") List<Integer> prod_ids, HttpSession session) throws Exception {
+    public String cartCheckDelete(@RequestParam("prod_id") List<String> prod_ids, HttpSession session) throws Exception {
         String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
 
-        for(Integer prod_id : prod_ids) {
+        for(String prod_id : prod_ids) {
             cartService.cart_checkdelete(u_id, prod_id);
         }
 

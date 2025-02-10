@@ -12,7 +12,7 @@ public interface CartMapper {
 
     List<Map<String, Object>> cart_list(String u_id);
 
-    void cart_checkdelete(@Param("u_id") String u_id, @Param("prod_id") Integer prod_id);
+    void cart_checkdelete(@Param("u_id") String u_id, @Param("prod_id") String prod_id);
 
     void cart_empty(String u_id);
 

@@ -21,7 +21,7 @@ public class CartService {
         return cartMapper.cart_list(u_id);
     }
 
-    public void cart_checkdelete(String u_id, Integer prod_id) {
+    public void cart_checkdelete(String u_id, String prod_id) {
         cartMapper.cart_checkdelete(u_id, prod_id);
     }
 
