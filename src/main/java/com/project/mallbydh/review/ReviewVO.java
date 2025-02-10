@@ -18,4 +18,6 @@ public class ReviewVO {
     private String rev_content;
     private int rev_rate;
     private LocalDateTime rev_regdate;
+    private String prod_uploadfolder;
+    private String prod_img;
 }

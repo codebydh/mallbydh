@@ -31,4 +31,29 @@
             (#{u_id}, #{prod_id}, #{rev_title}, #{rev_content}, #{rev_rate})
     </insert>
 
+    <select id="getReviewByUserId" resultType="com.project.mallbydh.review.ReviewVO">
+        select
+            r.rev_code, r.u_id, r.prod_id, r.rev_title, r.rev_content, r.rev_rate, r.rev_regdate,
+            p.prod_uploadfolder, p.prod_img
+        from
+            review_tbl r
+                JOIN product_tbl p
+                ON r.prod_id = p.prod_id
+        where
+            r.u_id = #{u_id}
+        order by
+            rev_code desc
+        limit
+            #{cri.pageStart}, #{cri.perPageNum}
+    </select>
+
+    <select id="getReviewCountByUserId" resultType="int">
+        SELECT
+            count(*)
+        FROM
+            review_tbl
+        WHERE
+            u_id = #{u_id}
+    </select>
+
 </mapper>

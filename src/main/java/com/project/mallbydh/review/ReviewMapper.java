@@ -7,9 +7,13 @@ import java.util.List;
 
 public interface ReviewMapper {
 
-    List<ReviewVO> rev_list(@Param("prod_id") Integer prod_id, @Param("cri")SearchCriteria cri);
+    List<ReviewVO> rev_list(@Param("prod_id") Integer prod_id, @Param("cri") SearchCriteria cri);
 
     int getReviewCountByProdId(Integer prod_id);
 
     void reviewSave(ReviewVO vo);
+
+    List<ReviewVO> getReviewByUserId(@Param("u_id") String u_id, @Param("cri") SearchCriteria cri);
+
+    int getReviewCountByUserId(String u_id);
 }

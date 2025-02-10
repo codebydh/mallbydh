@@ -9,6 +9,8 @@ import com.project.mallbydh.delivery.DeliveryVO;
 import com.project.mallbydh.mail.EmailDTO;
 import com.project.mallbydh.order.OrderService;
 import com.project.mallbydh.order.OrderVO;
+import com.project.mallbydh.review.ReviewService;
+import com.project.mallbydh.review.ReviewVO;
 import com.project.mallbydh.wish.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +39,7 @@ public class MemberController {
 
 	private final FileUtils fileUtils;
 	private final WishService wishService;
+	private final ReviewService reviewService;
 	@Value("${com.project.mallbydh.upload.path}")
 	private String uploadPath;
 	
@@ -357,19 +360,31 @@ public class MemberController {
 	
 	// 나의 상품리뷰
 	@GetMapping("/myreview")
-	public void myreview() throws Exception {
-		
+	public void myreview(HttpSession session, Model model, SearchCriteria cri) throws Exception {
+		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
+		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
+
+		List<ReviewVO> myReviewList = reviewService.getReviewByUserId(u_id, cri);
+
+		// 경로의 역슬래시를 슬래시로 변환
+		myReviewList.forEach(vo -> {
+			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+		});
+
+		model.addAttribute("myReviewList", myReviewList);
+
+		// 페이징 정보
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(reviewService.getReviewCountByUserId(u_id));
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("cri", cri);
 	}
 	
 	// 나의 상품문의
 	@GetMapping("/myinquiry")
 	public void myinquiry() throws Exception {
-		
-	}
-	
-	// 로그인기록
-	@GetMapping("/log")
-	public void log() throws Exception {
 		
 	}
 	

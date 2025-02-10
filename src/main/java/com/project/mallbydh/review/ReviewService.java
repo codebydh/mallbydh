@@ -28,4 +28,12 @@ public class ReviewService {
         // 2. 상품 후기 +1 가산 (상품테이블)
         productMapper.updateReviewCount(vo.getProd_id());
     }
+
+    public List<ReviewVO> getReviewByUserId(String u_id, SearchCriteria cri) {
+        return reviewMapper.getReviewByUserId(u_id, cri);
+    }
+
+    public int getReviewCountByUserId(String u_id) {
+        return reviewMapper.getReviewCountByUserId(u_id);
+    }
 }
