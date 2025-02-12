@@ -29,4 +29,12 @@ public class InquiryService {
         // 2. 질문 +1 가산 (상품테이블)
         productMapper.updateInquiryCount(vo.getProd_id());
     }
+
+    public List<InquiryAnswerVO> getInquiryListByUserId(String u_id, SearchCriteria cri) {
+        return inquiryMapper.getInquiryListByUserId(u_id, cri);
+    }
+
+    public int getInquiryCountByProdId(String u_id) {
+        return inquiryMapper.getInquiryCountByUserId(u_id);
+    }
 }

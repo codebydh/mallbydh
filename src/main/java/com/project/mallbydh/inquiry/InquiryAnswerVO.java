@@ -24,4 +24,6 @@ public class InquiryAnswerVO {
     private String admin_id;
     private String ans_content;
     private Date ans_regdate;
+
+    private String prod_name;
 }

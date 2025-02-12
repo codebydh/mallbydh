@@ -6,6 +6,8 @@ import com.project.mallbydh.common.utils.PageMaker;
 import com.project.mallbydh.common.utils.SearchCriteria;
 import com.project.mallbydh.delivery.DeliveryService;
 import com.project.mallbydh.delivery.DeliveryVO;
+import com.project.mallbydh.inquiry.InquiryAnswerVO;
+import com.project.mallbydh.inquiry.InquiryService;
 import com.project.mallbydh.mail.EmailDTO;
 import com.project.mallbydh.order.OrderService;
 import com.project.mallbydh.order.OrderVO;
@@ -48,6 +50,7 @@ public class MemberController {
 	private final MemberService memberService;
 	private final OrderService orderService;
 	private final DeliveryService deliveryService;
+	private final InquiryService inquiryService;
 	
 	// 회원가입 페이지
 	@GetMapping("/join")
@@ -392,8 +395,20 @@ public class MemberController {
 	
 	// 나의 상품문의
 	@GetMapping("/myinquiry")
-	public void myinquiry() throws Exception {
-		
+	public void myinquiry(HttpSession session, Model model, SearchCriteria cri) throws Exception {
+		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
+		cri.setPerPageNum(Constants.MYPAGE_REVIEW_LIST_COUNT);
+
+		List<InquiryAnswerVO> myInquiryList = inquiryService.getInquiryListByUserId(u_id, cri);
+		model.addAttribute("myInquiryList", myInquiryList);
+
+		// 페이징 정보
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setDisplayPageNum(Constants.MYPAGE_REVIEW_LIST_PAGESIZE);
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(inquiryService.getInquiryCountByProdId(u_id));
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("cri", cri);
 	}
 	
 	// 계정삭제

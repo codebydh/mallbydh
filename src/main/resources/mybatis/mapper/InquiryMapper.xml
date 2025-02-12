@@ -34,4 +34,32 @@
             (#{u_id}, #{prod_id}, #{inq_title}, #{inq_content})
     </insert>
 
+    <select id="getInquiryListByUserId" resultType="com.project.mallbydh.inquiry.InquiryAnswerVO">
+        select
+            i.inq_code, i.u_id, i.inq_title, i.inq_content, i.inq_regdate,
+            a.ans_code, a.ans_content, a.ans_regdate,
+            p.prod_name
+        from
+            inquiry_tbl i
+                left join
+            answer_tbl a on i.inq_code = a.inq_code
+                left join
+            product_tbl p on i.prod_id = p.prod_id
+        where
+            i.u_id = #{u_id}
+        order by
+            inq_code desc
+        limit
+            #{cri.pageStart}, #{cri.perPageNum}
+    </select>
+
+    <select id="getInquiryCountByUserId" resultType="int">
+        SELECT
+            count(*)
+        FROM
+            inquiry_tbl
+        WHERE
+            u_id = #{u_id}
+    </select>
+
 </mapper>

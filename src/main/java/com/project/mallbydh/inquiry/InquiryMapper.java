@@ -12,4 +12,8 @@ public interface InquiryMapper {
     int getInquiryCountByProdId(Integer prod_id);
 
     void inquirySave(InquiryAnswerVO vo);
+
+    List<InquiryAnswerVO> getInquiryListByUserId(@Param("u_id") String u_id, @Param("cri") SearchCriteria cri);
+
+    int getInquiryCountByUserId(String u_id);
 }

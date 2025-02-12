@@ -3,6 +3,46 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 
+<th:block layout:fragment="css">
+    <style>
+
+        .table tr:nth-last-child(3) td {
+            border-bottom: none;
+        }
+
+        .inquiry-content td, .inquiry-answer td {
+            border: none;
+        }
+
+        #inquiryTable td, #inquiryTable th {
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+
+        .inquiry-count {
+            font-size: 13px;
+            color: #333;
+        }
+
+        .inquiry-regdate {
+            font-size: 13px;
+            color: #333;
+        }
+
+        .inquiry-title {
+            font-size: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .form-control::placeholder {
+            color: #6c757d;
+            font-size: 0.875em;
+            opacity: 1;
+        }
+    </style>
+</th:block>
+
 <th:block layout:fragment="content">
     <div class="container" style="margin: 40px 0 40px 0;">
         <div class="text-center" style="margin-bottom: 48px;">
@@ -27,11 +67,60 @@
                 <div class="mb-4">
                     <h4 class="mb-0 border-bottom pb-2 border-dark">나의 상품문의</h4>
                 </div>
+                <table class="table">
+                    <tbody>
+                    <th:block th:each="item, iterStat : ${myInquiryList}">
+                        <tr class="align-middle text-center">
+                            <td style="width: 10%" class="inquiry-count"
+                                th:text="${myInquiryList.size() - iterStat.index}">3
+                            </td>
+                            <td style="width: 10%">
+                                <span th:if="${item.ans_content != null and !item.ans_content.isEmpty()}"
+                                      class="badge bg-success d-inline-flex align-items-center justify-content-center">답변완료
+                                </span>
+                                <span th:unless="${item.ans_content != null and !item.ans_content.isEmpty()}"
+                                      class="badge bg-secondary d-inline-flex align-items-center justify-content-center">답변대기
+                                </span>
+                            </td>
+                            <td th:id="'inquiry-title-' + ${item.inq_code}">
+                                <p class="inquiry-title mb-0" th:text="${item.inq_title}">리뷰제목</p>
+                                <p class="mb-0"><small class="text-muted" style="font-size: 13px;"
+                                                       th:text="'상품명 : ' + ${item.prod_name}">상품명</small></p>
+                            </td>
+                            <td style="width: 15%" class="inquiry-regdate"
+                                th:text="${#dates.format(item.inq_regdate, 'yyyy.MM.dd')}">작성일
+                            </td>
+                        </tr>
+                        <!-- 문의 내용 -->
+                        <tr class="inquiry-content" th:id="'inquiry-content-' + ${item.inq_code}"
+                            style="display: none;">
+                            <td colspan="4">
+                                <div class="inquiry-text" th:text="${item.inq_content}"></div>
+                            </td>
+                        </tr>
+                        <tr class="inquiry-answer" th:id="'inquiry-answer-' + ${item.inq_code}" style="display: none;">
+                            <td colspan="4">
+                                <div class="answer-content"
+                                     th:text="${item.ans_content != null and !item.ans_content.isEmpty()} ? ${item.ans_content} : '답변이 아직 등록되지 않았습니다.'">
+                                </div>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
             </div>
-
-
-
         </div>
     </div>
+</th:block>
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function () {
+            $('[id^="inquiry-title-"]').click(function () {
+                let inquiryCode = $(this).attr('id').split('-')[2];
+                $('#inquiry-content-' + inquiryCode).toggle();
+                $('#inquiry-answer-' + inquiryCode).toggle();
+            });
+        });
+    </script>
 </th:block>
 </html>
