@@ -2,6 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="css">
+    <style>
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .card img {
+            object-fit: cover;
+            height: 100%;
+        }
+        .card-regstars {
+            font-size: 13px;
+            color: cornflowerblue; /* 강조 색상 */
+        }
+        .card-title {
+            font-size: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+        .card-text {
+            font-size: 13px;
+            color: #333;
+        }
+        .text-muted {
+            font-size: 0.8rem;
+        }
+        .product-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</th:block>
 <th:block layout:fragment="content">
     <div class="container" style="margin: 40px 0 40px 0;">
         <div class="text-center" style="margin-bottom: 48px;">
@@ -24,10 +57,82 @@
             <!-- Main Content -->
             <div class="col-md-9">
                 <div class="mb-4">
-                    <h4 class="mb-0">나의 상품리뷰</h4>
+                    <h4 class="mb-0 border-bottom pb-2 border-dark">나의 상품리뷰</h4>
                 </div>
+
+                <!-- Cards Container -->
+                <div class="row g-3">
+                    <div class="col-md-6" th:each="item : ${myReviewList}">
+                        <div class="card mb-1">
+                            <div class="row g-0">
+                                <!-- 이미지 영역 -->
+                                <div class="col-md-5 d-flex align-items-center justify-content-center" style="width: 117px; height: 117px; margin: 16px 8px 16px 16px;">
+                                    <img th:src="@{'/member/image_display?dateFolderName=' + ${item.prod_uploadfolder} + '&fileName=s_' + ${item.prod_img}}"
+                                         class="img-fluid rounded product-thumbnail"
+                                         alt="상품 이미지" th:value="${item.rev_code}">
+                                </div>
+                                <!-- 리뷰 내용 영역 -->
+                                <div class="col-md-7">
+                                    <div class="card-body">
+                                        <!-- 리뷰 평점 -->
+                                        <p class="card-regstars mb-2" th:text="${item.rev_rate_stars}"></p>
+                                        <!-- 리뷰 제목 -->
+                                        <p class="card-title font-weight-bold mb-0" th:text="${item.rev_title}"></p>
+                                        <!-- 리뷰 내용 -->
+                                        <p class="card-text mb-2" th:text="${item.rev_content}"></p>
+                                        <!-- 등록 날짜 -->
+                                        <p class="card-text mb-0">
+                                            <small class="text-muted" th:text="'작성일 : ' + ${#temporals.format(item.rev_regdate, 'yyyy.MM.dd HH:mm:ss')}"></small>
+                                        </p>
+                                        <!-- 상품명 -->
+                                        <p class="card-text mb-0">
+                                            <small class="text-muted" th:text="'상품명 : ' + ${item.prod_name}"></small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- pagination -->
+                <nav aria-label="Page navigation example" style="margin-top: 30px;">
+                    <ul class="pagination justify-content-center">
+                        <th:block th:if="${pageMaker.prev}">
+                            <li class="page-item">
+                                <a class="page-link"
+                                   th:href="@{|/member/myreview${pageMaker.makeSearch(pageMaker.startPage - 1)}${pageMaker.cri.startDate != null ? '&startDate=' + pageMaker.cri.startDate : ''}${pageMaker.cri.endDate != null ? '&endDate=' + pageMaker.cri.endDate : ''}|}">
+                                    Previous
+                                </a>
+                            </li>
+                        </th:block>
+
+                        <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                            <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
+                                <a class="page-link"
+                                   th:href="@{|/member/myreview${pageMaker.makeSearch(num)}${pageMaker.cri.startDate != null ? '&startDate=' + pageMaker.cri.startDate : ''}${pageMaker.cri.endDate != null ? '&endDate=' + pageMaker.cri.endDate : ''}|}"
+                                   th:text="${num}">
+                                </a>
+                            </li>
+                        </th:block>
+
+                        <th:block th:if="${pageMaker.next}">
+                            <li class="page-item">
+                                <a class="page-link"
+                                   th:href="@{|/member/myreview${pageMaker.makeSearch(pageMaker.endPage + 1)}${pageMaker.cri.startDate != null ? '&startDate=' + pageMaker.cri.startDate : ''}${pageMaker.cri.endDate != null ? '&endDate=' + pageMaker.cri.endDate : ''}|}">
+                                    Next
+                                </a>
+                            </li>
+                        </th:block>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
+</th:block>
+<th:block layout:fragment="layout2">
+    <script>
+    </script>
 </th:block>
 </html>

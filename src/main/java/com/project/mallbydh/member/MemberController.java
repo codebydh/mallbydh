@@ -362,24 +362,32 @@ public class MemberController {
 	@GetMapping("/myreview")
 	public void myreview(HttpSession session, Model model, SearchCriteria cri) throws Exception {
 		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
-		cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
+		cri.setPerPageNum(Constants.MYPAGE_REVIEW_LIST_COUNT);
 
 		List<ReviewVO> myReviewList = reviewService.getReviewByUserId(u_id, cri);
 
-		// 경로의 역슬래시를 슬래시로 변환
 		myReviewList.forEach(vo -> {
+			// 경로의 역슬래시를 슬래시로 변환
 			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+
+			// 별점을 숫자에서 별로 변환
+			vo.setRev_rate_stars(convertToStars(vo.getRev_rate()));
 		});
 
 		model.addAttribute("myReviewList", myReviewList);
 
 		// 페이징 정보
 		PageMaker pageMaker = new PageMaker();
-		pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
+		pageMaker.setDisplayPageNum(Constants.MYPAGE_REVIEW_LIST_PAGESIZE);
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(reviewService.getReviewCountByUserId(u_id));
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("cri", cri);
+	}
+
+	// 별점 변환 메서드
+	private String convertToStars(int rating) {
+		return "★".repeat(rating) + "☆".repeat(5 - rating);
 	}
 	
 	// 나의 상품문의

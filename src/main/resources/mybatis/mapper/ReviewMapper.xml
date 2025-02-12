@@ -34,7 +34,7 @@
     <select id="getReviewByUserId" resultType="com.project.mallbydh.review.ReviewVO">
         select
             r.rev_code, r.u_id, r.prod_id, r.rev_title, r.rev_content, r.rev_rate, r.rev_regdate,
-            p.prod_uploadfolder, p.prod_img
+            p.prod_uploadfolder, p.prod_img, p.prod_name
         from
             review_tbl r
                 JOIN product_tbl p
