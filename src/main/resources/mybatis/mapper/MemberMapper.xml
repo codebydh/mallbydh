@@ -3,13 +3,13 @@
 <mapper namespace="com.project.mallbydh.member.MemberMapper">
 
 	<select id="idCheck" parameterType="String" resultType="String">
-	
-		select
-			u_id
-		from
-			user_tbl
-		where
-			u_id = #{u_id}
+
+		SELECT
+		    COUNT(*)
+		FROM
+		    user_tbl
+		WHERE
+		    u_id = #{u_id}
 	
 	</select>
 	
@@ -25,7 +25,7 @@
 	<select id="login" parameterType="String" resultType="com.project.mallbydh.member.MemberVO">
 		
 		select
-			u_id, u_pw, u_name, u_phone, u_smsreceive, u_email, u_emailreceive, u_birth, u_gender, u_zipcode, u_addr, u_addr_detail
+			u_id, u_pw, u_name, u_phone, u_smsreceive, u_email, u_emailreceive, u_birth, u_gender, u_zipcode, u_addr, u_addr_detail, u_status
 		from
 			user_tbl
 		where
@@ -123,5 +123,14 @@
 			u_email = #{u_email}
 
 	</select>
+
+	<update id="memberWithdrawal">
+		update
+			user_tbl
+		set
+			u_status = '사용자탈퇴'
+		where
+			u_id = #{u_id}
+	</update>
 	
 </mapper>

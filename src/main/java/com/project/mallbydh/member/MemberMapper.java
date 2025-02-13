@@ -29,4 +29,7 @@ public interface MemberMapper {
 	// 임시비밀번호 발급을 위한 정보 체크
 	String pwtempComfirm(@Param("u_id") String u_id, @Param("u_name") String u_name, @Param("u_email") String u_email);
 
+	// 회원탈퇴 (사용자탈퇴로 u_status를 변경)
+	void memberWithdrawal(String u_id);
+
 }

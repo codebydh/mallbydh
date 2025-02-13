@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 public class MemberService {
 	
 	private final MemberMapper memberMapper;
-	
+
 	public String idCheck(String u_id) {
-		return memberMapper.idCheck(u_id);
+		return memberMapper.idCheck(u_id).equals("0") ? u_id : null;
 	}
 	
 	public void join(MemberVO vo) {
@@ -44,6 +44,10 @@ public class MemberService {
 
 	public String pwtempComfirm(String u_id, String u_name, String u_email) {
 		return memberMapper.pwtempComfirm(u_id, u_name, u_email);
+	}
+
+	public void memberWithdrawal(String u_id) {
+		memberMapper.memberWithdrawal(u_id);
 	}
 
 }

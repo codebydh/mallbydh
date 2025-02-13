@@ -10,8 +10,12 @@
 
 		if(status == 'idFail') {
 			alert("아이디를 확인하세요");
-		}else if(status == 'pwFail') {
+		} else if(status == 'pwFail') {
 			alert("비밀번호를 확인하세요");
+		} else if(status == 'suspended') {
+			alert("계정이 정지되었습니다. 관리자에게 문의하세요.");
+		} else if(status == 'withdrawn') {
+			alert("탈퇴한 계정입니다. 로그인할 수 없습니다.");
 		}
 
 	</script>

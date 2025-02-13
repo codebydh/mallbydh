@@ -70,23 +70,11 @@ public class MemberController {
 
 		return "redirect:/member/login";
 	}
-	
-	// 아이디 중복체크
-	@GetMapping("/idCheck")
-	public ResponseEntity<String> idCheck(String u_id) throws Exception {
-		
-		ResponseEntity<String> entity = null;
-		String isUse = "";
-		
-		if(memberService.idCheck(u_id) != null) {
-			isUse = "no"; // 아이디 사용 불가능
-		}else {
-			isUse = "yes"; // 아이디 사용 가능
-		}
-		
-		entity = new ResponseEntity<String>(isUse, HttpStatus.OK);
-		
-		return entity;
+
+	@PostMapping("/idCheck")
+	public ResponseEntity<String> idCheck(@RequestParam("u_id") String u_id) throws Exception {
+		String isUse = memberService.idCheck(u_id).equals("yes") ? "yes" : "no";
+		return new ResponseEntity<>(isUse, HttpStatus.OK);
 	}
 	
 	// 로그인 페이지
@@ -103,19 +91,22 @@ public class MemberController {
 		
 		String url = "";
 		String status = "";
-		if(memberVO != null) { // 아이디가 존재  matches("사용자가 입력비밀번호", "db에서 가져온 암호된비밀번호")
-			// 사용자가 입력한 비밀번호가 db에서 가져온 암호화된 비밀번호를 만드는 데 사용한 것인지 체크
-			if(passwordEncoder.matches(dto.getU_pw(), memberVO.getU_pw())) { // 비번이 맞을 경우
-				
-				// 사용자를 인증처리하기위한 정보
+		if(memberVO != null) {
+			if("계정정지".equals(memberVO.getU_status())) {
+				status = "suspended";
+				url = "/member/login";
+			} else if("사용자탈퇴".equals(memberVO.getU_status())) {
+				status = "withdrawn";
+				url = "/member/login";
+			} else if(passwordEncoder.matches(dto.getU_pw(), memberVO.getU_pw())) {
 				session.setAttribute("login_auth", memberVO);
-				memberService.updateLastLogin(u_id); // 최근 로그인 시간 업데이트
+				memberService.updateLastLogin(u_id);
 				url = "/";
-			}else { // 비번이 틀린 경우
+			} else {
 				status = "pwFail";
 				url = "/member/login";
 			}
-		}else {  // 아이디가 없을 경우
+		} else {
 			status = "idFail";
 			url = "/member/login";
 		}
@@ -126,8 +117,7 @@ public class MemberController {
 		
 		// 이동되는 주소의 타임리프페이지에서 status 이름으로 사용할수가 있다. 페이지에서 자바스크립트 문법으로 사용
 		rttr.addFlashAttribute("status", status);
-		
-		
+
 		return "redirect:"+ url;
 	}
 	
@@ -410,11 +400,32 @@ public class MemberController {
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("cri", cri);
 	}
-	
+
+
 	// 계정삭제
 	@GetMapping("/delete")
 	public void delete() throws Exception {
-		
+
+	}
+
+	@PostMapping("/delete")
+	public ResponseEntity<String> delete(@RequestParam("u_pw") String u_pw, HttpSession session) throws Exception {
+		ResponseEntity<String> entity = null;
+		String msg = "";
+
+		String db_pw = ((MemberVO) session.getAttribute("login_auth")).getU_pw();
+		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
+
+		if(passwordEncoder.matches(u_pw, db_pw)) {
+			memberService.memberWithdrawal(u_id);
+			session.invalidate();
+			msg = "success";
+		} else {
+			msg = "fail";
+		}
+
+		entity = new ResponseEntity<String>(msg, HttpStatus.OK);
+		return entity;
 	}
 
 	@GetMapping("/image_display")

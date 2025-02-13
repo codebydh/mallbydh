@@ -26,4 +26,5 @@ public class MemberVO {
     private Date u_regdate;
     private Date u_updatedate;
     private Date u_lastlogin;
+    private String u_status; // 현재 계정 상태
 }

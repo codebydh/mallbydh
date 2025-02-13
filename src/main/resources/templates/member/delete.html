@@ -2,6 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="css">
+    <style>
+        #u_pw {
+            border-color: #dee2e6;
+        }
+    </style>
+</th:block>
 <th:block layout:fragment="content">
     <div class="container" style="margin: 40px 0 40px 0;">
         <div class="text-center" style="margin-bottom: 48px;">
@@ -24,10 +31,76 @@
             <!-- Main Content -->
             <div class="col-md-9">
                 <div class="mb-4">
-                    <h4 class="mb-0">회원탈퇴</h4>
+                    <h4 class="mb-0 border-bottom pb-2 border-dark">회원탈퇴</h4>
+                </div>
+                <div class="mb-4">
+                    <p style="font-size: 18px;"><strong>1. 회원 탈퇴를 위해 아래의 사항을 확인해 주세요.</strong></p>
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <p class="mb-2">· 회원 탈퇴 시 같은 아이디로 재가입할 수 없습니다.</p>
+                            <p class="mb-2">· 탈퇴 즉시 로그아웃 처리가 되며, 모든 서비스에 접근할 수 없게 됩니다.</p>
+                            <p class="mb-0">· 향후 계정 복구를 희망하실 경우 관리자에게 문의해 주세요.</p>
+                        </div>
+                    </div>
+                    <div class="form-check mt-2 mb-0">
+                        <input class="form-check-input" type="checkbox" id="terms">
+                        <label class="form-check-label" for="terms">
+                            상기 내용을 확인하였습니다.
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <p style="font-size: 18px;"><strong>2. 비밀번호를 입력하신 후, 탈퇴 버튼을 누르세요.</strong></p>
+                    <form id="deleteForm">
+                        <div class="row mb-3">
+                            <label for="u_pw" class="col-1 col-form-label">비밀번호</label>
+                            <div class="col-5">
+                                <input type="password" class="form-control" id="u_pw" name="u_pw">
+                            </div>
+                            <button type="submit" class="col-2 btn btn-danger">탈퇴하기</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</th:block>
+<th:block layout:fragment="script2">
+    <script>
+
+        function deleteCookie(name) {
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        }
+
+        $('#deleteForm').submit(function(e) {
+            e.preventDefault();
+
+            if (!$('#terms').is(':checked')) {
+                alert('회원 탈퇴 전 안내 사항을 확인하고 동의해 주세요.');
+                return;
+            }
+
+            let u_pw = $("#u_pw").val();
+
+            $.ajax({
+                url: '/member/delete',
+                type: 'POST',
+                data: { u_pw : u_pw },
+                success: function(response) {
+                    if (response === 'success') {
+                        deleteCookie('JSESSIONID'); // 세션 ID 쿠키
+                        deleteCookie('remember-me'); // 자동 로그인 쿠키 (사용 중인 경우)
+                        alert('회원 탈퇴가 완료되었습니다.');
+                        window.location.href = '/'; // 메인 페이지로 리다이렉팅
+                    } else {
+                        alert('비밀번호가 일치하지 않습니다.');
+                    }
+                },
+                error: function() {
+                    alert('오류가 발생했습니다. 다시 시도해주세요.');
+                }
+            });
+        });
+    </script>
 </th:block>
 </html>
