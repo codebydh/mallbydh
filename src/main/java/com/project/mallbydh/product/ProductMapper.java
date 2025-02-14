@@ -1,17 +1,25 @@
 package com.project.mallbydh.product;
 
 import com.project.mallbydh.admin.product.ProductVO;
+import com.project.mallbydh.common.utils.SearchCriteria;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface ProductMapper {
-    List<ProductVO> getProductsByCateId(Integer cate_id);
-    List<ProductVO> getProductsByMultipleCateIds(List<Integer> cate_id);
-    List<ProductVO> getAllProducts();
+    List<ProductVO> getProductsByCateId(Integer cate_id, SearchCriteria cri);
+    List<ProductVO> getProductsByMultipleCateIds(@Param("list") List<Integer> cate_id, @Param("cri") SearchCriteria cri);
+    List<ProductVO> getAllProducts(SearchCriteria cri);
+
+    int getTotalCountByCateId(Integer cate_id, SearchCriteria cri);
+    int getTotalCountByMultipleCateIds(@Param("list") List<Integer> cate_ids, @Param("cri") SearchCriteria cri);
+    int getTotalCount(SearchCriteria cri); // 상품페이지에서 활용
+
     ProductVO getProductById(Integer prod_id);
     int updateReviewCount(Integer prod_id);
     int updateWishCount(Integer prod_id);
     int updateInquiryCount(Integer prod_id);
+
 
     // 주문 테이블에서 활용
     String getProductNameById(Integer prod_id);

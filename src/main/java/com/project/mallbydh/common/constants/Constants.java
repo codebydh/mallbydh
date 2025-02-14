@@ -10,5 +10,8 @@ public class Constants {
 	public static final int ADMIN_PRODUCT_LIST_PAGESIZE = 5;
 
 	public static final int MYPAGE_REVIEW_LIST_PAGESIZE = 5;
-	public static final int MYPAGE_REVIEW_LIST_COUNT = 6;
+	public static final int MYPAGE_REVIEW_LIST_COUNT = 5;
+
+	public static final int PRODUCT_LIST_COUNT = 8;
+	public static final int PRODUCT_LIST_PAGESIZE = 5;
 }

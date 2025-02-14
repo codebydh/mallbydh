@@ -17,62 +17,98 @@
             <img src="/temp_img/top_nintendo.jpg" class="d-block w-100 img-fluid object-fit-cover" alt="IMG2">
         </div>
     </section>
-    <div>
-        <h5 th:text="'총 ' + ${#lists.size(productList)} + '개 제품'"></h5>
-    </div>
-    <div class="my-4">
-        <hr>
-    </div>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <div class="card border-0" th:each="product : ${productList}">
-            <div class="ratio ratio-1x1">
-                <a th:href="|/product/detail?prod_id=${product.prod_id}|">
-                    <img class="card-img-top rounded w-100 h-100 object-fit-cover" th:src="${'/product/image_display?dateFolderName=' + product.prod_uploadfolder + '&fileName=s_' + product.prod_img}">
-                </a>
-            </div>
-            <div class="card-body px-0">
-                <h5 class="card-title fw-bold mb-2" style="font-size: 15px;" th:text="${product.prod_name}"></h5>
-                <p class="text-danger fw-bold mb-2" style="font-size: 17px;" th:text="${#numbers.formatDecimal(product.prod_price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
-                <div class="d-flex gap-2">
-                    <!-- 장바구니 버튼 -->
-                    <button th:if="${session.login_auth != null}"
-                            type="button"
-                            class="btn p-0 border-0"
-                            name="addToCart"
-                            th:data-prod_id="${product.prod_id}">
-                        <i class="bi bi-cart3 fs-5"></i>
-                    </button>
-                    <button th:unless="${session.login_auth != null}"
-                            type="button"
-                            class="btn p-0 border-0"
-                            onclick="alert('로그인이 필요한 서비스입니다.'); location.href='/member/login';">
-                        <i class="bi bi-cart3 fs-5"></i>
-                    </button>
 
-                    <!-- 찜하기 버튼 -->
-                    <button th:if="${session.login_auth != null}"
-                            type="button"
-                            class="btn p-0 border-0"
-                            name="addToWish"
-                            th:data-prod_id="${product.prod_id}">
-                        <i class="bi" th:classappend="${wishList != null and wishList.contains(product.prod_id)} ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
-                    </button>
-                    <button th:unless="${session.login_auth != null}"
-                            type="button"
-                            class="btn p-0 border-0"
-                            onclick="alert('로그인이 필요한 서비스입니다.'); location.href='/member/login';">
-                        <i class="bi bi-heart"></i>
-                    </button>
+    <div th:if="${not #lists.isEmpty(productList)}">
+        <div>
+            <h5 th:text="'총 ' + ${#lists.size(productList)} + '개 제품'"></h5>
+        </div>
+
+        <div class="my-4">
+            <hr>
+        </div>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="card border-0" th:each="product : ${productList}">
+                <div class="ratio ratio-1x1">
+                    <a th:href="|/product/detail?prod_id=${product.prod_id}|">
+                        <img class="card-img-top rounded w-100 h-100 object-fit-cover" th:src="${'/product/image_display?dateFolderName=' + product.prod_uploadfolder + '&fileName=s_' + product.prod_img}">
+                    </a>
+                </div>
+                <div class="card-body px-0">
+                    <h5 class="card-title fw-bold mb-2" style="font-size: 15px;" th:text="${product.prod_name}"></h5>
+                    <p class="text-danger fw-bold mb-2" style="font-size: 17px;" th:text="${#numbers.formatDecimal(product.prod_price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
+                    <div class="d-flex gap-2">
+                        <!-- 장바구니 버튼 -->
+                        <button th:if="${session.login_auth != null}"
+                                type="button"
+                                class="btn p-0 border-0"
+                                name="addToCart"
+                                th:data-prod_id="${product.prod_id}">
+                            <i class="bi bi-cart3 fs-5"></i>
+                        </button>
+                        <button th:unless="${session.login_auth != null}"
+                                type="button"
+                                class="btn p-0 border-0"
+                                onclick="alert('로그인이 필요한 서비스입니다.'); location.href='/member/login';">
+                            <i class="bi bi-cart3 fs-5"></i>
+                        </button>
+
+                        <!-- 찜하기 버튼 -->
+                        <button th:if="${session.login_auth != null}"
+                                type="button"
+                                class="btn p-0 border-0"
+                                name="addToWish"
+                                th:data-prod_id="${product.prod_id}">
+                            <i class="bi" th:classappend="${wishList != null and wishList.contains(product.prod_id)} ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
+                        </button>
+                        <button th:unless="${session.login_auth != null}"
+                                type="button"
+                                class="btn p-0 border-0"
+                                onclick="alert('로그인이 필요한 서비스입니다.'); location.href='/member/login';">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
 
-    </script>
+        <!-- pagination -->
+        <nav aria-label="Page navigation example" style="margin-top: 30px;" th:if="${pageMaker.totalCount > 0}">
+            <ul class="pagination justify-content-center">
+                <th:block th:if="${pageMaker.prev}">
+                    <li class="page-item">
+                        <a class="page-link" href="#" th:onclick="'javascript:updatePageLink(' + ${pageMaker.startPage - 1} + ');'">
+                            Previous
+                        </a>
+                    </li>
+                </th:block>
+
+                <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                    <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
+                        <a class="page-link" href="#" th:onclick="'javascript:updatePageLink(' + ${num} + ');'" th:text="${num}">
+                        </a>
+                    </li>
+                </th:block>
+
+                <th:block th:if="${pageMaker.next}">
+                    <li class="page-item">
+                        <a class="page-link" href="#" th:onclick="'javascript:updatePageLink(' + ${pageMaker.endPage + 1} + ');'">
+                            Next
+                        </a>
+                    </li>
+                </th:block>
+            </ul>
+        </nav>
+    </div>
+
+    <div th:if="${#lists.isEmpty(productList)}" class="text-center" style="padding: 96px 0 96px 0;">
+        <i class="bi bi-shop-window m-2 text-secondary" style="font-size: 48px;"></i>
+        <p class="m-0 text-secondary" style="font-size: 20px;">상품이 존재하지 않습니다.</p>
+    </div>
+
 </th:block>
 <th:block layout:fragment="script2">
-    <script>
+    <script th:inline="javascript">
         $(document).ready(function() {
             // 상품리스트 - 장바구니 아이콘 클릭 시 추가
             $("button[name='addToCart']").on("click", function() {
@@ -117,6 +153,33 @@
                     }
                 });
             });
+
+            // 새로 추가된 페이지네이션 함수
+            function updatePageLink(page) {
+                let currentUrl = new URL(window.location.href);
+                let searchParams = currentUrl.searchParams;
+
+                // 페이지 관련 파라미터 업데이트
+                searchParams.set('page', page);
+                searchParams.set('perPageNum', [[${pageMaker.cri.perPageNum}]]);
+
+                // 카테고리 ID 유지
+                let cateId = [[${cate_id}]];
+                let parentId = [[${parent_id}]];
+                if (cateId) searchParams.set('cate_id', cateId);
+                if (parentId) searchParams.set('parent_id', parentId);
+
+                // 검색 관련 파라미터 유지
+                let searchType = [[${pageMaker.cri.searchType}]];
+                let keyword = [[${pageMaker.cri.keyword}]];
+                if (searchType) searchParams.set('searchType', searchType);
+                if (keyword) searchParams.set('keyword', keyword);
+
+                // 새 URL로 이동
+                window.location.href = currentUrl.toString();
+            }
+
+            window.updatePageLink = updatePageLink;
         });
     </script>
 </th:block>

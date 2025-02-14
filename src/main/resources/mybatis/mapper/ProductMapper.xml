@@ -12,6 +12,7 @@
             and cate_id = #{cate_id}
         order by
             prod_id desc
+        limit #{cri.pageStart}, #{cri.perPageNum}
     </select>
 
     <select id="getProductsByMultipleCateIds" resultType="com.project.mallbydh.admin.product.ProductVO">
@@ -27,6 +28,7 @@
             </foreach>
         order by
             prod_id desc
+        limit #{cri.pageStart}, #{cri.perPageNum}
     </select>
 
     <select id="getAllProducts" resultType="com.project.mallbydh.admin.product.ProductVO">
@@ -36,9 +38,58 @@
             product_tbl
         where
             prod_forsale = 'Y'
+            <include refid="search"></include>
         order by
             prod_id desc
+        limit #{pageStart}, #{perPageNum}
     </select>
+
+    <select id="getTotalCountByCateId" resultType="int">
+        SELECT count(*)
+        FROM product_tbl
+        WHERE prod_forsale = 'Y' AND cate_id = #{cate_id}
+        <include refid="criSearch"></include>
+    </select>
+
+    <select id="getTotalCountByMultipleCateIds" resultType="int">
+        SELECT count(*)
+        FROM product_tbl
+        WHERE prod_forsale = 'Y' AND cate_id IN
+        <foreach item="cate_id" collection="list" open="(" separator="," close=")">
+            #{cate_id}
+        </foreach>
+        <include refid="criSearch"></include>
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        select
+            count(*)
+        from
+            product_tbl
+        where
+            prod_forsale = 'Y'
+            <include refid="search"></include>
+    </select>
+
+    <sql id="search">
+        <if test="searchType != null">
+            <if test="searchType == 'nm'.toString()">
+                and (prod_name like concat('%', #{keyword}, '%')
+                or
+                prod_maker like concat('%', #{keyword}, '%'))
+            </if>
+        </if>
+    </sql>
+
+    <sql id="criSearch">
+        <if test="cri != null and cri.searchType != null">
+            <if test="cri.searchType == 'nm'.toString()">
+                and (prod_name like concat('%', #{cri.keyword}, '%')
+                or
+                prod_maker like concat('%', #{cri.keyword}, '%'))
+            </if>
+        </if>
+    </sql>
 
     <select id="getProductById" resultType="com.project.mallbydh.admin.product.ProductVO">
         select
