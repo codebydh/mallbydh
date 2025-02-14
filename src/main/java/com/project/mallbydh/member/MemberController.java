@@ -60,7 +60,7 @@ public class MemberController {
 	
 	// 회원정보 저장
 	@PostMapping("/join")
-	public String join(MemberVO vo) {
+	public String join(MemberVO vo, RedirectAttributes rttr) {
 
 		// passwordEncoder.encode(vo.getU_pw()) : 비밀번호를 암호화
 		vo.setU_pw(passwordEncoder.encode(vo.getU_pw()));
@@ -68,13 +68,25 @@ public class MemberController {
 		// DB에 저장
 		memberService.join(vo);
 
+		rttr.addFlashAttribute("message", "회원 가입이 완료되었습니다.");
+
 		return "redirect:/member/login";
 	}
 
-	@PostMapping("/idCheck")
-	public ResponseEntity<String> idCheck(@RequestParam("u_id") String u_id) throws Exception {
-		String isUse = memberService.idCheck(u_id).equals("yes") ? "yes" : "no";
-		return new ResponseEntity<>(isUse, HttpStatus.OK);
+	@GetMapping("/idCheck")
+	public ResponseEntity<String> idCheck(String u_id) throws Exception {
+		ResponseEntity<String> entity = null;
+
+		String availability = "";
+
+		if(memberService.idCheck(u_id) != null) {
+			availability = "no";
+		} else {
+			availability = "yes";
+		}
+
+		entity = new ResponseEntity<String>(availability, HttpStatus.OK);
+		return entity;
 	}
 	
 	// 로그인 페이지

@@ -11,7 +11,7 @@ public class MemberService {
 	private final MemberMapper memberMapper;
 
 	public String idCheck(String u_id) {
-		return memberMapper.idCheck(u_id).equals("0") ? u_id : null;
+		return memberMapper.idCheck(u_id);
 	}
 	
 	public void join(MemberVO vo) {

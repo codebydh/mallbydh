@@ -11,4 +11,5 @@ public class LoginDTO {
 	
 	private String u_id;
 	private String u_pw;
+	private String u_status;
 }
