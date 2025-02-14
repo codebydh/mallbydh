@@ -46,36 +46,45 @@
                     <h4 class="mb-0 border-bottom pb-2 border-dark">찜한 상품</h4>
                 </div>
 
-                <div th:each="item : ${wishList}" class="card mb-3 border-0">
-                    <div class="row g-0">
-                        <!-- 상품 이미지 -->
-                        <div class="product-image col-2" style="width: 81px; height: 81px;">
-                            <img th:src="@{'/member/image_display?dateFolderName=' + ${item.prod_uploadfolder} + '&fileName=s_' + ${item.prod_img}}"
-                                 class="img-fluid rounded product-thumbnail"
-                                 alt="상품 이미지">
-                        </div>
-                        <!-- 상품 정보 -->
-                        <div class="col-8">
-                            <div class="card-body py-2">
-                                <!-- 상품명 -->
-                                <h6 class="card-title mb-1">
-                                    <a th:href="@{/product/detail(prod_id=${item.prod_id})}"
-                                       class="text-decoration-none text-dark get-prod-id"
-                                       th:text="${item.prod_name}"
-                                       th:data-prod-id="${item.prod_id}"></a>
-                                </h6>
-                                <!-- 가격 정보 -->
-                                <div class="d-flex align-items-center">
-                                    <span class="fw-bold me-2" th:text="${#numbers.formatDecimal(item.prod_price, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
+                <div>
+                    <div th:if="${not #lists.isEmpty(wishList)}">
+                        <div th:each="item : ${wishList}" class="card mb-3 border-0">
+                            <div class="row g-0">
+                                <!-- 상품 이미지 -->
+                                <div class="product-image col-2" style="width: 81px; height: 81px;">
+                                    <img th:src="@{'/member/image_display?dateFolderName=' + ${item.prod_uploadfolder} + '&fileName=s_' + ${item.prod_img}}"
+                                         class="img-fluid rounded product-thumbnail"
+                                         alt="상품 이미지">
                                 </div>
-                                <!-- 판매자 정보 -->
-                                <small class="text-muted" th:text="${item.prod_maker}"></small>
+                                <!-- 상품 정보 -->
+                                <div class="col-8">
+                                    <div class="card-body py-2">
+                                        <!-- 상품명 -->
+                                        <h6 class="card-title mb-1">
+                                            <a th:href="@{/product/detail(prod_id=${item.prod_id})}"
+                                               class="text-decoration-none text-dark get-prod-id"
+                                               th:text="${item.prod_name}"
+                                               th:data-prod-id="${item.prod_id}"></a>
+                                        </h6>
+                                        <!-- 가격 정보 -->
+                                        <div class="d-flex align-items-center">
+                                            <span class="fw-bold me-2" th:text="${#numbers.formatDecimal(item.prod_price, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
+                                        </div>
+                                        <!-- 판매자 정보 -->
+                                        <small class="text-muted" th:text="${item.prod_maker}"></small>
+                                    </div>
+                                </div>
+                                <!-- 삭제 아이콘 -->
+                                <div class="col-2 d-flex align-items-center justify-content-end">
+                                    <i class="bi bi-bag-x fs-4 text-secondary" id="removeWish"></i>
+                                </div>
                             </div>
                         </div>
-                        <!-- 삭제 아이콘 -->
-                        <div class="col-2 d-flex align-items-center justify-content-end">
-                            <i class="bi bi-bag-x fs-4 text-secondary" id="removeWish"></i>
-                        </div>
+                    </div>
+
+                    <div th:if="${#lists.isEmpty(wishList)}" class="text-center" style="padding: 96px 0 96px 0;">
+                        <i class="bi bi-clipboard-heart m-2 text-secondary" style="font-size: 48px;"></i>
+                        <p class="m-0 text-secondary" style="font-size: 20px;">찜한 상품이 없습니다.</p>
                     </div>
                 </div>
             </div>

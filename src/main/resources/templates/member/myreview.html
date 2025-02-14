@@ -62,37 +62,43 @@
 
                 <!-- Cards Container -->
                 <div class="row g-3">
-                    <div class="col-md-6" th:each="item : ${myReviewList}">
-                        <div class="card mb-1">
-                            <div class="row g-0">
-                                <!-- 이미지 영역 -->
-                                <div class="col-md-5 d-flex align-items-center justify-content-center" style="width: 117px; height: 117px; margin: 16px 8px 16px 16px;">
-                                    <img th:src="@{'/member/image_display?dateFolderName=' + ${item.prod_uploadfolder} + '&fileName=s_' + ${item.prod_img}}"
-                                         class="img-fluid rounded product-thumbnail"
-                                         alt="상품 이미지" th:value="${item.rev_code}">
-                                </div>
-                                <!-- 리뷰 내용 영역 -->
-                                <div class="col-md-7">
-                                    <div class="card-body">
-                                        <!-- 리뷰 평점 -->
-                                        <p class="card-regstars mb-2" th:text="${item.rev_rate_stars}"></p>
-                                        <!-- 리뷰 제목 -->
-                                        <p class="card-title font-weight-bold mb-0" th:text="${item.rev_title}"></p>
-                                        <!-- 리뷰 내용 -->
-                                        <p class="card-text mb-2" th:text="${item.rev_content}"></p>
-                                        <!-- 등록 날짜 -->
-                                        <p class="card-text mb-0">
-                                            <small class="text-muted" th:text="'작성일 : ' + ${#temporals.format(item.rev_regdate, 'yyyy.MM.dd HH:mm:ss')}"></small>
-                                        </p>
-                                        <!-- 상품명 -->
-                                        <p class="card-text mb-0">
-                                            <small class="text-muted" th:text="'상품명 : ' + ${item.prod_name}"></small>
-                                        </p>
+                    <div th:if="${not #lists.isEmpty(myReviewList)}">
+                        <div class="col-md-6" th:each="item : ${myReviewList}">
+                            <div class="card mb-1">
+                                <div class="row g-0">
+                                    <!-- 이미지 영역 -->
+                                    <div class="col-md-5 d-flex align-items-center justify-content-center" style="width: 117px; height: 117px; margin: 16px 8px 16px 16px;">
+                                        <img th:src="@{'/member/image_display?dateFolderName=' + ${item.prod_uploadfolder} + '&fileName=s_' + ${item.prod_img}}"
+                                             class="img-fluid rounded product-thumbnail"
+                                             alt="상품 이미지" th:value="${item.rev_code}">
+                                    </div>
+                                    <!-- 리뷰 내용 영역 -->
+                                    <div class="col-md-7">
+                                        <div class="card-body">
+                                            <!-- 리뷰 평점 -->
+                                            <p class="card-regstars mb-2" th:text="${item.rev_rate_stars}"></p>
+                                            <!-- 리뷰 제목 -->
+                                            <p class="card-title font-weight-bold mb-0" th:text="${item.rev_title}"></p>
+                                            <!-- 리뷰 내용 -->
+                                            <p class="card-text mb-2" th:text="${item.rev_content}"></p>
+                                            <!-- 등록 날짜 -->
+                                            <p class="card-text mb-0">
+                                                <small class="text-muted" th:text="'작성일 : ' + ${#temporals.format(item.rev_regdate, 'yyyy.MM.dd HH:mm:ss')}"></small>
+                                            </p>
+                                            <!-- 상품명 -->
+                                            <p class="card-text mb-0">
+                                                <small class="text-muted" th:text="'상품명 : ' + ${item.prod_name}"></small>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+                    </div>
+
+                    <div th:if="${#lists.isEmpty(myReviewList)}" class="text-center" style="padding: 96px 0 96px 0;">
+                        <i class="bi bi-chat-left-text m-2 text-secondary" style="font-size: 48px;"></i>
+                        <p class="m-0 text-secondary" style="font-size: 20px;">작성하신 리뷰가 없습니다.</p>
                     </div>
                 </div>
 

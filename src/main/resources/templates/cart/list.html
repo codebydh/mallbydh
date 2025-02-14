@@ -69,57 +69,65 @@
         </div>
     </section>
     <div class="card-body">
-        <div class="mb-2 d-flex justify-content-between align-items-center">
-            <div>
-                <button type="button" class="btn btn-outline-secondary" id="btnCheckDelete">선택삭제</button>
-                <button type="button" class="btn btn-outline-danger" id="btnEmpty">장바구니비우기</button>
+        <div th:if="${not #lists.isEmpty(cart_list)}">
+            <div class="mb-2 d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="button" class="btn btn-outline-secondary" id="btnCheckDelete">선택삭제</button>
+                    <button type="button" class="btn btn-outline-danger" id="btnEmpty">장바구니비우기</button>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead class="text-center">
+                <tr>
+                    <th style="width: 5%"><input type="checkbox" id="checkAll"></th>
+                    <th style="width: 59%">상품정보</th>
+                    <th style="width: 12%">판매가</th>
+                    <th style="width: 12%">수량</th>
+                    <th style="width: 12%">합계</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${cart_list}">
+                    <td class="text-center">
+                        <input type="checkbox" name="prod_id" th:value="${item['prod_id']}">
+                    </td>
+                    <td class="product-info ml-3">
+                        <div class="product-container d-flex align-items-center">
+                            <div class="product-image me-3" style="width: 81px; height: 81px;">
+                                <img th:src="${'/cart/image_display?dateFolderName=' + item.prod_uploadfolder + '&fileName=s_' + item.prod_img}"}
+                                     alt="상품 이미지"
+                                     class="img-fluid rounded product-thumbnail">
+                            </div>
+                            <div class="product-details">
+                                <h4 class="product-name mb-1" th:text="${item['prod_name']}"></h4>
+                                <small class="text-muted"><p class="manufacturer mb-2" th:text="${item['prod_maker']}"></p></small>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center font-weight-bold" style="color: red;" th:text="${#numbers.formatInteger(item['prod_price'], 1, 'COMMA') + '원'}"></td>
+                    <td class="text-center">
+                        <input type="number" name="cart_amount" th:value="${item['cart_amount']}" class="custom-number-input">
+                        <input type="hidden" name="prod_id" th:value="${item['prod_id']}">
+                    </td>
+                    <td class="text-center font-weight-bold subtotal" style="color: red;" th:text="${#numbers.formatInteger(item['subtotal'], 1, 'COMMA') + '원'}" th:data-prod-id="${item['prod_id']}"></td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-end pe-3 py-3" style="background-color: #DEE2E6;">
+                        선택 상품 주문 금액 <span class="fw-bold">총 <span class="text-danger">0</span>원</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="my-5 text-center">
+                <button type="button" class="btn btn-outline-info" id="btnOrderSelected">선택상품주문</button>
+                <button type="button" class="btn btn-info" id="btnOrderAll">전체상품주문</button>
             </div>
         </div>
-        <table class="table table-bordered">
-            <thead class="text-center">
-            <tr>
-                <th style="width: 5%"><input type="checkbox" id="checkAll"></th>
-                <th style="width: 59%">상품정보</th>
-                <th style="width: 12%">판매가</th>
-                <th style="width: 12%">수량</th>
-                <th style="width: 12%">합계</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="item : ${cart_list}">
-                <td class="text-center">
-                    <input type="checkbox" name="prod_id" th:value="${item['prod_id']}">
-                </td>
-                <td class="product-info ml-3">
-                    <div class="product-container d-flex align-items-center">
-                        <div class="product-image me-3" style="width: 81px; height: 81px;">
-                            <img th:src="${'/cart/image_display?dateFolderName=' + item.prod_uploadfolder + '&fileName=s_' + item.prod_img}"}
-                                 alt="상품 이미지"
-                                 class="img-fluid rounded product-thumbnail">
-                        </div>
-                        <div class="product-details">
-                            <h4 class="product-name mb-1" th:text="${item['prod_name']}"></h4>
-                            <small class="text-muted"><p class="manufacturer mb-2" th:text="${item['prod_maker']}"></p></small>
-                        </div>
-                    </div>
-                </td>
-                <td class="text-center font-weight-bold" style="color: red;" th:text="${#numbers.formatInteger(item['prod_price'], 1, 'COMMA') + '원'}"></td>
-                <td class="text-center">
-                    <input type="number" name="cart_amount" th:value="${item['cart_amount']}" class="custom-number-input">
-                    <input type="hidden" name="prod_id" th:value="${item['prod_id']}">
-                </td>
-                <td class="text-center font-weight-bold subtotal" style="color: red;" th:text="${#numbers.formatInteger(item['subtotal'], 1, 'COMMA') + '원'}" th:data-prod-id="${item['prod_id']}"></td>
-            </tr>
-            <tr>
-                <td colspan="5" class="text-end pe-3 py-3" style="background-color: #DEE2E6;">
-                    선택 상품 주문 금액 <span class="fw-bold">총 <span class="text-danger">0</span>원</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="my-5 text-center">
-            <button type="button" class="btn btn-outline-info" id="btnOrderSelected">선택상품주문</button>
-            <button type="button" class="btn btn-info" id="btnOrderAll">전체상품주문</button>
+
+        <div th:if="${#lists.isEmpty(cart_list)}" class="text-center" style="padding: 96px 0 96px 0;">
+            <i class="bi bi-cart m-2 text-secondary" style="font-size: 48px;"></i>
+            <p class="m-0 text-secondary" style="font-size: 20px;">장바구니에 담긴 상품이 없습니다.</p>
+            <a href="/product/list" class="btn btn-primary mt-3">쇼핑 계속하기</a>
         </div>
     </div>
 </th:block>

@@ -70,7 +70,7 @@
 
                 <!-- 주문 목록 -->
                 <div style="margin-bottom: 64px;">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" th:if="${not #lists.isEmpty(orderList)}">
                         <thead class="text-center table-light">
                         <tr>
                             <th style="width: 52%">주문정보</th>
@@ -107,6 +107,11 @@
                         </tr>
                         </tbody>
                     </table>
+
+                    <div th:if="${#lists.isEmpty(orderList)}" class="text-center" style="padding: 96px 0 96px 0;">
+                        <i class="bi bi-box-seam m-2 text-secondary" style="font-size: 48px;"></i>
+                        <p class="m-0 text-secondary" style="font-size: 20px;">주문하신 상품이 없습니다.</p>
+                    </div>
                 </div>
 
                 <!-- 페이징 및 검색 파라미터 정보 : 현재 목록상태를 작업(수정,삭제)을 하고 돌아왔을 때 유지. -->
