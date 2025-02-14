@@ -108,46 +108,46 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- 페이징 및 검색 파라미터 정보 : 현재 목록상태를 작업(수정,삭제)을 하고 돌아왔을 때 유지. -->
+                <form id="criteriaForm" action="" method="get">
+                    <!-- 페이징,검색 파라미터 -->
+                    <input type="hidden" name="startDate" th:value="${pageMaker.cri.startDate}"/>
+                    <input type="hidden" name="endDate" th:value="${pageMaker.cri.endDate}"/>
+                </form>
+
+                <!-- pagination -->
+                <nav aria-label="Page navigation example" style="margin-top: 30px;" th:if="${pageMaker.totalCount > 0}">
+                    <ul class="pagination justify-content-center">
+                        <th:block th:if="${pageMaker.prev}">
+                            <li class="page-item">
+                                <a class="page-link"
+                                   th:href="@{|/member/order${pageMaker.makeSearch(pageMaker.startPage - 1)}${pageMaker.cri.startDate != null ? '&startDate=' + pageMaker.cri.startDate : ''}${pageMaker.cri.endDate != null ? '&endDate=' + pageMaker.cri.endDate : ''}|}">
+                                    Previous
+                                </a>
+                            </li>
+                        </th:block>
+
+                        <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                            <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
+                                <a class="page-link"
+                                   th:href="@{|/member/order${pageMaker.makeSearch(num)}${pageMaker.cri.startDate != null ? '&startDate=' + pageMaker.cri.startDate : ''}${pageMaker.cri.endDate != null ? '&endDate=' + pageMaker.cri.endDate : ''}|}"
+                                   th:text="${num}">
+                                </a>
+                            </li>
+                        </th:block>
+
+                        <th:block th:if="${pageMaker.next}">
+                            <li class="page-item">
+                                <a class="page-link"
+                                   th:href="@{|/member/order${pageMaker.makeSearch(pageMaker.endPage + 1)}${pageMaker.cri.startDate != null ? '&startDate=' + pageMaker.cri.startDate : ''}${pageMaker.cri.endDate != null ? '&endDate=' + pageMaker.cri.endDate : ''}|}">
+                                    Next
+                                </a>
+                            </li>
+                        </th:block>
+                    </ul>
+                </nav>
             </div>
-
-            <!-- 페이징 및 검색 파라미터 정보 : 현재 목록상태를 작업(수정,삭제)을 하고 돌아왔을 때 유지. -->
-            <form id="criteriaForm" action="" method="get">
-                <!-- 페이징,검색 파라미터 -->
-                <input type="hidden" name="startDate" th:value="${pageMaker.cri.startDate}"/>
-                <input type="hidden" name="endDate" th:value="${pageMaker.cri.endDate}"/>
-            </form>
-
-            <!-- pagination -->
-            <nav aria-label="Page navigation example" style="margin-top: -12px;">
-                <ul class="pagination justify-content-center">
-                    <th:block th:if="${pageMaker.prev}">
-                        <li class="page-item">
-                            <a class="page-link"
-                               th:href="@{|/member/order${pageMaker.makeSearch(pageMaker.startPage - 1)}${pageMaker.cri.startDate != null ? '&startDate=' + pageMaker.cri.startDate : ''}${pageMaker.cri.endDate != null ? '&endDate=' + pageMaker.cri.endDate : ''}|}">
-                                Previous
-                            </a>
-                        </li>
-                    </th:block>
-
-                    <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
-                        <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
-                            <a class="page-link"
-                               th:href="@{|/member/order${pageMaker.makeSearch(num)}${pageMaker.cri.startDate != null ? '&startDate=' + pageMaker.cri.startDate : ''}${pageMaker.cri.endDate != null ? '&endDate=' + pageMaker.cri.endDate : ''}|}"
-                               th:text="${num}">
-                            </a>
-                        </li>
-                    </th:block>
-
-                    <th:block th:if="${pageMaker.next}">
-                        <li class="page-item">
-                            <a class="page-link"
-                               th:href="@{|/member/order${pageMaker.makeSearch(pageMaker.endPage + 1)}${pageMaker.cri.startDate != null ? '&startDate=' + pageMaker.cri.startDate : ''}${pageMaker.cri.endDate != null ? '&endDate=' + pageMaker.cri.endDate : ''}|}">
-                                Next
-                            </a>
-                        </li>
-                    </th:block>
-                </ul>
-            </nav>
         </div>
     </div>
     </div>

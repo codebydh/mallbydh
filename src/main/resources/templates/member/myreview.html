@@ -97,7 +97,7 @@
                 </div>
 
                 <!-- pagination -->
-                <nav aria-label="Page navigation example" style="margin-top: 30px;">
+                <nav aria-label="Page navigation example" style="margin-top: 30px;" th:if="${pageMaker.totalCount > 0}">
                     <ul class="pagination justify-content-center">
                         <th:block th:if="${pageMaker.prev}">
                             <li class="page-item">
