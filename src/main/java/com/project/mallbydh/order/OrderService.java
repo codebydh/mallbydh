@@ -114,4 +114,8 @@ public class OrderService {
     public void cancelOrder(Integer ord_code) {
         orderMapper.cancelOrder(ord_code);
     }
+
+    public Integer userTotalAmount(String u_id) throws Exception {
+        return orderMapper.userTotalAmount(u_id);
+    }
 }

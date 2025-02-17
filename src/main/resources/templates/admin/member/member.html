@@ -147,6 +147,8 @@
                     <input type="hidden" name="u_gender" id="u_gender" th:value="${u_gender}"/>
                     <input type="hidden" name="u_emailreceive" id="u_emailreceive" th:value="${u_emailreceive}"/>
                     <input type="hidden" name="u_smsreceive" id="u_smsreceive" th:value="${u_smsreceive}"/>
+                    <!-- 수정에 필요한 값(아이디) -->
+                    <input type="hidden" name="u_id" id="u_id">
                 </form>
             </div>
         </div>
@@ -185,8 +187,8 @@
                             <p class="text-muted mb-0" style="font-size: 14px;" th:text="'(' + ${#dates.format(item.u_lastlogin, 'HH:mm:ss')} + ')'"></p>
                         </td>
                         <td class="text-center align-middle">
-                            <button type="button" class="btn btn-sm btn-warning" name="btn_memberEdit">수정</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" name="btn_proDelete">삭제</button>
+                            <button type="button" class="btn btn-sm btn-warning" th:data-u_id="${item.u_id}" name="btnMemberEdit">수정</button>
+                            <button type="button" class="btn btn-sm btn-danger" th:data-u_id="${item.u_id}" name="btn_proDelete">정지</button>
                         </td>
                     </tr>
                     </tbody>
@@ -243,6 +245,14 @@
                         $("#checkAll").prop("checked", false);
                     }
                 });
+            });
+
+            // 수정하기 버튼
+            $("button[name='btnMemberEdit']").on("click", function() {
+                let u_id = $(this).data("u_id");
+                $("#u_id").val(u_id);
+                criteriaForm.attr("action", "/admin/member/edit");
+                criteriaForm.submit();
             });
 
         })

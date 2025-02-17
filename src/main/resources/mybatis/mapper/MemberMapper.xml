@@ -69,10 +69,22 @@
 	        <if test="u_addr_detail != null">
 	            u_addr_detail = #{u_addr_detail},
 	        </if>
-	        <if test="u_pw != null">
-	            u_pw = #{u_pw},
+	        <if test="u_name != null">
+	            u_pw = #{u_name},
 	        </if>
-	    </set>
+			<if test="u_smsreceive != null">
+				u_smsreceive = #{u_smsreceive},
+			</if>
+			<if test="u_emailreceive != null">
+				u_emailreceive = #{u_emailreceive},
+			</if>
+			<if test="u_gender != null">
+				u_gender = #{u_gender},
+			</if>
+			<if test="u_birth != null">
+				u_birth = #{u_birth},
+			</if>
+		</set>
 		where
 			u_id = #{u_id}
 	

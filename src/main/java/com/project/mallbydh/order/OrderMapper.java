@@ -22,4 +22,6 @@ public interface OrderMapper {
 
     void cancelOrder(Integer ord_code);
 
+    Integer userTotalAmount(String u_id) throws Exception;
+
 }
