@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="script">
+</th:block>
+
+<th:block layout:fragment="css">
+    <style>
+        .search-option {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .search-option th {
+            width: 10%;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        .search-option td {
+            text-align: left;
+        }
+
+        .search-option .d-flex select {
+            flex: 1; /* select-input 비율 설정 */
+        }
+
+        .search-option .d-flex input {
+            flex: 3; /* select-input 비율 설정 */
+        }
+
+        .search-option .d-flex {
+            gap: 10px; /* select-input 사이 간격 설정 */
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div>
+        <h2 class="mb-4">회원 목록</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <p class="mb-2 font-weight-bold" style="font-size: 24px;">Search</p>
+
+                <form action="/admin/member/" method="get">
+                    <table class="table table-bordered search-option">
+                        <tbody>
+                        <tr>
+                            <th rowspan="2" class="align-middle">검색어</th>
+                            <td rowspan="2" class="align-middle">
+                                <div class="d-flex">
+                                    <select class="form-control" name="searchType">
+                                        <option selected th:selected="${''} == ${pageMaker.cri.searchType}">전체</option>
+                                        <option value="id" th:selected="${'id'} == ${pageMaker.cri.searchType}">아이디</option>
+                                        <option value="name" th:selected="${'name'} == ${pageMaker.cri.searchType}">성명</option>
+                                        <option value="email" th:selected="${'email'} == ${pageMaker.cri.searchType}">이메일</option>
+                                        <option value="phone" th:selected="${'phone'} == ${pageMaker.cri.searchType}">휴대폰</option>
+                                    </select>
+                                    <input class="form-control" type="search" aria-label="Search" name="keyword" th:value="${pageMaker.cri.keyword}">
+                                </div>
+                            </td>
+                            <th>계정상태</th>
+                            <td>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_status" id="u_status_all" value="" th:checked="${''} == ${u_status}" checked>
+                                    <label class="form-check-label" for="u_status_all">전체</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_status" id="u_status_active" value="활성" th:checked="${'활성'} == ${u_status}">
+                                    <label class="form-check-label" for="u_status_active">활성</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_status" id="u_status_suspended" value="정지" th:checked="${'정지'} == ${u_status}">
+                                    <label class="form-check-label" for="u_status_suspended">정지</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_status" id="u_status_withdrawal" value="사용자탈퇴" th:checked="${'사용자탈퇴'} == ${u_status}">
+                                    <label class="form-check-label" for="u_status_withdrawal">사용자탈퇴</label>
+                                </div>
+                            </td>
+                            <th>성별</th>
+                            <td>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_gender" id="u_gender_all" value="" th:checked="${''} == ${u_gender}" checked>
+                                    <label class="form-check-label" for="u_gender_all">전체</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_gender" id="u_gender_male" value="M" th:checked="${'M'} == ${u_gender}">
+                                    <label class="form-check-label" for="u_gender_male">남성</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_gender" id="u_gender_female" value="F" th:checked="${'F'} == ${u_gender}">
+                                    <label class="form-check-label" for="u_gender_female">여성</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>이메일수신여부</th>
+                            <td>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_emailreceive" id="u_emailreceive_all" value="" th:checked="${''} == ${u_emailreceive}" checked>
+                                    <label class="form-check-label" for="u_emailreceive_all">전체</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_emailreceive" id="u_emailreceive_yes" value="Y" th:checked="${'Y'} == ${u_emailreceive}">
+                                    <label class="form-check-label" for="u_emailreceive_yes">수신허용</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_emailreceive" id="u_emailreceive_no" value="N" th:checked="${'N'} == ${u_emailreceive}">
+                                    <label class="form-check-label" for="u_emailreceive_no">수신거부</label>
+                                </div>
+                            </td>
+                            <th>SMS수신여부</th>
+                            <td>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_smsreceive" id="u_smsreceive_all" value="" th:checked="${''} == ${u_smsreceive}" checked>
+                                    <label class="form-check-label" for="u_smsreceive_all">전체</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_smsreceive" id="u_smsreceive_yes" value="" th:checked="${'Y'} == ${u_smsreceive}">
+                                    <label class="form-check-label" for="u_smsreceive_yes">수신허용</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="u_smsreceive" id="u_smsreceive_no" value="" th:checked="${'N'} == ${u_smsreceive}">
+                                    <label class="form-check-label" for="u_smsreceive_no">수신거부</label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-dark mt-3">검색</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead class="text-center">
+                    <tr>
+                        <th style="width: 3%"><input type="checkbox" id="checkAll"></th>
+                        <th style="width: 9%">계정상태</th>
+                        <th style="width: 44%">성명(아이디)/이메일</th>
+                        <th style="width: 11%">휴대폰</th>
+                        <th style="width: 11%">가입일</th>
+                        <th style="width: 11%">최근접속일</th>
+                        <th style="width: 11%">관리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${memberList}">
+                        <td class="text-center align-middle">
+                            <input type="checkbox" name="check">
+                        </td>
+                        <td class="text-center align-middle" th:text="${item.u_status}"></td>
+                        <td class="align-middle" th:text="${item.u_name} + ' / ' + ${item.u_id} + ' (' + ${item.u_email} + ')'"></td>
+                        <td class="text-center align-middle" th:text="${item.u_phone}"></td>
+                        <td class="text-center align-middle">
+                            <p class="mb-0" th:text="${#dates.format(item.u_regdate, 'yyyy-MM-dd')}"></p>
+                            <p class="text-muted mb-0" style="font-size: 14px;" th:text="'(' + ${#dates.format(item.u_regdate, 'HH:mm:ss')} + ')'"></p>
+                        </td>
+
+                        <td class="text-center align-middle">
+                            <p class="mb-0" th:text="${#dates.format(item.u_lastlogin, 'yyyy-MM-dd')}"></p>
+                            <p class="text-muted mb-0" style="font-size: 14px;" th:text="'(' + ${#dates.format(item.u_lastlogin, 'HH:mm:ss')} + ')'"></p>
+                        </td>
+                        <td class="text-center align-middle">
+                            <button type="button" class="btn btn-sm btn-warning" name="btn_memberEdit">수정</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" name="btn_proDelete">삭제</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</th:block>
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function() {
+            // 제목행 체크박스 클릭 시 전체 상품 선택
+            let isCheck = true;
+            $("#checkAll").on("click", function() {
+                $("input[name='check']").prop("checked", this.checked);
+                isCheck = this.checked;
+            });
+
+            // 체크박스가 모두 선택된 상태에서 한 개라도 체크를 해제할 경우 제목행 체크박스 선택도 해제
+            $("input[name='check']").on("click", function() {
+                $("#checkAll").prop("checked", this.checked);
+                $("input[name='check']").each(function() {
+                    if(!$(this).is(":checked")) {
+                        $("#checkAll").prop("checked", false);
+                    }
+                });
+            });
+
+        })
+    </script>
+</th:block>
+</html>

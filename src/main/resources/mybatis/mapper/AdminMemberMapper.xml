@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.admin.member.AdminMemberMapper">
+
+    <select id="getMembers" resultType="com.project.mallbydh.member.MemberVO" parameterType="com.project.mallbydh.common.utils.SearchCriteria">
+        select
+            *
+        from
+            user_tbl
+        where
+            1=1
+            <include refid="search"></include>
+            <include refid="u_status"></include>
+            <include refid="u_gender"></include>
+            <include refid="u_emailreceive"></include>
+            <include refid="u_smsreceive"></include>
+        order by
+            u_regdate desc
+    </select>
+
+    <select id="getTotalCount">
+        select
+            count(*)
+        from
+            user_tbl
+        where
+            1=1
+            <include refid="search"></include>
+            <include refid="u_status"></include>
+            <include refid="u_gender"></include>
+            <include refid="u_emailreceive"></include>
+            <include refid="u_smsreceive"></include>
+    </select>
+
+    <sql id="search">
+        <if test="cri.searchType != null">
+            <if test="cri.searchType == 'id'.toString()">
+                and u_id like concat('%', #{cri.keyword}, '%')
+            </if>
+            <if test="cri.searchType == 'name'.toString()">
+                and u_name like concat('%', #{cri.keyword}, '%')
+            </if>
+            <if test="cri.searchType == 'email'.toString()">
+                and u_email like concat('%', #{cri.keyword}, '%')
+            </if>
+            <if test="cri.searchType == 'phone'.toString()">
+                and u_phone like concat('%', #{cri.keyword}, '%')
+            </if>
+        </if>
+    </sql>
+
+    <sql id="u_status">
+        <if test="u_status != null and !u_status.equals('')">
+            and u_status = #{u_status}
+        </if>
+    </sql>
+
+    <sql id="u_gender">
+        <if test="u_gender != null and !u_gender.equals('')">
+            and u_gender = #{u_gender}
+        </if>
+    </sql>
+
+    <sql id="u_emailreceive">
+        <if test="u_emailreceive != null and !u_emailreceive.equals('')">
+            and u_emailreceive = #{u_emailreceive}
+        </if>
+    </sql>
+
+    <sql id="u_smsreceive">
+        <if test="u_smsreceive != null and !u_smsreceive.equals('')">
+            and u_smsreceive = #{u_smsreceive}
+        </if>
+    </sql>
+
+</mapper>
