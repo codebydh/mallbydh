@@ -136,6 +136,18 @@
                         <button type="submit" class="btn btn-dark mt-3">검색</button>
                     </div>
                 </form>
+
+                <!-- 페이징 및 검색 파라미터 정보 -->
+                <form id="criteriaForm" action="/admin/member/" method="get">
+                    <input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}" />
+                    <input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}" />
+                    <input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}" />
+                    <input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}" />
+                    <input type="hidden" name="u_status" id="u_status" th:value="${u_status}"/>
+                    <input type="hidden" name="u_gender" id="u_gender" th:value="${u_gender}"/>
+                    <input type="hidden" name="u_emailreceive" id="u_emailreceive" th:value="${u_emailreceive}"/>
+                    <input type="hidden" name="u_smsreceive" id="u_smsreceive" th:value="${u_smsreceive}"/>
+                </form>
             </div>
         </div>
 
@@ -180,12 +192,42 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- pagination -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <th:block th:if="${pageMaker.prev}">
+                        <li class="page-item"><a class="page-link movepage" th:href="${pageMaker.startPage - 1}">Previous</a></li>
+                    </th:block>
+
+                    <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                        <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
+                            <a class="page-link movepage" th:href="${num}" th:text="${num}"></a>
+                        </li>
+                    </th:block>
+
+                    <th:block th:if="${pageMaker.next}">
+                        <li class="page-item"><a class="page-link movepage" th:href="${pageMaker.endPage + 1}">Next</a></li>
+                    </th:block>
+                </ul>
+            </nav>
         </div>
     </div>
 </th:block>
+
 <th:block layout:fragment="script2">
     <script>
         $(document).ready(function() {
+
+            let criteriaForm = $("#criteriaForm");
+
+            $("a.movepage").on("click", function(e) {
+                e.preventDefault(); // <a>태그의 링크기능을 제거
+
+                criteriaForm.find("input[name='page']").val($(this).attr("href"));
+                criteriaForm.submit();
+            });
+
             // 제목행 체크박스 클릭 시 전체 상품 선택
             let isCheck = true;
             $("#checkAll").on("click", function() {
