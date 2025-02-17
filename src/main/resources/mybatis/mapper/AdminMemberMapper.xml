@@ -32,6 +32,15 @@
             <include refid="u_smsreceive"></include>
     </select>
 
+    <update id="memberSuspend">
+        update
+            user_tbl
+        set
+            u_status = '정지'
+        where
+            u_id = #{u_id}
+    </update>
+
     <sql id="search">
         <if test="cri.searchType != null">
             <if test="cri.searchType == 'id'.toString()">

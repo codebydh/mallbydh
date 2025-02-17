@@ -188,7 +188,7 @@
                         </td>
                         <td class="text-center align-middle">
                             <button type="button" class="btn btn-sm btn-warning" th:data-u_id="${item.u_id}" name="btnMemberEdit">수정</button>
-                            <button type="button" class="btn btn-sm btn-danger" th:data-u_id="${item.u_id}" name="btn_proDelete">정지</button>
+                            <button type="button" class="btn btn-sm btn-danger" th:data-u_id="${item.u_id}" name="btnMemberSuspend">정지</button>
                         </td>
                     </tr>
                     </tbody>
@@ -253,6 +253,23 @@
                 $("#u_id").val(u_id);
                 criteriaForm.attr("action", "/admin/member/edit");
                 criteriaForm.submit();
+            });
+
+            // 정지 버튼
+            $("button[name='btnMemberSuspend']").on("click", function() {
+               if(!confirm("해당 사용자를 정지시키시겠습니까?")) return;
+
+               let u_id = $(this).data("u_id");
+               $.ajax ({
+                  url: '/admin/member/suspend',
+                  type: 'post',
+                  data: {u_id: u_id},
+                  dataType: 'text',
+                  success: function(result) {
+                      alert("해당 사용자를 정지시켰습니다.");
+                      location.href = "/admin/member/";
+                  }
+               });
             });
 
         })

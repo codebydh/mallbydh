@@ -23,4 +23,8 @@ public class AdminMemberService {
         return adminmembermapper.getTotalCount(cri, u_status, u_gender, u_emailreceive, u_smsreceive);
     }
 
+    public void memberSuspend(String u_id) {
+        adminmembermapper.memberSuspend(u_id);
+    }
+
 }

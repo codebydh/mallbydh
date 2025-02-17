@@ -39,7 +39,7 @@
 	<select id="modifyView" parameterType="String" resultType="com.project.mallbydh.member.MemberVO">
 	
 		select 
-			u_id, u_pw, u_name, u_phone, u_smsreceive, u_email, u_emailreceive, u_birth, u_gender, u_zipcode, u_addr, u_addr_detail, u_point, u_regdate, u_updatedate, u_lastlogin
+			u_id, u_pw, u_name, u_phone, u_smsreceive, u_email, u_emailreceive, u_birth, u_gender, u_zipcode, u_addr, u_addr_detail, u_point, u_regdate, u_updatedate, u_lastlogin, u_status
 		from 
 			user_tbl 
 		where 
@@ -83,6 +83,9 @@
 			</if>
 			<if test="u_birth != null">
 				u_birth = #{u_birth},
+			</if>
+			<if test="u_status != null">
+				u_status = #{u_status}
 			</if>
 		</set>
 		where

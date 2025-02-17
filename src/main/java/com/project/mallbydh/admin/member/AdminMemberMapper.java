@@ -16,4 +16,6 @@ public interface AdminMemberMapper {
     int getTotalCount(@Param("cri") SearchCriteria cri, @Param("u_status") String u_status,
                       @Param("u_gender") String u_gender, @Param("u_emailreceive") String u_emailreceive,
                       @Param("u_smsreceive") String u_smsreceive);
+
+    void memberSuspend(String u_id);
 }

@@ -48,10 +48,10 @@
                                 <td th:text="${memberVO.u_id}"></td>
                                 <th>계정상태</th>
                                 <td>
-                                    <select class="form-control" aria-label="Default select example">
-                                        <option value="활성" th:checked="${memberVO.u_status == '활성'}">활성</option>
-                                        <option value="정지" th:checked="${memberVO.u_status == '정지'}">정지</option>
-                                        <option value="사용자탈퇴" th:checked="${memberVO.u_status == '사용자탈퇴'}">사용자탈퇴</option>
+                                    <select class="form-control" aria-label="Default select example" th:field="${memberVO.u_status}">
+                                        <option value="활성">활성</option>
+                                        <option value="정지">정지</option>
+                                        <option value="사용자탈퇴">사용자탈퇴</option>
                                     </select>
                                 </td>
                             </tr>
