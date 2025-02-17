@@ -53,8 +53,8 @@
 </th:block>
 
 <th:block layout:fragment="content">
-    <div class="mx-5">
-        <h2 class="my-4">상품 목록</h2>
+    <div>
+        <h2 class="mb-4">상품 목록</h2>
             <div class="card">
                 <div class="card-body">
                     <div class="mb-2 d-flex justify-content-between align-items-center">
@@ -135,7 +135,7 @@
                     <input type="hidden" name="prod_id" id="prod_id">
                 </form>
                 <!-- /.card-body -->
-                <nav aria-label="Page navigation example" style="margin-top: -12px;">
+                <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <th:block th:if="${pageMaker.prev}">
                             <li class="page-item">

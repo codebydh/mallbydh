@@ -10,13 +10,16 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
+    <!-- Navbar -->
+    <nav th:replace="~{/admin/fragments/nav}"></nav>
+    <!-- /.navbar -->
     <!-- Main Sidebar Container -->
     <aside th:replace="~{/admin/fragments/aside}"></aside>
     <!-- /.main Sidebar Container -->
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Main content -->
-        <section class="content p-3">
+        <section class="content" style="padding: 32px 48px 48px 48px;">
             <th:block layout:fragment="content"></th:block>
         </section>
         <!-- /.content -->
