@@ -9,10 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -52,4 +49,13 @@ public class ManagerController {
         return entity;
     }
 
+    @PostMapping("/suspend")
+    public ResponseEntity<String> managerSuspend(@RequestParam("admin_id") String admin_id) throws Exception {
+        ResponseEntity<String> entity = null;
+
+        managerService.suspendManager(admin_id);
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+
+        return entity;
+    }
 }

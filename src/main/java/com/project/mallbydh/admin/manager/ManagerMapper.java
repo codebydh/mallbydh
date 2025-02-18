@@ -13,5 +13,7 @@ public interface ManagerMapper {
 
     void insertManager(AdminVO vo);
 
+    void managerSuspend(String admin_id);
+
 
 }

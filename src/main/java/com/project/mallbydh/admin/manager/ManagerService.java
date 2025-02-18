@@ -23,4 +23,8 @@ public class ManagerService {
         managerMapper.insertManager(vo);
     }
 
+    public void suspendManager(String admin_id) {
+        managerMapper.managerSuspend(admin_id);
+    }
+
 }

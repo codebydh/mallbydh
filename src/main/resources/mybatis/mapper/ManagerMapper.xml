@@ -33,6 +33,15 @@
             (#{admin_name}, #{admin_id}, #{admin_pw})
     </insert>
 
+    <update id="managerSuspend">
+        update
+            admin_tbl
+        set
+            admin_status = '정지'
+        where
+            admin_id = #{admin_id}
+    </update>
+
     <sql id="search">
         <if test="cri.searchType != null">
             <if test="cri.searchType == 'id'.toString()">
