@@ -162,7 +162,7 @@
                     <tr>
                         <th style="width: 3%"><input type="checkbox" id="checkAll"></th>
                         <th style="width: 9%">계정상태</th>
-                        <th style="width: 44%">성명(아이디)/이메일</th>
+                        <th style="width: 44%">아이디(성명/이메일)</th>
                         <th style="width: 11%">휴대폰</th>
                         <th style="width: 11%">가입일</th>
                         <th style="width: 11%">최근접속일</th>
@@ -175,7 +175,9 @@
                             <input type="checkbox" name="check">
                         </td>
                         <td class="text-center align-middle" th:text="${item.u_status}"></td>
-                        <td class="align-middle" th:text="${item.u_name} + ' / ' + ${item.u_id} + ' (' + ${item.u_email} + ')'"></td>
+                        <td class="align-middle">
+                            <span th:utext="'<b>' + ${item.u_id} + '</b> (' + ${item.u_name} + ' / ' + ${item.u_email} + ')'"></span>
+                        </td>
                         <td class="text-center align-middle" th:text="${item.u_phone}"></td>
                         <td class="text-center align-middle">
                             <p class="mb-0" th:text="${#dates.format(item.u_regdate, 'yyyy-MM-dd')}"></p>
