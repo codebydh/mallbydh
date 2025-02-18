@@ -17,99 +17,150 @@
             background-color: red;
             border-color: red;
         }
+
+        .fs-14 {
+            font-size: 14px;
+        }
+
+        .product-info {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .product-info th {
+            width: 15%;
+            background-color: #f5f5f5;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .product-info td {
+            text-align: left;
+            vertical-align: middle;
+        }
     </style>
 </th:block>
 
 <th:block layout:fragment="content">
     <div>
         <h2 class="mb-4">상품 수정</h2>
-        <div class="row">
-            <div class="col">
-                <div class="card card-primary">
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <form action="/admin/product/pro_update" method="post" enctype="multipart/form-data">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label class="mr-5">상품 노출</label>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input class="custom-control-input" type="radio" id="prod_forsale_y" name="prod_forsale" value="Y" th:checked="${productVO.prod_forsale == 'Y'}">
-                                    <label class="custom-control-label" for="prod_forsale_y" style="color: green">노출</label>
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input class="custom-control-input" type="radio" id="prod_forsale_n" name="prod_forsale" value="N" th:checked="${productVO.prod_forsale == 'N'}">
-                                    <label class="custom-control-label" for="prod_forsale_n" style="color: red">숨김</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="prod_name">상품명</label>
-                                <input type="text" class="form-control" id="prod_name" name="prod_name" th:value="${productVO.prod_name}">
-                                <input type="hidden" name="prod_id" th:value="${productVO.prod_id}">
-                            </div>
-                            <div class="form-group">
-                                <label>카테고리</label>
-                                <div class="row">
-                                    <div class = "col-6 pr-1">
-                                        <select class="custom-select" id="btn_firstCategory" name="cate_parentid">
-                                            <option>1차 카테고리 선택</option>
-                                            <option th:each="category : ${cate_list}" th:value="${category.cate_id}"
-                                                    th:text="${category.cate_name}" th:selected="${category.cate_id == categoryVO.cate_parentid}">option 2</option>
-                                        </select>
+
+        <form action="/admin/product/pro_update" id="productUpdateForm" method="post" enctype="multipart/form-data">
+            <div class="card">
+                <div class="card-body">
+                    <!-- 광고정보 -->
+                    <div class="mb-3">
+                        <p class="mb-2 font-weight-bold" style="font-size: 20px;">광고정보</p>
+                        <table class="table table-bordered product-info fs-14">
+                            <tr>
+                                <th>판매여부</th>
+                                <td>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="prod_forsale" id="prod_forsale_y" value="Y" th:checked="${productVO.prod_forsale == 'Y'}">
+                                        <label class="form-check-label" for="prod_forsale_y">노출</label>
                                     </div>
-                                    <div class = "col-6 pl-1">
-                                        <select class="custom-select" id="btn_secondCategory" name="cate_id">
-                                            <option>2차 카테고리 선택</option>
-                                            <option th:each= "subCategory : ${secondCategoryVO}" th:value="${subCategory.cate_id}"
-                                                    th:text="${subCategory.cate_name}" th:selected="${subCategory.cate_id == productVO.cate_id}"></option>
-                                        </select>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="prod_forsale" id="prod_forsale_n" value="N" th:checked="${productVO.prod_forsale == 'N'}">
+                                        <label class="form-check-label" for="prod_forsale_n">숨김</label>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="prod_maker">제조사</label>
-                                <input type="text" class="form-control" id="prod_maker" name="prod_maker" th:value="${productVO.prod_maker}">
-                            </div>
-                            <div class="form-group">
-                                <label for="prod_price">가격</label>
-                                <input type="text" class="form-control" id="prod_price" name="prod_price" th:value="${productVO.prod_price}">
-                            </div>
-                            <div class="form-group">
-                                <label for="prod_discount">할인율</label>
-                                <input type="text" class="form-control" id="prod_discount" name="prod_discount" th:value="${productVO.prod_discount}">
-                            </div>
-                            <div class="form-group">
-                                <label for="prod_amount">수량</label>
-                                <input type="number" class="form-control" id="prod_amount" name="prod_amount" th:value="${productVO.prod_amount}">
-                            </div>
-                            <div class="form-group">
-                                <label for="prod_img_upload">상품 이미지</label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="prod_img_upload" name="prod_img_upload">
-                                        <label class="custom-file-label" for="prod_img_upload" id="prod_img_label">Choose file</label>
-                                        <!-- 상품이미지 변경시 기존이미지 삭제를 위한 이미지정보 -->
-                                        <input type="hidden" name="prod_uploadfolder" th:value="${productVO.prod_uploadfolder}">
-                                        <input type="hidden" name="prod_img" th:value="${productVO.prod_img}">
+                                </td>
+                                <th>우선순위</th>
+                                <td>
+                                    <input type="number" class="form-control mb-1" id="prod_priority" name="prod_priority" th:value="${productVO.prod_priority}">
+                                    <p class="text-primary small mb-0">- 숫자 1에서 8까지 정수로 지정해 주세요. (기본값 999)</p>
+                                    <p class="text-primary small mb-0">- 설정된 상품은 메인 페이지 'MD's Pick' 에 순서대로 노출됩니다.</p>
+                                    <p class="text-primary small mb-0">- 우선순위 값이 동일할 경우 최근 등록된 상품이 먼저 정렬됩니다.</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- 상품기본정보 -->
+                    <div class="mb-3">
+                        <p class="mb-2 font-weight-bold" style="font-size: 20px;">상품정보</p>
+                        <table class="table table-bordered product-info fs-14">
+                            <tr>
+                                <th>상품명</th>
+                                <td>
+                                    <input type="text" class="form-control" id="prod_name" name="prod_name" th:value="${productVO.prod_name}">
+                                    <input type="hidden" name="prod_id" th:value="${productVO.prod_id}">
+                                </td>
+                                <th rowspan="2">카테고리</th>
+                                <td rowspan="2">
+                                    <select class="custom-select mb-2" id="btn_firstCategory" name="cate_parentid">
+                                        <option>1차 카테고리 선택</option>
+                                        <option th:each="category : ${cate_list}" th:value="${category.cate_id}"
+                                                th:text="${category.cate_name}" th:selected="${category.cate_id == categoryVO.cate_parentid}">option 2</option>
+                                    </select>
+                                    <select class="custom-select" id="btn_secondCategory" name="cate_id">
+                                        <option>2차 카테고리 선택</option>
+                                        <option th:each= "subCategory : ${secondCategoryVO}" th:value="${subCategory.cate_id}"
+                                                th:text="${subCategory.cate_name}" th:selected="${subCategory.cate_id == productVO.cate_id}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>제조사</th>
+                                <td>
+                                    <input type="text" class="form-control" id="prod_maker" name="prod_maker" th:value="${productVO.prod_maker}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>가격</th>
+                                <td>
+                                    <input type="text" class="form-control" id="prod_price" name="prod_price" th:value="${productVO.prod_price}">
+                                </td>
+                                <th>수량</th>
+                                <td>
+                                    <input type="number" class="form-control" id="prod_amount" name="prod_amount" th:value="${productVO.prod_amount}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>할인율</th>
+                                <td>
+                                    <input type="text" class="form-control" id="prod_discount" name="prod_discount" th:value="${productVO.prod_discount}">
+                                </td>
+                                <th>누적판매량</th>
+                                <td>
+                                    <input type="text" class="form-control" id="prod_ordercount" name="prod_ordercount" th:value="${productVO.prod_ordercount}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>대표이미지</th>
+                                <td colspan="3">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="prod_img_upload" name="prod_img_upload">
+                                            <label class="custom-file-label" for="prod_img_upload" id="prod_img_label">Choose file</label>
+                                            <!-- 상품이미지 변경시 기존이미지 삭제를 위한 이미지정보 -->
+                                            <input type="hidden" name="prod_uploadfolder" th:value="${productVO.prod_uploadfolder}">
+                                            <input type="hidden" name="prod_img" th:value="${productVO.prod_img}">
+                                        </div>
                                     </div>
-                                </div>
-                                <div style="margin-top: 8px;">
-                                    <img id="img_preview" style="width: 200px;height: 200px;"
-                                         th:src="|/admin/product/image_display?dateFolderName=${productVO.prod_uploadfolder}&fileName=${productVO.prod_img}|">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="prod_content">상품설명</label>
-                                <textarea class="form-control" id="prod_content" name="prod_content" th:text="${productVO.prod_content}"></textarea>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">수정</button>
-                        </div>
-                    </form>
+                                    <div style="margin-top: 8px;">
+                                        <img id="img_preview" style="width: 200px;height: 200px;"
+                                             th:src="|/admin/product/image_display?dateFolderName=${productVO.prod_uploadfolder}&fileName=${productVO.prod_img}|">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>상품설명</th>
+                                <td colspan="3">
+                                    <textarea class="form-control" id="prod_content" name="prod_content" th:text="${productVO.prod_content}"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- 버튼 -->
+                    <div class="text-center" style="margin: 36px 0 16px 0;">
+                        <button type="submit" class="btn btn-danger mr-2 px-4" id="btnMemberUpdate">수정</button>
+                        <input type="hidden" id="u_id" name="u_id" th:value="${productVO.prod_id}">
+                        <button type="button" class="btn btn-light px-4" onclick="history.back()">뒤로</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
     <script>
         // ckeditor 설정
@@ -161,6 +212,22 @@
                     }
                     reader.readAsDataURL(file);
                 }
+            });
+
+            // 폼 출력 전 체크
+            $("#btnMemberUpdate").on("click", function(event) {
+                event.preventDefault();
+
+                let prod_priority = $("#prod_priority").val();
+                let priorityNum = parseInt(prod_priority);
+
+                if (isNaN(priorityNum) || priorityNum < 1 || priorityNum > 8 || prod_priority.includes('.')) {
+                    alert("올바르지 않은 우선순위 값입니다. 1부터 8까지의 정수를 입력해주세요.");
+                    $("#prod_priority").focus();
+                    return;
+                }
+
+                $("#productUpdateForm").submit();
             });
         })
     </script>

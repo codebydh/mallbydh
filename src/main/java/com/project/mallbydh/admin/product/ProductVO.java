@@ -26,4 +26,6 @@ public class ProductVO {
     private int prod_reviewcount;
     private int prod_wishcount;
     private int prod_inquirycount;
+    private int prod_priority;
+    private int prod_ordercount;
 }

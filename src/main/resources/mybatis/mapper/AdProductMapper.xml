@@ -70,7 +70,7 @@
 
     <select id="pro_edit" resultType="com.project.mallbydh.admin.product.ProductVO" parameterType="com.project.mallbydh.common.utils.SearchCriteria">
         select
-            prod_id, cate_id, prod_name, prod_price, prod_amount, prod_discount, prod_maker, prod_content, prod_uploadfolder, prod_img, prod_forsale, prod_regdate, prod_updatedate
+            *
         from
             product_tbl
         where
@@ -81,8 +81,19 @@
         update
             product_tbl
         set
-            cate_id = #{cate_id}, prod_name = #{prod_name}, prod_price = #{prod_price}, prod_discount = #{prod_discount} , prod_maker = #{prod_maker}, prod_content = #{prod_content},
-            prod_uploadfolder = #{prod_uploadfolder}, prod_img = #{prod_img}, prod_amount = #{prod_amount}, prod_forsale = #{prod_forsale}, prod_updatedate = now()
+            prod_updatedate = now(),
+            cate_id = #{cate_id},
+            prod_name = #{prod_name},
+            prod_price = #{prod_price},
+            prod_discount = #{prod_discount},
+            prod_maker = #{prod_maker},
+            prod_content = #{prod_content},
+            prod_uploadfolder = #{prod_uploadfolder},
+            prod_img = #{prod_img},
+            prod_amount = #{prod_amount},
+            prod_forsale = #{prod_forsale},
+            prod_priority = #{prod_priority},
+            prod_ordercount = #{prod_ordercount}
         where
             prod_id = #{prod_id}
     </update>
