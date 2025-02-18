@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.admin.manager.ManagerMapper">
+
+    <select id="getManagers" resultType="com.project.mallbydh.admin.manager.AdminVO" parameterType="com.project.mallbydh.common.utils.SearchCriteria">
+        select
+            *
+        from
+            admin_tbl
+        where
+            1=1
+            <include refid="search"></include>
+            <include refid="admin_status"></include>
+        order by
+            admin_regdate desc
+    </select>
+
+    <select id="getManagerTotalCount">
+        select
+            count(*)
+        from
+            admin_tbl
+        where
+            1=1
+            <include refid="search"></include>
+            <include refid="admin_status"></include>
+    </select>
+
+    <sql id="search">
+        <if test="cri.searchType != null">
+            <if test="cri.searchType == 'id'.toString()">
+                and admin_id like concat('%', #{cri.keyword}, '%')
+            </if>
+            <if test="cri.searchType == 'name'.toString()">
+                and admin_name like concat('%', #{cri.keyword}, '%')
+            </if>
+        </if>
+    </sql>
+
+    <sql id="admin_status">
+        <if test="admin_status != null and !admin_status.equals('')">
+            and admin_status = #{admin_status}
+        </if>
+    </sql>
+
+</mapper>
