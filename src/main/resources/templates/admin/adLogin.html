@@ -6,14 +6,18 @@
 <th:block layout:fragment="script">
   <script th:inline="javascript">
 
-    let msg = [[${msg}]]; // pwFail, idFail
+    let status = [[${status}]];
+    let message = [[${message}]];
 
-    if(msg == 'idFail') {
+    if (message) {
+      alert(message);
+    } else if (status == 'idFail') {
       alert("아이디를 확인하세요");
-    }else if(msg == 'pwFail') {
+    } else if (status == 'pwFail') {
       alert("비밀번호를 확인하세요");
+    } else if (status == 'suspended') {
+      alert("정지된 계정입니다.");
     }
-
   </script>
 </th:block>
 

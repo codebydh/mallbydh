@@ -4,7 +4,7 @@
 
     <select id="adLoginPass" parameterType="String" resultType="com.project.mallbydh.admin.AdminDTO">
         select
-            admin_id, admin_pw
+            admin_id, admin_pw, admin_status
         from
             admin_tbl
         where

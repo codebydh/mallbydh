@@ -104,7 +104,7 @@ public class MemberController {
 		String url = "";
 		String status = "";
 		if(memberVO != null) {
-			if("계정정지".equals(memberVO.getU_status())) {
+			if("정지".equals(memberVO.getU_status())) {
 				status = "suspended";
 				url = "/member/login";
 			} else if("사용자탈퇴".equals(memberVO.getU_status())) {
@@ -136,7 +136,7 @@ public class MemberController {
 	// 로그아웃
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		session.invalidate(); // 서버측의 세션으로 저장된 모든메모리가 소멸.
+		session.invalidate();
 		
 		return "redirect:/";
 	}

@@ -32,22 +32,26 @@ public class AdminController {
 		AdminDTO db_vo = adminService.adLoginPass(dto.getAdmin_id());
 
 		String url = "";
-		String msg = "";
+		String status = "";
 		if(db_vo != null) {
-			if(passwordEncoder.matches(dto.getAdmin_pw(), db_vo.getAdmin_pw())) {
+			log.info("상태 : {}", db_vo.getAdmin_status());
+			if("정지".equals(db_vo.getAdmin_status())) {
+				status = "suspended";
+				url = "/admin/";
+			} else if(passwordEncoder.matches(dto.getAdmin_pw(), db_vo.getAdmin_pw())) {
 				session.setAttribute("admin_auth", db_vo);
 				adminService.updateAdminLastLogin(admin_id);
 				url = "/admin/menu";
-			}else {
+			} else {
+				status = "pwFail";
 				url = "/admin/";
-				msg = "pwFail";
 			}
-		}else {
+		} else {
+			status = "idFail";
 			url = "/admin/";
-			msg = "idFail";
 		}
 
-		rttr.addFlashAttribute("msg", msg); // 타임리프파일에서 자바스크립트로 참조
+		rttr.addFlashAttribute("status", status); // 타임리프파일에서 자바스크립트로 참조
 
 		return "redirect:" + url;
 	}
@@ -56,5 +60,11 @@ public class AdminController {
 	public String adminMenu(Model model) {
 		model.addAttribute("currentPage", "menu");
 		return "admin/adMenu";
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/admin/";
 	}
 }
