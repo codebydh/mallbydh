@@ -57,4 +57,8 @@ public class ProductService {
         return productMapper.getLatestProducts();
     }
 
+    public List<ProductVO> getPromotionProducts() {
+        return productMapper.getPromotionProducts();
+    }
+
 }

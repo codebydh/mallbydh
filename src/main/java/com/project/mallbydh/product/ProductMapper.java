@@ -26,4 +26,5 @@ public interface ProductMapper {
 
     // 메인페이지에서 활용
     List<ProductVO> getLatestProducts();
+    List<ProductVO> getPromotionProducts();
 }
