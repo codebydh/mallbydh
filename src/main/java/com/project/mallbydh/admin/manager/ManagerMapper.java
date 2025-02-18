@@ -15,5 +15,9 @@ public interface ManagerMapper {
 
     void managerSuspend(String admin_id);
 
+    AdminVO managerEditView(String admin_id);
+
+    void managerUpdate(AdminVO vo);
+
 
 }

@@ -27,4 +27,12 @@ public class ManagerService {
         managerMapper.managerSuspend(admin_id);
     }
 
+    AdminVO managerEditView(String admin_id) {
+        return managerMapper.managerEditView(admin_id);
+    }
+
+    public void managerUpdate(AdminVO vo) {
+        managerMapper.managerUpdate(vo);
+    }
+
 }

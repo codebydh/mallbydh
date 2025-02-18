@@ -42,6 +42,34 @@
             admin_id = #{admin_id}
     </update>
 
+    <select id="managerEditView" resultType="com.project.mallbydh.admin.manager.AdminVO">
+        select
+            *
+        from
+            admin_tbl
+        where
+            admin_id = #{admin_id}
+    </select>
+
+    <update id="managerUpdate">
+        update
+            admin_tbl
+        <set>
+            admin_updatedate = now(),
+            <if test="admin_pw != null">
+                admin_pw = #{admin_pw},
+            </if>
+            <if test="admin_name != null">
+                admin_name = #{admin_name},
+            </if>
+            <if test="admin_status != null">
+                admin_status = #{admin_status},
+            </if>
+        </set>
+        where
+            admin_id = #{admin_id}
+    </update>
+
     <sql id="search">
         <if test="cri.searchType != null">
             <if test="cri.searchType == 'id'.toString()">

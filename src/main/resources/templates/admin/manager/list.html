@@ -272,6 +272,14 @@
                })
             });
 
+            // 수정하기 버튼
+            $("button[name='btnManagerEdit']").on("click", function() {
+                let admin_id = $(this).data("admin_id");
+                $("#admin_id").val(admin_id);
+                criteriaForm.attr("action", "/admin/manager/edit");
+                criteriaForm.submit();
+            });
+
             // 정지 버튼
             $("button[name='btnManagerSuspend']").on("click", function() {
                 if(!confirm("해당 운영자를 정지시키시겠습니까?")) return;

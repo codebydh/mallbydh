@@ -15,4 +15,5 @@ public class AdminVO {
     private Date admin_regdate;
     private Date admin_lastlogin;
     private String admin_status;
+    private Date admin_updatedate;
 }

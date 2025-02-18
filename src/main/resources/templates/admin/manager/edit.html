@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="script">
+</th:block>
+
+<th:block layout:fragment="css">
+    <style>
+        .member-info {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .member-info th {
+            width: 15%;
+            background-color: #f5f5f5;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .member-info td {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .fs-14 {
+            font-size: 14px;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="content">
+
+    <div>
+        <h2 class="mb-4">관리자 정보 수정</h2>
+
+        <form action="/admin/manager/update" id="managerUpdateForm" method="post">
+            <div class="card">
+                <div class="card-body">
+                    <!-- 회원기본정보 -->
+                    <div class="mb-3">
+                        <p class="mb-2 font-weight-bold" style="font-size: 20px;">기본정보</p>
+                        <table class="table table-bordered member-info fs-14">
+                            <tr>
+                                <th>아이디</th>
+                                <td>
+                                    <input type="text" class="form-control-plaintext" id="admin_id" name="admin_id" th:value="${adminVO.admin_id}" readonly>
+                                </td>
+                                <th rowspan="3">비밀번호</th>
+                                <td rowspan="3">
+                                    <input type="password" class="form-control mb-2" name="admin_pw" id="admin_pw" placeholder="바꿀 비밀번호">
+                                    <input type="password" class="form-control mb-1" id="admin_pwConfirm" placeholder="비밀번호 확인">
+                                    <p class="text-danger mb-0" style="font-size: 14px;">★ 비밀번호를 수정하실 경우에만 입력하세요.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>성함</th>
+                                <td>
+                                    <input type="text" class="form-control" th:value="${adminVO.admin_name}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th rowspan="3">계정상태</th>
+                                <td rowspan="3">
+                                    <select class="form-control" aria-label="Default select example" th:field="${adminVO.admin_status}">
+                                        <option value="활성">활성</option>
+                                        <option value="정지">정지</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- 회원활동정보 -->
+                    <div>
+                        <p class="mb-2 font-weight-bold" style="font-size: 20px;">활동정보</p>
+                        <table class="table table-bordered member-info fs-14">
+                            <tr>
+                                <th>가입일</th>
+                                <td colspan="3" th:text="${#dates.format(adminVO.admin_regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            </tr>
+                            <tr>
+                                <th>최종 로그인</th>
+                                <td colspan="3" th:text="${adminVO.admin_regdate != null ? #dates.format(adminVO.admin_regdate, 'yyyy-MM-dd HH:mm:ss') : '-'}"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- 버튼 -->
+                    <div class="text-center" style="margin: 36px 0 16px 0;">
+                        <button type="button" class="btn btn-danger mr-2 px-4" id="btnAdminUpdate">수정</button>
+                        <button type="button" class="btn btn-light px-4" onclick="history.back()">뒤로</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function() {
+            $("#btnAdminUpdate").on("click", function() {
+                let admin_pw = $("#admin_pw").val();
+                let admin_pwConfirm = $("#admin_pwConfirm").val();
+
+                if (admin_pw !== admin_pwConfirm) {
+                    alert("비밀번호가 일치하지 않습니다.");
+                    return;
+                }
+
+                let managerUpdateForm = $("#managerUpdateForm");
+                managerUpdateForm.submit();
+            });
+        });
+    </script>
+</th:block>
+</html>
