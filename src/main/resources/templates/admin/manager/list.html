@@ -81,9 +81,58 @@
 
                     <div class="text-center">
                         <button type="submit" class="btn btn-dark">검색</button>
-                        <button type="submit" class="btn btn-info">관리자등록</button>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#newManagerModal">운영자등록</button>
                     </div>
                 </form>
+
+                <!-- 관리자 등록 모달 -->
+                <div class="modal fade" id="newManagerModal" tabindex="-1" aria-labelledby="newManagerModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="ManagerModalLabel">새 운영자 등록하기</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 이름 -->
+                                <div class="row my-3">
+                                    <label for="admin_name_new" class="col-sm-2 col-form-label" style="font-weight: 500;">이름</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="admin_name_new" name="admin_name_new">
+                                    </div>
+                                </div>
+
+                                <!-- 아이디 -->
+                                <div class="row mb-3">
+                                    <label for="admin_id_new" class="col-sm-2 col-form-label" style="font-weight: 500;">아이디</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="admin_id_new" name="admin_id_new">
+                                    </div>
+                                </div>
+
+                                <!-- 비밀번호 -->
+                                <div class="row mb-3">
+                                    <label for="admin_pw_new" class="col-sm-2 col-form-label mb-2" style="font-weight: 500;">비밀번호</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="admin_pw_new" name="admin_pw_new" placeholder="비밀번호">
+                                    </div>
+
+                                    <label for="admin_pw_new_confirm" class="col-sm-2 col-form-label fw-bold mb-2"></label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="admin_pw_new_confirm" name="admin_pw_new_confirm" placeholder="비밀번호 확인">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                <button type="submit" class="btn btn-info" id="btnNewAdmin">등록</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- 페이징 및 검색 파라미터 정보 -->
                 <form id="criteriaForm" action="/admin/manager/" method="get">
@@ -193,6 +242,34 @@
                         $("#checkAll").prop("checked", false);
                     }
                 });
+            });
+
+            // 신규 운영자 등록
+            $("#btnNewAdmin").on("click", function() {
+               let admin_name = $("#admin_name_new").val();
+               let admin_id = $("#admin_id_new").val();
+               let admin_pw = $("#admin_pw_new").val();
+               let admin_pwConfirm = $("#admin_pw_new_confirm").val();
+
+               if (admin_pw !== admin_pwConfirm) {
+                   alert("비밀번호가 일치하지 않습니다.");
+                   return;
+               }
+
+               $.ajax({
+                   url: '/admin/manager/new',
+                   type: 'post',
+                   data: {
+                       admin_id: admin_id,
+                       admin_name: admin_name,
+                       admin_pw: admin_pw
+                   },
+                   dataType: 'text',
+                   success: function(result) {
+                       alert("새 운영자가 등록되었습니다.");
+                       location.href="/admin/manager/";
+                   }
+               })
             });
         })
     </script>

@@ -19,4 +19,8 @@ public class ManagerService {
         return managerMapper.getManagerTotalCount(cri, admin_status);
     }
 
+    public void insertManager(AdminVO vo) {
+        managerMapper.insertManager(vo);
+    }
+
 }

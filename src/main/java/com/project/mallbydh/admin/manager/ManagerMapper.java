@@ -11,5 +11,7 @@ public interface ManagerMapper {
 
     int getManagerTotalCount(@Param("cri") SearchCriteria cri, @Param("admin_status") String admin_status);
 
+    void insertManager(AdminVO vo);
+
 
 }

@@ -26,6 +26,13 @@
             <include refid="admin_status"></include>
     </select>
 
+    <insert id="insertManager">
+        insert into
+            admin_tbl(admin_name, admin_id, admin_pw)
+        values
+            (#{admin_name}, #{admin_id}, #{admin_pw})
+    </insert>
+
     <sql id="search">
         <if test="cri.searchType != null">
             <if test="cri.searchType == 'id'.toString()">
