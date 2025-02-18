@@ -157,7 +157,7 @@
 
         <div class="card">
             <div class="card-body">
-                <table class="table table-bordered">
+                <table class="table table-bordered" th:if="${not #lists.isEmpty(memberList)}">
                     <thead class="text-center">
                     <tr>
                         <th style="width: 3%"><input type="checkbox" id="checkAll"></th>
@@ -195,10 +195,14 @@
                     </tr>
                     </tbody>
                 </table>
+
+                <div th:if="${#lists.isEmpty(memberList)}" class="text-center p-4">
+                    <p class="mb-0">검색 결과가 없습니다.</p>
+                </div>
             </div>
 
             <!-- pagination -->
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example" th:if="${pageMaker.totalCount > 0}">
                 <ul class="pagination justify-content-center">
                     <th:block th:if="${pageMaker.prev}">
                         <li class="page-item"><a class="page-link movepage" th:href="${pageMaker.startPage - 1}">Previous</a></li>
