@@ -67,7 +67,7 @@
                                 <th>우선순위</th>
                                 <td>
                                     <input type="number" class="form-control mb-1" id="prod_priority" name="prod_priority" th:value="${productVO.prod_priority}">
-                                    <p class="text-primary small mb-0">- 숫자 1에서 8까지 정수로 지정해 주세요. (기본값 999)</p>
+                                    <p class="text-primary small mb-0">- 숫자 1에서 8까지 정수로 지정해 주세요. (기본값 999)  |   광고 해제를 원할 경우 비워주세요.</p>
                                     <p class="text-primary small mb-0">- 설정된 상품은 메인 페이지 'MD's Pick' 에 순서대로 노출됩니다.</p>
                                     <p class="text-primary small mb-0">- 우선순위 값이 동일할 경우 최근 등록된 상품이 먼저 정렬됩니다.</p>
                                 </td>
@@ -218,13 +218,17 @@
             $("#btnMemberUpdate").on("click", function(event) {
                 event.preventDefault();
 
-                let prod_priority = $("#prod_priority").val();
-                let priorityNum = parseInt(prod_priority);
+                let prod_priority = $("#prod_priority").val()
 
-                if (isNaN(priorityNum) || priorityNum < 1 || priorityNum > 8 || prod_priority.includes('.')) {
-                    alert("올바르지 않은 우선순위 값입니다. 1부터 8까지의 정수를 입력해주세요.");
-                    $("#prod_priority").focus();
-                    return;
+                // 빈 문자열이 아닌 경우에만 유효성 검사 수행
+                if (prod_priority !== "") {
+                    let priorityNum = parseInt(prod_priority);
+
+                    if (isNaN(priorityNum) || priorityNum < 1 || priorityNum > 8 || prod_priority.includes('.')) {
+                        alert("올바르지 않은 우선순위 값입니다. 1부터 8까지의 정수를 입력하거나 비워두세요.");
+                        $("#prod_priority").focus();
+                        return;
+                    }
                 }
 
                 $("#productUpdateForm").submit();

@@ -92,7 +92,7 @@
             prod_img = #{prod_img},
             prod_amount = #{prod_amount},
             prod_forsale = #{prod_forsale},
-            prod_priority = #{prod_priority},
+            prod_priority = IFNULL(#{prod_priority}, 999),
             prod_ordercount = #{prod_ordercount}
         where
             prod_id = #{prod_id}
