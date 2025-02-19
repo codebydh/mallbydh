@@ -70,11 +70,8 @@ public class OrderService {
         paymentVO.setPayment_price(vo.getOrd_price());
 
         if(paymentMethod.equals("무통장입금")) {
-            paymentVO.setPayment_status("입금대기");
             paymentVO.setDeposit_name(deposit_name);
             paymentVO.setAccount_info(account_info);
-        } else {
-            paymentVO.setPayment_status("결제완료");
         }
 
         paymentMapper.insertPayment(paymentVO);

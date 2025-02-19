@@ -27,8 +27,6 @@
 
     <select id="getOrdersByUserId" resultType="com.project.mallbydh.order.OrderVO">
         SELECT o.*,
-                p.payment_status,
-                d.delivery_status,
                 first_prod.prod_uploadfolder,
                 first_prod.prod_img
         FROM order_tbl o
