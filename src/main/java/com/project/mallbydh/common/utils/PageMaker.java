@@ -3,6 +3,8 @@ package com.project.mallbydh.common.utils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 // 페이징기능을 구현하기위한 클래스
 //       1	 2	3	4	5 [next]
 //[prev] 6	 7	8	9	10
@@ -105,21 +107,46 @@ public class PageMaker {
 	// 페이징, 검색기능 사용시 필요한 파라미터 생성해주는 기능.
 	// ?page=2&perPageNum=10&searchType&keyword
 	public String makeSearch(int page) {
-		
-		UriComponents uriComponents = 
-				UriComponentsBuilder.newInstance()
+		UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
 				.queryParam("page", page)
-				.queryParam("perPageNum", cri.getPerPageNum())
-				.queryParam("searchType", ((SearchCriteria)cri).getSearchType())
-				.queryParam("keyword", ((SearchCriteria)cri).getKeyword())
-				.build();
-		
-		return uriComponents.toUriString();
+				.queryParam("perPageNum", cri.getPerPageNum());
+
+		if (cri instanceof AdminOrderSearchCriteria) {
+			AdminOrderSearchCriteria searchCriteria = (AdminOrderSearchCriteria) cri;
+
+			addParamIfNotNull(builder, "searchType", searchCriteria.getSearchType());
+			addParamIfNotNull(builder, "keyword", searchCriteria.getKeyword());
+			addParamIfNotNull(builder, "startDate", searchCriteria.getStartDate());
+			addParamIfNotNull(builder, "endDate", searchCriteria.getEndDate());
+
+			addMultipleParams(builder, "ord_status", searchCriteria.getOrd_status());
+			addMultipleParams(builder, "payment_method", searchCriteria.getPayment_method());
+
+			addParamIfNotNull(builder, "recipient_name", searchCriteria.getRecipient_name());
+			addParamIfNotNull(builder, "recipient_phone", searchCriteria.getRecipient_phone());
+			addParamIfNotNull(builder, "delivery_addr", searchCriteria.getDelivery_addr());
+			addParamIfNotNull(builder, "u_id", searchCriteria.getU_id());
+			addParamIfNotNull(builder, "u_addr", searchCriteria.getU_addr());
+			addParamIfNotNull(builder, "u_name", searchCriteria.getU_name());
+			addParamIfNotNull(builder, "u_phone", searchCriteria.getU_phone());
+		}
+
+		return builder.build().toUriString(); // 인코딩을 제거했습니다.
 	}
-	
-	
-	
-	
+
+	private void addMultipleParams(UriComponentsBuilder builder, String key, List<String> values) {
+		if (values != null && !values.isEmpty()) {
+			for (String value : values) {
+				builder.queryParam(key, value);
+			}
+		}
+	}
+
+	private void addParamIfNotNull(UriComponentsBuilder builder, String key, String value) {
+		if (value != null && !value.isEmpty()) {
+			builder.queryParam(key, value);
+		}
+	}
 
 	@Override
 	public String toString() {

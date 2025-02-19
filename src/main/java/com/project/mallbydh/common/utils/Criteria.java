@@ -52,7 +52,4 @@ public class Criteria {
 		return "Criteria [page=" + page + ", perPageNum=" + perPageNum + "]";
 	}
 	
-	
-	
-	
 }

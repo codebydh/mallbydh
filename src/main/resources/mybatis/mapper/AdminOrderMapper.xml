@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.admin.order.AdminOrderMapper">
+
+    <select id="getOrderList" resultType="java.util.Map" parameterType="com.project.mallbydh.common.utils.AdminOrderSearchCriteria">
+        SELECT
+            o.*,
+            u.u_name, u.u_phone, u.u_addr, u.u_addr_detail,
+            p.payment_method
+        FROM
+            order_tbl o
+        LEFT OUTER JOIN
+            user_tbl u ON o.u_id = u.u_id
+        LEFT OUTER JOIN
+            payment_tbl p ON o.ord_code = p.ord_code
+        WHERE
+            1=1
+            <include refid="search"></include>
+        ORDER BY
+            o.ord_code DESC
+        LIMIT #{pageStart}, #{perPageNum}
+    </select>
+
+    <select id="getTotalOrderCount" resultType="int">
+        SELECT
+            count(*)
+        FROM
+            order_tbl o
+        LEFT OUTER JOIN
+            user_tbl u ON o.u_id = u.u_id
+        LEFT OUTER JOIN
+            payment_tbl p ON o.ord_code = p.ord_code
+        WHERE
+            1=1
+            <include refid="search"></include>
+    </select>
+
+    <sql id="search">
+        <if test="keyword != null and keyword != ''">
+            <choose>
+                <when test="searchType == null or searchType == ''">
+                    AND (
+                    o.ord_code LIKE CONCAT('%', #{keyword}, '%') OR
+                    o.ord_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    u.u_id LIKE CONCAT('%', #{keyword}, '%') OR
+                    u.u_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    o.ord_status LIKE CONCAT('%', #{keyword}, '%') OR
+                    o.recipient_name LIKE CONCAT('%', #{keyword}, '%') OR
+                    o.recipient_phone LIKE CONCAT('%', #{keyword}, '%') OR
+                    o.delivery_addr LIKE CONCAT('%', #{keyword}, '%') OR
+                    u.u_addr LIKE CONCAT('%', #{keyword}, '%') OR
+                    u.u_phone LIKE CONCAT('%', #{keyword}, '%')
+                    )
+                </when>
+                <otherwise>
+                    <if test="searchType == 'ord_code'.toString()">
+                        AND o.ord_code LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'ord_name'.toString()">
+                        AND o.ord_name LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'u_id'.toString()">
+                        AND u.u_id LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'u_name'.toString()">
+                        AND u.u_name LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                </otherwise>
+            </choose>
+        </if>
+        <if test="startDate != null and startDate != ''">
+            AND o.ord_date >= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND DATE(o.ord_date) &lt;= #{endDate}
+        </if>
+        <if test="payment_method != null and payment_method.size() > 0">
+            AND p.payment_method IN
+            <foreach item="payment_method" collection="payment_method" open="(" separator="," close=")">
+                #{payment_method}
+            </foreach>
+        </if>
+        <if test="ord_status != null and ord_status.size() > 0">
+            AND o.ord_status IN
+            <foreach item="ord_status" collection="ord_status" open="(" separator="," close=")">
+                #{ord_status}
+            </foreach>
+        </if>
+        <if test="recipient_name != null and recipient_name != ''">
+            AND o.recipient_name LIKE CONCAT('%', #{recipient_name}, '%')
+        </if>
+        <if test="recipient_phone != null and recipient_phone != ''">
+            AND o.recipient_phone LIKE CONCAT('%', #{recipient_phone}, '%')
+        </if>
+        <if test="delivery_addr != null and delivery_addr != ''">
+            AND o.delivery_addr LIKE CONCAT('%', #{delivery_addr}, '%')
+        </if>
+        <if test="u_id != null and u_id != ''">
+            AND o.u_id LIKE CONCAT('%', #{u_id}, '%')
+        </if>
+        <if test="u_addr != null and u_addr != ''">
+            AND u.u_addr LIKE CONCAT('%', #{u_addr}, '%')
+        </if>
+        <if test="u_name != null and u_name != ''">
+            AND u.u_name LIKE CONCAT('%', #{u_name}, '%')
+        </if>
+        <if test="u_phone != null and u_phone != ''">
+            AND u.u_phone LIKE CONCAT('%', #{u_phone}, '%')
+        </if>
+    </sql>
+
+</mapper>

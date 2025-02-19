@@ -74,7 +74,7 @@
             o.*,
             od.*, od.ordt_amount * od.ordt_price as subtotal,
             p.prod_name, p.prod_maker, p.prod_uploadfolder, p.prod_img,
-            pay.payment_method, pay.payment_price, pay.payment_status, pay.payment_date,
+            pay.payment_method, pay.payment_price, pay.payment_date,
             pay.account_info, pay.deposit_name
         FROM order_tbl o
                  INNER JOIN orderdetail_tbl od ON o.ORD_CODE = od.ORD_CODE

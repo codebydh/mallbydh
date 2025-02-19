@@ -39,131 +39,162 @@
 
         <div class="card">
             <div class="card-body">
-
-                <div class="d-flex justify-content-center align-items-center">
-                    <select class="form-control mr-2" name="searchType" style="width: 120px;">
-                        <option selected>전체</option>
-                        <option value="id">아이디</option>
-                        <option value="name">성명</option>
-                        <option value="email">이메일</option>
-                        <option value="phone">휴대폰</option>
-                    </select>
-                    <input class="form-control mr-2" type="search" aria-label="Search" name="keyword" style="width: 300px;">
-                    <button type="submit" class="btn btn-dark mr-2" style="width: 82px;">검색</button>
-                    <button type="submit" class="btn btn-outline-info" style="width: 82px;" id="btnDetailSearchOpen">상세검색</button>
-                </div>
-
-                <div id="detailSearchForm" class="fs-14" style="display: none;">
-
-                    <hr class="my-3">
-
-                    <table class="table table-bordered search-option">
-                        <tbody>
-                        <tr>
-                            <th class="align-middle">주문일</th>
-                            <td colspan="5" class="align-middle">
-                                <div class="d-flex align-items-center gap-2">
-                                    <input type="date" class="form-control form-control-sm" style="width: 150px; flex: 0 0 150px;">
-                                    <span>-</span>
-                                    <input type="date" class="form-control form-control-sm" style="width: 150px; flex: 0 0 150px;">
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
-                                        <button type="button" class="btn btn-outline-secondary" style="min-width: 50px; padding: 4px;">오늘</button>
-                                        <button type="button" class="btn btn-outline-secondary" style="min-width: 50px; padding: 4px;">1주일</button>
-                                        <button type="button" class="btn btn-outline-secondary" style="min-width: 50px; padding: 4px;">1개월</button>
-                                        <button type="button" class="btn btn-outline-secondary" style="min-width: 58px; padding: 4px;">3개월</button>
-                                        <button type="button" class="btn btn-outline-secondary" style="min-width: 58px; padding: 4px;">6개월</button>
-                                        <button type="button" class="btn btn-outline-secondary" style="min-width: 58px; padding: 4px;">1년</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="align-middle">진행상태</th>
-                            <td colspan="5" class="align-middle" style="padding-top: 16px; padding-bottom 16px;">
-                                <div class="form-check form-check-inline mr-3 ml-1">
-                                    <input class="form-check-input" type="radio" name="#" id="#" value="" checked>
-                                    <label class="form-check-label" for="#">입금대기</label>
-                                </div>
-                                <div class="form-check form-check-inline mr-3">
-                                    <input class="form-check-input" type="radio" name="#" id="#" value="#">
-                                    <label class="form-check-label" for="#">결제완료</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="#" id="#" value="#">
-                                    <label class="form-check-label" for="#">배송준비</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="#" id="#" value="#">
-                                    <label class="form-check-label" for="#">배송중</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="#" id="#" value="#">
-                                    <label class="form-check-label" for="#">배송완료</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="align-middle">결제수단</th>
-                            <td colspan="5" class="align-middle" style="padding-top: 16px; padding-bottom 16px;">
-                                <div class="form-check form-check-inline mr-3 ml-1">
-                                    <input class="form-check-input" type="radio" name="#" id="#" value="" checked>
-                                    <label class="form-check-label" for="#">카드결제</label>
-                                </div>
-                                <div class="form-check form-check-inline mr-3">
-                                    <input class="form-check-input" type="radio" name="#" id="#" value="#">
-                                    <label class="form-check-label" for="#">카카오페이</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="#" id="#" value="#">
-                                    <label class="form-check-label" for="#">무통장입금</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="align-middle">받는분 이름</th>
-                            <td class="align-middle">
-                                <input type="text" class="form-control form-control-sm">
-                            </td>
-                            <th class="align-middle">받는분 주소</th>
-                            <td class="align-middle">
-                                <input type="text" class="form-control form-control-sm">
-                            </td>
-                            <th class="align-middle">받는분 휴대폰</th>
-                            <td class="align-middle">
-                                <input type="text" class="form-control form-control-sm">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="align-middle">사용자 이름</th>
-                            <td class="align-middle">
-                                <input type="text" class="form-control form-control-sm">
-                            </td>
-                            <th class="align-middle">사용자 주소</th>
-                            <td class="align-middle">
-                                <input type="text" class="form-control form-control-sm">
-                            </td>
-                            <th class="align-middle">사용자 휴대폰</th>
-                            <td class="align-middle">
-                                <input type="text" class="form-control form-control-sm">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-dark" style="width: 82px;">검색</button>
+                <form action="/admin/order/" method="get">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <select class="form-control mr-2" name="searchType" style="width: 120px;">
+                            <option value="" selected th:selected="${''} == ${pageMaker.cri.searchType}">전체</option>
+                            <option value="ord_code" th:selected="${'ord_code'} == ${pageMaker.cri.searchType}">주문번호</option>
+                            <option value="ord_name" th:selected="${'ord_name'} == ${pageMaker.cri.searchType}">주문명</option>
+                            <option value="u_id" th:selected="${'u_id'} == ${pageMaker.cri.searchType}">사용자ID</option>
+                            <option value="u_name" th:selected="${'u_name'} == ${pageMaker.cri.searchType}">성함</option>
+                        </select>
+                        <input class="form-control mr-2" type="search" aria-label="Search" name="keyword" style="width: 300px;">
+                        <button type="submit" class="btn btn-dark mr-2" style="width: 82px;">검색</button>
+                        <button type="button" class="btn btn-outline-info" style="width: 82px;" id="btnDetailSearchOpen">상세검색</button>
                     </div>
-                </div>
 
-                <!-- 페이징 및 검색 파라미터 정보
-                <form id="criteriaForm" action="/admin/member/" method="get">
+                    <div id="detailSearchForm" class="fs-14" style="display: none;">
+
+                        <hr class="my-3">
+
+                        <table class="table table-bordered search-option">
+                            <tbody>
+                            <tr>
+                                <th class="align-middle">주문일</th>
+                                <td colspan="5" class="align-middle">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <input type="date" class="form-control form-control-sm" name="startDate" style="width: 150px; flex: 0 0 150px;">
+                                        <span>-</span>
+                                        <input type="date" class="form-control form-control-sm" name="endDate" style="width: 150px; flex: 0 0 150px;">
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+                                            <button type="button" style="min-width: 50px; padding: 4px;" class="btn btn-outline-secondary date-range-btn" data-range="today">오늘</button>
+                                            <button type="button" style="min-width: 50px; padding: 4px;" class="btn btn-outline-secondary date-range-btn" data-range="week">1주일</button>
+                                            <button type="button" style="min-width: 50px; padding: 4px;" class="btn btn-outline-secondary date-range-btn" data-range="month">1개월</button>
+                                            <button type="button" style="min-width: 50px; padding: 4px;" class="btn btn-outline-secondary date-range-btn" data-range="3months">3개월</button>
+                                            <button type="button" style="min-width: 50px; padding: 4px;" class="btn btn-outline-secondary date-range-btn" data-range="6months">6개월</button>
+                                            <button type="button" style="min-width: 50px; padding: 4px;" class="btn btn-outline-secondary date-range-btn" data-range="year">1년</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle">진행상태</th>
+                                <td colspan="5" class="align-middle" style="padding-top: 16px; padding-bottom: 16px;">
+                                    <div class="form-check form-check-inline mr-3 ml-1">
+                                        <input class="form-check-input" type="checkbox" name="ord_status" id="ord_status_all" value="all"
+                                               th:checked="${ord_status == null or ord_status == ''}">
+                                        <label class="form-check-label" for="ord_status_all">전체</label>
+                                    </div>
+                                    <div class="form-check form-check-inline mr-3">
+                                        <input class="form-check-input" type="checkbox" name="ord_status" id="ord_status_1" value="입금대기"
+                                               th:checked="${'입금대기'} == ${ord_status}">
+                                        <label class="form-check-label" for="ord_status_1">입금대기</label>
+                                    </div>
+                                    <div class="form-check form-check-inline mr-3">
+                                        <input class="form-check-input" type="checkbox" name="ord_status" id="ord_status_2" value="결제완료"
+                                               th:checked="${'결제완료'} == ${ord_status}">
+                                        <label class="form-check-label" for="ord_status_2">결제완료</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="ord_status" id="ord_status_3" value="배송준비"
+                                               th:checked="${'배송준비'} == ${ord_status}">
+                                        <label class="form-check-label" for="ord_status_3">배송준비</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="ord_status" id="ord_status_4" value="배송중"
+                                               th:checked="${'배송중'} == ${ord_status}">
+                                        <label class="form-check-label" for="ord_status_4">배송중</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="ord_status" id="ord_status_5" value="배송완료"
+                                               th:checked="${'배송완료'} == ${ord_status}">
+                                        <label class="form-check-label" for="ord_status_5">배송완료</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="ord_status" id="ord_status_6" value="주문취소"
+                                               th:checked="${'주문취소'} == ${ord_status}">
+                                        <label class="form-check-label" for="ord_status_6">주문취소</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle">결제수단</th>
+                                <td colspan="5" class="align-middle" style="padding-top: 16px; padding-bottom: 16px;">
+                                    <div class="form-check form-check-inline mr-3 ml-1">
+                                        <input class="form-check-input" type="checkbox" name="payment_method" id="payment_method_all" value="all"
+                                               th:checked="${payment_method == null or payment_method == ''}">
+                                        <label class="form-check-label" for="payment_method_all">전체</label>
+                                    </div>
+                                    <div class="form-check form-check-inline mr-3">
+                                        <input class="form-check-input" type="checkbox" name="payment_method" id="payment_method_1" value="카드결제"
+                                               th:checked="${payment_method != null and payment_method.contains('카드결제')}">
+                                        <label class="form-check-label" for="payment_method_1">카드결제</label>
+                                    </div>
+                                    <div class="form-check form-check-inline mr-3">
+                                        <input class="form-check-input" type="checkbox" name="payment_method" id="payment_method_2" value="카카오페이"
+                                               th:checked="${payment_method != null and payment_method.contains('카카오페이')}">
+                                        <label class="form-check-label" for="payment_method_2">카카오페이</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="payment_method" id="payment_method_3" value="무통장입금"
+                                               th:checked="${payment_method != null and payment_method.contains('무통장입금')}">
+                                        <label class="form-check-label" for="payment_method_3">무통장입금</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle">받는분 이름</th>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm" name="recipient_name">
+                                </td>
+                                <th class="align-middle">받는분 주소</th>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm" name="delivery_addr">
+                                </td>
+                                <th class="align-middle">받는분 휴대폰</th>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm" name="recipient_phone">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle">사용자 이름</th>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm" name="u_name">
+                                </td>
+                                <th class="align-middle">사용자 주소</th>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm" name="u_addr">
+                                </td>
+                                <th class="align-middle">사용자 휴대폰</th>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm" name="u_phone">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-dark" style="width: 82px;">검색</button>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="criteriaForm" action="/admin/order/" method="get">
                     <input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}" />
                     <input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}" />
                     <input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}" />
                     <input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}" />
-                    <input type="hidden" name="u_status" id="u_status" th:value="${u_status}"/>
-                    <input type="hidden" name="admin_id" id="admin_id"> /* 수정에 필요한 값(아이디) */
-                </form>-->
+                    <input type="hidden" name="startDate" id="startDate" th:value="${startDate}"/>
+                    <input type="hidden" name="endDate" id="endDate" th:value="${endDate}"/>
+                    <input type="hidden" name="ord_status" id="ord_status" th:value="${#strings.arrayJoin(pageMaker.cri.ord_status, ',')}" />
+                    <input type="hidden" name="payment_method" id="payment_method" th:value="${#strings.arrayJoin(pageMaker.cri.payment_method, ',')}" />
+                    <input type="hidden" name="recipient_name" id="recipient_name" th:value="${recipient_name}"/>
+                    <input type="hidden" name="delivery_addr" id="delivery_addr" th:value="${delivery_addr}"/>
+                    <input type="hidden" name="recipient_phone" id="recipient_phone" th:value="${recipient_phone}"/>
+                    <input type="hidden" name="u_name" id="u_name" th:value="${u_name}"/>
+                    <input type="hidden" name="u_addr" id="u_addr" th:value="${u_addr}"/>
+                    <input type="hidden" name="u_phone" id="u_phone" th:value="${u_phone}"/>
+                </form>
             </div>
         </div>
 
@@ -175,51 +206,71 @@
                     <thead class="text-center">
                     <tr>
                         <th style="width: 3%"><input type="checkbox" id="checkAll"></th>
-                        <th style="width: 9%">주문번호</th>
-                        <th style="width: 11%">주문자</th>
-                        <th style="width: 44%">주문명</th>
-                        <th style="width: 11%">결제금액</th>
-                        <th style="width: 11%">주문일</th>
-                        <th style="width: 11%">관리</th>
+                        <th style="width: 7%">주문번호</th>
+                        <th style="width: 9%">주문자</th>
+                        <th style="width: 9%">진행상태</th>
+                        <th>주문명</th>
+                        <th style="width: 10%">결제금액</th>
+                        <th style="width: 10%">주문일</th>
+                        <th style="width: 10%">관리</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr th:each="item : ${orderList}">
                         <td class="text-center align-middle">
                             <input type="checkbox" name="check">
                         </td>
-                        <td class="text-center align-middle">주문번호</td>
-                        <td class="text-center align-middle">주문번호</td>
-                        <td class="text-center align-middle">주문번호</td>
-                        <td class="text-center align-middle">주문번호</td>
-                        <td class="text-center align-middle">주문번호</td>
+                        <td class="text-center align-middle" th:text="${item.ORD_CODE}"></td>
+                        <td class="text-center align-middle">
+                            <p class="mb-0" th:text="${item.U_ID}"></p>
+                            <p class="text-muted mb-0" style="font-size: 14px;" th:text="'(' + ${item.u_name} + ')'"></p>
+                        </td>
+                        <td class="text-center align-middle" th:text="${item.ord_status}"></td>
+                        <td class="text-center align-middle" th:text="${item.ord_name}"></td>
+                        <td class="text-center align-middle" th:text="${#numbers.formatDecimal(item.ORD_PRICE, 0, 'COMMA', 0, 'POINT')} + '원'"></td>
+                        <td class="text-center align-middle">
+                            <p class="mb-0" th:text="${#temporals.format(item.ORD_DATE, 'yyyy-MM-dd')}"></p>
+                            <p class="text-muted mb-0" style="font-size: 14px;" th:text="'(' + ${#temporals.format(item.ORD_DATE, 'HH:mm:ss')} + ')'"></p>
+                        </td>
                         <td class="text-center align-middle">
                             <button type="button" class="btn btn-sm btn-warning" name="btnManagerEdit">상세</button>
-                            <button type="button" class="btn btn-sm btn-danger" name="btnManagerSuspend">정지</button>
+                            <button type="button" class="btn btn-sm btn-danger" name="btnManagerSuspend">취소</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- pagination
-            <nav aria-label="Page navigation example">
+            <!-- pagination -->
+            <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
+                    <!-- 이전버튼 (prev가 true일 때만 표시) -->
                     <th:block th:if="${pageMaker.prev}">
-                        <li class="page-item"><a class="page-link movepage" th:href="${pageMaker.startPage - 1}">Previous</a></li>
-                    </th:block>
-
-                    <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
-                        <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
-                            <a class="page-link movepage" th:href="${num}" th:text="${num}"></a>
+                        <li class="page-item">
+                            <a class="page-link movepage" th:href="@{(${pageMaker.startPage - 1})}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
                         </li>
                     </th:block>
 
+                    <!-- 페이지번호 -->
+                    <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                        <li class="page-item" th:classappend="${pageMaker.cri.page == num} ? 'active' : ''">
+                            <a class="page-link movepage" th:href="@{(${num})}" th:text="${num}"></a>
+                        </li>
+                    </th:block>
+
+                    <!-- 다음버튼 (next가 true일 때만 표시) -->
                     <th:block th:if="${pageMaker.next}">
-                        <li class="page-item"><a class="page-link movepage" th:href="${pageMaker.endPage + 1}">Next</a></li>
+                        <li class="page-item">
+                            <a class="page-link movepage" th:href="@{(${pageMaker.endPage + 1})}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
                     </th:block>
                 </ul>
-            </nav>-->
+            </nav>
+
         </div>
     </div>
 </th:block>
@@ -230,12 +281,29 @@
 
             let criteriaForm = $("#criteriaForm");
 
-            $("a.movepage").on("click", function(e) {
-                e.preventDefault(); // <a>태그의 링크기능을 제거
-
+            $(".movepage").on("click", function(e) {
+                e.preventDefault();
                 criteriaForm.find("input[name='page']").val($(this).attr("href"));
                 criteriaForm.submit();
             });
+
+            // 체크박스 값 업데이트
+            function updateHiddenInputs() {
+                let ordStatusValues = [];
+                $("input[name='ord_status']:checked").each(function() {
+                    ordStatusValues.push($(this).val());
+                });
+                $("#ord_status").val(ordStatusValues.join(','));  // 배열을 문자열로 변환
+
+                let paymentMethodValues = [];
+                $("input[name='payment_method']:checked").each(function() {
+                    paymentMethodValues.push($(this).val());
+                });
+                $("#payment_method").val(paymentMethodValues.join(','));  // 배열을 문자열로 변환
+            }
+
+            $("input[name='ord_status'], input[name='payment_method']").on("change", updateHiddenInputs);
+
 
             // 제목행 체크박스 클릭 시 전체 상품 선택
             let isCheck = true;
@@ -254,6 +322,7 @@
                 });
             });
 
+            // 상세검색 form 오픈
             $("#btnDetailSearchOpen").on("click", function() {
                 let detailForm = $("#detailSearchForm");
                 if (detailForm.is(":visible")) {
@@ -261,6 +330,49 @@
                 } else {
                     detailForm.show();
                 }
+            });
+
+            // 상세검색 - 날짜 범위 버튼 누를 시 해당 값 자동 입력
+            let today = new Date();
+
+            function formatDate(date) {
+                let d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear();
+
+                if (month.length < 2) month = '0' + month;
+                if (day.length < 2) day = '0' + day;
+
+                return [year, month, day].join('-');
+            }
+
+            $('.date-range-btn').click(function() {
+                let endDate = today;
+                let startDate = new Date(today);
+
+                switch($(this).data('range')) {
+                    case 'today':
+                        break;
+                    case 'week':
+                        startDate.setDate(startDate.getDate() - 7);
+                        break;
+                    case 'month':
+                        startDate.setMonth(startDate.getMonth() - 1);
+                        break;
+                    case '3months':
+                        startDate.setMonth(startDate.getMonth() - 3);
+                        break;
+                    case '6months':
+                        startDate.setMonth(startDate.getMonth() - 6);
+                        break;
+                    case 'year':
+                        startDate.setFullYear(startDate.getFullYear() - 1);
+                        break;
+                }
+
+                $('input[name="startDate"]').val(formatDate(startDate));
+                $('input[name="endDate"]').val(formatDate(endDate));
             });
         })
     </script>

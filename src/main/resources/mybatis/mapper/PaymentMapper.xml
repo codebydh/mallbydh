@@ -4,9 +4,9 @@
 
     <insert id="insertPayment" parameterType="com.project.mallbydh.payment.PaymentVO">
         insert into
-            payment_tbl(ord_code, u_id, payment_method, payment_price, payment_status, account_info, deposit_name)
+            payment_tbl(ord_code, u_id, payment_method, payment_price, account_info, deposit_name)
         values
-            (#{ord_code}, #{u_id}, #{payment_method}, #{payment_price}, #{payment_status}, #{account_info}, #{deposit_name})
+            (#{ord_code}, #{u_id}, #{payment_method}, #{payment_price}, #{account_info}, #{deposit_name})
     </insert>
 
 </mapper>
