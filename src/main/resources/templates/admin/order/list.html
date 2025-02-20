@@ -244,26 +244,23 @@
             <!-- pagination -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    <!-- 이전버튼 (prev가 true일 때만 표시) -->
                     <th:block th:if="${pageMaker.prev}">
                         <li class="page-item">
-                            <a class="page-link movepage" th:href="@{(${pageMaker.startPage - 1})}" aria-label="Previous">
+                            <a class="page-link movepage" th:href="@{./(page=${pageMaker.startPage - 1},perPageNum=${pageMaker.cri.perPageNum},searchType=${pageMaker.cri.searchType},keyword=${pageMaker.cri.keyword},startDate=${startDate},endDate=${endDate},ord_status=${#strings.arrayJoin(pageMaker.cri.ord_status, ',')},payment_method=${#strings.arrayJoin(pageMaker.cri.payment_method, ',')},recipient_name=${recipient_name},delivery_addr=${delivery_addr},recipient_phone=${recipient_phone},u_name=${u_name},u_addr=${u_addr},u_phone=${u_phone})}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
                     </th:block>
 
-                    <!-- 페이지번호 -->
                     <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
                         <li class="page-item" th:classappend="${pageMaker.cri.page == num} ? 'active' : ''">
-                            <a class="page-link movepage" th:href="@{(${num})}" th:text="${num}"></a>
+                            <a class="page-link movepage" th:href="@{./(page=${num},perPageNum=${pageMaker.cri.perPageNum},searchType=${pageMaker.cri.searchType},keyword=${pageMaker.cri.keyword},startDate=${startDate},endDate=${endDate},ord_status=${#strings.arrayJoin(pageMaker.cri.ord_status, ',')},payment_method=${#strings.arrayJoin(pageMaker.cri.payment_method, ',')},recipient_name=${recipient_name},delivery_addr=${delivery_addr},recipient_phone=${recipient_phone},u_name=${u_name},u_addr=${u_addr},u_phone=${u_phone})}" th:text="${num}"></a>
                         </li>
                     </th:block>
 
-                    <!-- 다음버튼 (next가 true일 때만 표시) -->
                     <th:block th:if="${pageMaker.next}">
                         <li class="page-item">
-                            <a class="page-link movepage" th:href="@{(${pageMaker.endPage + 1})}" aria-label="Next">
+                            <a class="page-link movepage" th:href="@{./(page=${pageMaker.endPage + 1},perPageNum=${pageMaker.cri.perPageNum},searchType=${pageMaker.cri.searchType},keyword=${pageMaker.cri.keyword},startDate=${startDate},endDate=${endDate},ord_status=${#strings.arrayJoin(pageMaker.cri.ord_status, ',')},payment_method=${#strings.arrayJoin(pageMaker.cri.payment_method, ',')},recipient_name=${recipient_name},delivery_addr=${delivery_addr},recipient_phone=${recipient_phone},u_name=${u_name},u_addr=${u_addr},u_phone=${u_phone})}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -283,8 +280,7 @@
 
             $(".movepage").on("click", function(e) {
                 e.preventDefault();
-                criteriaForm.find("input[name='page']").val($(this).attr("href"));
-                criteriaForm.submit();
+                window.location.href = $(this).attr("href");
             });
 
             // 체크박스 값 업데이트
