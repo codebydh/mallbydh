@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="script">
+</th:block>
+
+<th:block layout:fragment="css">
+    <style>
+        .search-option {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .search-option th {
+            width: 10%;
+            background-color: #f5f5f5;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .search-option td {
+            text-align: left;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div>
+        <h2 class="mb-4">주문 상세</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <p class="mb-1 font-weight-bold" style="font-size: 24px;">주문번호 n번 - "주문이름"</p>
+                    <p class="0">주문일시 : yyyy-mm-dd hh:mm:ss</p>
+                </div>
+
+                <table class="table table-bordered">
+                    <thead class="text-center">
+                    <tr>
+                        <th style="width: 52%">상품정보</th>
+                        <th style="width: 16%">판매가</th>
+                        <th style="width: 16%">수량</th>
+                        <th style="width: 16%">합계</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="product-info ml-3">
+                            <div class="product-container d-flex align-items-center">
+                                <div class="product-image me-3" style="width: 81px; height: 81px;">
+                                    <img src="#"
+                                         alt="상품 이미지"
+                                         class="img-fluid rounded product-thumbnail">
+                                </div>
+                                <div class="product-details">
+                                    <h4 class="product-name mb-1"></h4>
+                                    <small class="text-muted"><p class="manufacturer mb-0"></p></small>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center font-weight-bold">판매가</td>
+                        <td class="text-center font-weight-bold">수량</td>
+                        <td class="text-center font-weight-bold">합계</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="card">
+            <div class="card-body">
+                <!-- 주문 및 결제 정보 변경 -->
+                <div class="mb-4">
+                    <p class="mb-2 font-weight-bold" style="font-size: 20px;">주문 및 결제정보</p>
+                    <table class="table table-bordered search-option fs-14">
+                        <colgroup>
+                            <col style="width: 10%;">
+                            <col style="width: 40%;">
+                            <col style="width: 10%;">
+                            <col style="width: 40%;">
+                        </colgroup>
+                        <tr>
+                            <th>주문진행상태</th>
+                            <td colspan="3">
+                                <select class="form-control">
+                                    <option>입금대기</option>
+                                    <option>결제완료</option>
+                                    <option>배송준비</option>
+                                    <option>배송중</option>
+                                    <option>배송완료</option>
+                                    <option>주문취소</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>택배사</th>
+                            <td>
+                                <select class="form-control">
+                                    <option>선택</option>
+                                    <option>CJ대한통운</option>
+                                    <option>우체국택배</option>
+                                    <option>롯데택배</option>
+                                    <option>로젠택배</option>
+                                    <option>경동택배</option>
+                                </select>
+                            </td>
+                            <th>송장번호</th>
+                            <td>
+                                <input type="text" class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>결제방식</th>
+                            <td colspan="3">
+                                <input type="text" class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>입금은행</th>
+                            <td>
+                                <input type="text" class="form-control">
+                            </td>
+                            <th>입금계좌</th>
+                            <td>
+                                <input type="text" class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>주문취소</th>
+                            <td colspan="3">
+                                <button type="button" class="btn btn-danger mr-2 px-4">주문 취소하기</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- 배송정보 변경 -->
+                <div class="mb-4">
+                    <p class="mb-2 font-weight-bold" style="font-size: 20px;">배송정보</p>
+                    <table class="table table-bordered search-option fs-14">
+                        <tr>
+                            <th>성함</th>
+                            <td>
+                                <input type="text" class="form-control">
+                            </td>
+                            <th>연락처</th>
+                            <td>
+                                <input type="text" class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>주소</th>
+                            <td colspan="3">
+                                <div class="row">
+                                    <div class="col-sm-3 mb-2" style="padding-right: 0;">
+                                        <input type="number" class="form-control readonly-white" id="sample2_postcode" name="u_zipcode" readonly>
+                                    </div>
+                                    <div class="col-sm-6 d-flex align-items-start mb-2">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="sample2_execDaumPostcode()">주소검색</button>
+                                    </div>
+
+                                    <div class="col-12 mb-2">
+                                        <input type="text" class="form-control readonly-white" id="sample2_address" name="u_addr" readonly>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="sample2_detailAddress" name="u_addr_detail">
+                                        <input type="hidden" class="form-control" id="sample2_extraAddress" name="u_addr_extra">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>배송메세지</th>
+                            <td colspan="3">
+                                <div>
+                                    <textarea class="form-control w-100" id="delivery_message" name="delivery_message" rows="3" maxlength="200"></textarea>
+                                    <small class="text-muted">배송 시 전달할 메시지를 직접 입력해주세요.(200자 이내)</small>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- 버튼 -->
+                <div class="text-center">
+                    <button type="button" class="btn btn-danger mr-2 px-4" id="btnMemberUpdate">수정</button>
+                    <button type="button" class="btn btn-light px-4" onclick="history.back()">뒤로</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 다음 주소 찾기 api -->
+    <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
+    <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+        <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
+    </div>
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        // 우편번호 찾기 화면을 넣을 element
+        var element_layer = document.getElementById('layer');
+
+        function closeDaumPostcode() {
+            // iframe을 넣은 element를 안보이게 한다.
+            element_layer.style.display = 'none';
+        }
+
+        function sample2_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if(data.userSelectedType === 'R'){
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        document.getElementById("sample2_extraAddress").value = extraAddr;
+
+                    } else {
+                        document.getElementById("sample2_extraAddress").value = '';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('sample2_postcode').value = data.zonecode;
+                    document.getElementById("sample2_address").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("sample2_detailAddress").focus();
+
+                    // iframe을 넣은 element를 안보이게 한다.
+                    // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                    element_layer.style.display = 'none';
+                },
+                width : '100%',
+                height : '100%',
+                maxSuggestItems : 5
+            }).embed(element_layer);
+
+            // iframe을 넣은 element를 보이게 한다.
+            element_layer.style.display = 'block';
+
+            // iframe을 넣은 element의 위치를 화면의 가운데로 이동시킨다.
+            initLayerPosition();
+        }
+
+        // 브라우저의 크기 변경에 따라 레이어를 가운데로 이동시키고자 하실때에는
+        // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
+        // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
+        function initLayerPosition(){
+            var width = 300; //우편번호서비스가 들어갈 element의 width
+            var height = 400; //우편번호서비스가 들어갈 element의 height
+            var borderWidth = 5; //샘플에서 사용하는 border의 두께
+
+            // 위에서 선언한 값들을 실제 element에 넣는다.
+            element_layer.style.width = width + 'px';
+            element_layer.style.height = height + 'px';
+            element_layer.style.border = borderWidth + 'px solid';
+            // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
+            element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth) + 'px';
+            element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+        }
+    </script>
+</th:block>
+
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function() {
+
+        })
+    </script>
+</th:block>
+</html>
