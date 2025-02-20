@@ -8,13 +8,13 @@ import com.project.mallbydh.order.OrderService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.Map;
 @Controller
 public class AdminOrderController {
 
-    private final AdminOrderService adminorderService;
+    private final AdminOrderService adminOrderService;
     private final OrderService orderService;
     private final FileUtils fileUtils;
 
@@ -48,13 +48,13 @@ public class AdminOrderController {
             cri.setPayment_method(Arrays.asList("카드결제", "카카오페이", "무통장입금"));
         }
 
-        List<Map<String, Object>> orderList = adminorderService.getOrderList(cri);
+        List<Map<String, Object>> orderList = adminOrderService.getOrderList(cri);
         model.addAttribute("orderList", orderList);
 
         PageMaker pageMaker = new PageMaker();
         pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
         pageMaker.setCri(cri);
-        pageMaker.setTotalCount(adminorderService.getTotalOrderCount(cri));
+        pageMaker.setTotalCount(adminOrderService.getTotalOrderCount(cri));
         model.addAttribute("pageMaker", pageMaker);
 
         return "admin/order/list";
@@ -75,6 +75,22 @@ public class AdminOrderController {
         model.addAttribute("orderInfo", orderInfo);
 
         return "admin/order/detail";
+    }
+
+    @PostMapping("/direct_cancel")
+    public ResponseEntity<String> orderDirectCancel(Integer ord_code) throws Exception {
+        ResponseEntity<String> entity = null;
+        adminOrderService.orderDirectCancel(ord_code);
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+        return entity;
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<String> orderUpdate(OrderUpdateDTO dto) throws Exception {
+        ResponseEntity<String> entity = null;
+        adminOrderService.updateOrderInfo(dto);
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+        return entity;
     }
 
     @GetMapping("/image_display")

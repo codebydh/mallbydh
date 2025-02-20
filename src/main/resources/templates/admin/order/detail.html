@@ -133,7 +133,8 @@
                         <tr>
                             <th>주문진행상태</th>
                             <td colspan="3">
-                                <select class="form-control" th:value="${orderInfo[0]['ord_status']}">
+                                <select class="form-control" id="ord_status" th:value="${orderInfo[0]['ord_status']}"
+                                        th:disabled="${orderInfo[0]['ord_status'] == '주문취소'}">
                                     <option value="입금대기" th:selected="${orderInfo[0]['ord_status'] == '입금대기'}">입금대기</option>
                                     <option value="결제완료" th:selected="${orderInfo[0]['ord_status'] == '결제완료'}">결제완료</option>
                                     <option value="배송준비" th:selected="${orderInfo[0]['ord_status'] == '배송준비'}">배송준비</option>
@@ -146,7 +147,7 @@
                         <tr>
                             <th>택배사</th>
                             <td>
-                                <select class="form-control" th:value="${orderInfo[0]['carrier']}">
+                                <select class="form-control" id="carrier" th:value="${orderInfo[0]['carrier']}">
                                     <option value="" th:selected="${orderInfo[0]['carrier'] == ''}">선택</option>
                                     <option value="CJ대한통운" th:selected="${orderInfo[0]['carrier'] == 'CJ대한통운'}">CJ대한통운</option>
                                     <option value="우체국택배" th:selected="${orderInfo[0]['carrier'] == '우체국택배'}">우체국택배</option>
@@ -157,32 +158,43 @@
                             </td>
                             <th>송장번호</th>
                             <td>
-                                <input type="text" class="form-control" name="tracking_number" th:value="${orderInfo[0]['tracking_number']}">
+                                <input type="text" class="form-control" id="tracking_number" name="tracking_number" th:value="${orderInfo[0]['tracking_number']}">
                             </td>
                         </tr>
                         <tr>
                             <th>결제방식</th>
                             <td colspan="3">
-                                <input type="text" class="form-control" name="payment_method" th:value="${orderInfo[0]['payment_method']}">
+                                <input type="text" class="form-control readonly-white" id="payment_method" name="payment_method" th:value="${orderInfo[0]['payment_method']}" readonly>
                             </td>
                         </tr>
 
                         <tr th:if="${orderInfo[0]['payment_method'] == '무통장입금'}">
                             <th>입금은행</th>
                             <td>
-                                <input type="text" class="form-control" name="account_info" th:value="${orderInfo[0]['account_info']}">
+                                <input type="text" class="form-control" id="account_info" name="account_info" th:value="${orderInfo[0]['account_info']}">
                             </td>
                             <th>입금자명</th>
                             <td>
-                                <input type="text" class="form-control" name="deposit_name" th:value="${orderInfo[0]['deposit_name']}">
+                                <input type="text" class="form-control" id="deposit_name" name="deposit_name" th:value="${orderInfo[0]['deposit_name']}">
                             </td>
                         </tr>
-                        <tr>
-                            <th>주문취소</th>
-                            <td colspan="3">
-                                <button type="button" class="btn btn-danger mr-2 px-4">주문 취소하기</button>
-                            </td>
-                        </tr>
+                        <th>주문취소</th>
+                        <td colspan="3">
+                            <!-- 주문이 취소되지 않았을 경우 -->
+                            <button type="button" class="btn btn-danger mr-2 px-4"
+                                    th:data-ord_code="${orderInfo[0]['ORD_CODE']}"
+                                    name="btnOrderDirectCancel"
+                                    th:if="${orderInfo[0]['ord_status'] != '주문취소'}">
+                                주문 취소하기
+                            </button>
+
+                            <!-- 주문이 이미 취소된 경우 -->
+                            <button type="button" class="btn btn-outline-danger mr-2 px-4"
+                                    disabled
+                                    th:unless="${orderInfo[0]['ord_status'] != '주문취소'}">
+                                취소된 주문입니다.
+                            </button>
+                        </td>
                     </table>
                 </div>
 
@@ -193,11 +205,11 @@
                         <tr>
                             <th>성함</th>
                             <td>
-                                <input type="text" class="form-control" name="recipient_name" th:value="${orderInfo[0]['recipient_name']}">
+                                <input type="text" class="form-control" id="recipient_name" name="recipient_name" th:value="${orderInfo[0]['recipient_name']}">
                             </td>
                             <th>연락처</th>
                             <td>
-                                <input type="text" class="form-control" name="recipient_phone" th:value="${orderInfo[0]['recipient_phone']}">
+                                <input type="text" class="form-control" id="recipient_phone" name="recipient_phone" th:value="${orderInfo[0]['recipient_phone']}">
                             </td>
                         </tr>
                         <tr>
@@ -241,7 +253,7 @@
 
         <!-- 버튼 -->
         <div class="text-center">
-            <button type="button" class="btn btn-danger mr-2 px-4" id="btnMemberUpdate">수정</button>
+            <button type="button" class="btn btn-danger mr-2 px-4" th:data-ord_code="${orderInfo[0]['ORD_CODE']}" id="btnOrderUpdate">수정</button>
             <button type="button" class="btn btn-outline-secondary px-4" onclick="history.back()">뒤로</button>
         </div>
     </div>
@@ -345,6 +357,64 @@
 <th:block layout:fragment="script2">
     <script>
         $(document).ready(function() {
+
+            // 버튼으로 주문 취소
+            $("button[name='btnOrderDirectCancel']").on("click", function() {
+                if(!confirm("해당 주문을 취소하시겠습니까?")) return;
+
+                let ord_code = $(this).data("ord_code");
+                $.ajax ({
+                    url: '/admin/order/direct_cancel',
+                    type: 'post',
+                    data: {ord_code: ord_code},
+                    dataType: 'text',
+                    success: function(result) {
+                        alert("주문이 취소되었습니다.");
+                        location.href = "/admin/order/";
+                    }
+                });
+            });
+
+            $("#btnOrderUpdate").on("click", function() {
+                if(!confirm("주문을 수정하시겠습니까?")) return;
+
+                let ord_code = $(this).data("ord_code");
+                let ord_status = $("#ord_status").val();
+                let carrier = $("#carrier").val();
+                let tracking_number = $("#tracking_number").val();
+                let account_info = $("#account_info").val();
+                let deposit_name = $("#deposit_name").val();
+                let recipient_name = $("#recipient_name").val();
+                let recipient_phone = $("#recipient_phone").val();
+                let delivery_zipcode = $("#delivery_zipcode").val();
+                let delivery_addr = $("#sample2_address").val();
+                let delivery_addr_detail = $("#sample2_detailAddress").val();
+                let delivery_message = $("#delivery_message").val();
+
+                $.ajax ({
+                    url: '/admin/order/update',
+                    type: 'post',
+                    data: {
+                        ord_code: ord_code,
+                        ord_status: ord_status,
+                        carrier: carrier,
+                        tracking_number: tracking_number,
+                        account_info: account_info,
+                        deposit_name: deposit_name,
+                        recipient_name: recipient_name,
+                        recipient_phone: recipient_phone,
+                        delivery_zipcode: delivery_zipcode,
+                        delivery_addr: delivery_addr,
+                        delivery_addr_detail: delivery_addr_detail,
+                        delivery_message: delivery_message
+                    },
+                    dataType: 'text',
+                    success: function(result) {
+                        alert("주문이 수정되었습니다.");
+                        location.href = "/admin/order/";
+                    }
+                });
+            });
 
         })
     </script>

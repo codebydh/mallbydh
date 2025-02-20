@@ -35,6 +35,54 @@
             <include refid="search"></include>
     </select>
 
+    <update id="orderDirectCancel">
+        update
+            order_tbl
+        set
+            ord_status = '주문취소'
+        where
+            ord_code = #{ord_code}
+    </update>
+
+    <update id="updateOrder">
+        update order_tbl
+        <set>
+            <if test="ord_status != null">ord_status = #{ord_status},</if>
+            <if test="recipient_name != null">recipient_name = #{recipient_name},</if>
+            <if test="recipient_phone != null">recipient_phone = #{recipient_phone},</if>
+            <if test="delivery_zipcode != null">delivery_zipcode = #{delivery_zipcode},</if>
+            <if test="delivery_addr != null">delivery_addr = #{delivery_addr},</if>
+            <if test="delivery_addr_detail != null">delivery_addr_detail = #{delivery_addr_detail},</if>
+            <if test="delivery_message != null">delivery_message = #{delivery_message},</if>
+        </set>
+        where ord_code = #{ord_code}
+    </update>
+
+    <update id="updatePayment">
+        update payment_tbl
+        <set>
+            <if test="account_info != null">account_info = #{account_info},</if>
+            <if test="deposit_name != null">deposit_name = #{deposit_name},</if>
+        </set>
+        where ord_code = #{ord_code}
+    </update>
+
+    <update id="updateDelivery">
+        update delivery_tbl
+        <set>
+            updated_at = now(),
+            <if test="recipient_name != null">recipient_name = #{recipient_name},</if>
+            <if test="recipient_phone != null">recipient_phone = #{recipient_phone},</if>
+            <if test="delivery_zipcode != null">delivery_zipcode = #{delivery_zipcode},</if>
+            <if test="delivery_addr != null">delivery_addr = #{delivery_addr},</if>
+            <if test="delivery_addr_detail != null">delivery_addr_detail = #{delivery_addr_detail},</if>
+            <if test="delivery_message != null">delivery_message = #{delivery_message},</if>
+            <if test="tracking_number != null">tracking_number = #{tracking_number},</if>
+            <if test="carrier != null">carrier = #{carrier},</if>
+        </set>
+        where ord_code = #{ord_code}
+    </update>
+
     <sql id="search">
         <if test="keyword != null and keyword != ''">
             <choose>

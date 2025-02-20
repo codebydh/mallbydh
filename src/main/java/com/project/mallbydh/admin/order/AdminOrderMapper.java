@@ -10,4 +10,11 @@ public interface AdminOrderMapper {
     List<Map<String, Object>> getOrderList(AdminOrderSearchCriteria cri);
 
     int getTotalOrderCount(AdminOrderSearchCriteria cri);
+
+    void orderDirectCancel(Integer ord_code);
+
+    // 주문 변경 시 한번에 사용
+    void updateOrder(OrderUpdateDTO dto);
+    void updatePayment(OrderUpdateDTO dto);
+    void updateDelivery(OrderUpdateDTO dto);
 }
