@@ -194,6 +194,7 @@
                     <input type="hidden" name="u_name" id="u_name" th:value="${u_name}"/>
                     <input type="hidden" name="u_addr" id="u_addr" th:value="${u_addr}"/>
                     <input type="hidden" name="u_phone" id="u_phone" th:value="${u_phone}"/>
+                    <input type="hidden" name="ord_code" id="ord_code" th:value="${ord_code}"/>
                 </form>
             </div>
         </div>
@@ -233,8 +234,7 @@
                             <p class="text-muted mb-0" style="font-size: 14px;" th:text="'(' + ${#temporals.format(item.ORD_DATE, 'HH:mm:ss')} + ')'"></p>
                         </td>
                         <td class="text-center align-middle">
-                            <button type="button" class="btn btn-sm btn-warning" name="btnManagerEdit">상세</button>
-                            <button type="button" class="btn btn-sm btn-danger" name="btnManagerSuspend">취소</button>
+                            <button type="button" class="btn btn-sm btn-warning" th:data-ord_code="${item.ORD_CODE}" name="btnOrderEdit">주문상세</button>
                         </td>
                     </tr>
                     </tbody>
@@ -373,6 +373,14 @@
 
                 $('input[name="startDate"]').val(formatDate(startDate));
                 $('input[name="endDate"]').val(formatDate(endDate));
+            });
+
+            // 주문상세 버튼
+            $("button[name='btnOrderEdit']").on("click", function() {
+                let ord_code = $(this).data("ord_code");
+                $("#ord_code").val(ord_code);
+                criteriaForm.attr("action", "/admin/order/detail");
+                criteriaForm.submit();
             });
         })
     </script>

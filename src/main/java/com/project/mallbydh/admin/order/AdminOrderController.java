@@ -2,9 +2,14 @@ package com.project.mallbydh.admin.order;
 
 import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.AdminOrderSearchCriteria;
+import com.project.mallbydh.common.utils.FileUtils;
 import com.project.mallbydh.common.utils.PageMaker;
+import com.project.mallbydh.order.OrderService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +27,11 @@ import java.util.Map;
 public class AdminOrderController {
 
     private final AdminOrderService adminorderService;
+    private final OrderService orderService;
+    private final FileUtils fileUtils;
+
+    @Value("${com.project.mallbydh.upload.path}")
+    private String uploadPath;
 
     @GetMapping("/")
     public String adminOrderList(@ModelAttribute("cri")AdminOrderSearchCriteria cri, Model model) {
@@ -51,8 +61,26 @@ public class AdminOrderController {
     }
 
     @GetMapping("/detail")
-    public String adminOrderDetail() throws Exception {
+    public String adminOrderDetail(Integer ord_code, Model model) throws Exception {
+
+        // 주문정보 삽입
+        List<Map<String, Object>> orderInfo = orderService.getOrderDetailInfo(ord_code);
+
+        // 이미지 경로 : 역슬래시 - 슬래시로 변환
+        orderInfo.forEach(map -> {
+            String uploadFolder = (String) map.get("prod_uploadfolder");
+            map.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
+        });
+
+        model.addAttribute("orderInfo", orderInfo);
+
         return "admin/order/detail";
+    }
+
+    @GetMapping("/image_display")
+    public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
+
+        return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
     }
 
 }
