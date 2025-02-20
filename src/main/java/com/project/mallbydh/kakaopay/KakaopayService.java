@@ -77,6 +77,10 @@ public class KakaopayService {
         return readyResponse;
     }
 
+    public String getTid() {
+        return tid;
+    }
+
     // 2차요청(결제승인요청-approve)
     public String approve(String pg_token) {
 

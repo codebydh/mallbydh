@@ -19,4 +19,5 @@ public class PaymentVO {
     private Date payment_date;
     private String account_info;
     private String deposit_name;
+    private String tid;
 }

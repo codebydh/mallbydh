@@ -4,6 +4,8 @@ import com.project.mallbydh.cart.CartMapper;
 import com.project.mallbydh.common.utils.SearchCriteria;
 import com.project.mallbydh.delivery.DeliveryMapper;
 import com.project.mallbydh.delivery.DeliveryVO;
+import com.project.mallbydh.kakaopay.KakaopayService;
+import com.project.mallbydh.kakaopay.ReadyResponse;
 import com.project.mallbydh.payment.PaymentMapper;
 import com.project.mallbydh.payment.PaymentVO;
 import com.project.mallbydh.product.ProductMapper;
@@ -23,6 +25,7 @@ public class OrderService {
     private final CartMapper cartMapper;
     private final PaymentMapper paymentMapper;
     private final DeliveryMapper deliveryMapper;
+    private final KakaopayService kakaopayService;
 
     public String generateOrderName(List<Map<String, Object>> orderedItems) {
         List<String> prod_names = new ArrayList<>();
@@ -72,6 +75,14 @@ public class OrderService {
         if(paymentMethod.equals("무통장입금")) {
             paymentVO.setDeposit_name(deposit_name);
             paymentVO.setAccount_info(account_info);
+        } else {
+            // 카카오페이 결제 준비 요청
+            ReadyResponse readyResponse = kakaopayService.ready(
+                    ord_code.toString(), u_id, vo.getOrd_name(),
+                    prod_ids.size(), vo.getOrd_price(), 0); // tax_free_amount는 필요에 따라 조정
+
+            // TID 저장
+            paymentVO.setTid(readyResponse.getTid()); // readyResponse에서 TID 가져오기
         }
 
         paymentMapper.insertPayment(paymentVO);

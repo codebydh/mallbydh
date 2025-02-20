@@ -140,9 +140,6 @@ public class OrderController {
         Integer orderCode = orderService.getOrderByOrderCode(ord_code);
         model.addAttribute("ord_code", orderCode);
 
-
-
-
         String ord_email = ((MemberVO)session.getAttribute("login_auth")).getU_email();
 
     }
