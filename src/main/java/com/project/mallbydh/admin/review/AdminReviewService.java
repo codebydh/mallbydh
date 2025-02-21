@@ -20,4 +20,8 @@ public class AdminReviewService {
     public int getReviewCount(SearchCriteria cri, Integer rev_rate) {
         return adminReviewMapper.getReviewCount(cri, rev_rate);
     }
+
+    public void reviewDelete(Integer rev_code) {
+        adminReviewMapper.reviewDelete(rev_code);
+    }
 }

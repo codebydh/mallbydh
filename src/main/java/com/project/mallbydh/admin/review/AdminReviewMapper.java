@@ -11,4 +11,6 @@ public interface AdminReviewMapper {
     List<Map<String, Object>> getReviewList(@Param("cri") SearchCriteria cri, @Param("rev_rate") Integer rev_rate);
 
     int getReviewCount(@Param("cri") SearchCriteria cri, @Param("rev_rate") Integer rev_rate);
+
+    void reviewDelete(Integer rev_code);
 }

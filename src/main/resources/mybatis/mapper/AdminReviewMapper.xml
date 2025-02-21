@@ -32,6 +32,10 @@
         <include refid="rev_rate"></include>
     </select>
 
+    <delete id="reviewDelete">
+        delete from review_tbl where rev_code = #{rev_code}
+    </delete>
+
     <sql id="search">
         <if test="cri.searchType != null">
             <if test="cri.searchType == 'prod_name'.toString()">
