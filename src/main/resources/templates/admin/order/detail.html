@@ -194,9 +194,12 @@
                                     th:unless="${orderInfo[0]['ord_status'] != '주문취소'}">
                                 취소된 주문입니다.
                             </button>
+
                         </td>
                     </table>
                 </div>
+                <input type="hidden" class="form-control" id="tid" th:value="${orderInfo[0]['tid']}">
+                <input type="hidden" class="form-control" id="ord_price" th:value="${orderInfo[0]['ORD_PRICE']}">
 
                 <!-- 배송정보 변경 -->
                 <div class="mb-4">
@@ -361,18 +364,39 @@
             // 버튼으로 주문 취소
             $("button[name='btnOrderDirectCancel']").on("click", function() {
                 if(!confirm("해당 주문을 취소하시겠습니까?")) return;
-
                 let ord_code = $(this).data("ord_code");
-                $.ajax ({
-                    url: '/admin/order/direct_cancel',
-                    type: 'post',
-                    data: {ord_code: ord_code},
-                    dataType: 'text',
-                    success: function(result) {
-                        alert("주문이 취소되었습니다.");
-                        location.href = "/admin/order/";
-                    }
-                });
+                let ord_price = $("#ord_price").val();
+                let tid = $("#tid").val();
+                let payment_method = $("#payment_method").val();
+
+                if(payment_method == "카카오페이") {
+                    $.ajax ({
+                        url: '/kakao/refund',
+                        type: 'post',
+                        data: {
+                            tid: tid,
+                            cancel_amount: ord_price,
+                            cancel_tax_free_amount: 0
+                        },
+                        success: function(response) {
+                            if (response.status == "CANCEL_PAYMENT") {
+                                alert("주문이 취소되었습니다.");
+                                location.href = "/admin/order/";
+                            }
+                        }
+                    })
+                } else {
+                    $.ajax ({
+                        url: '/admin/order/direct_cancel',
+                        type: 'post',
+                        data: {ord_code: ord_code},
+                        dataType: 'text',
+                        success: function(result) {
+                            alert("주문이 취소되었습니다.");
+                            location.href = "/admin/order/";
+                        }
+                    });
+                }
             });
 
             $("#btnOrderUpdate").on("click", function() {

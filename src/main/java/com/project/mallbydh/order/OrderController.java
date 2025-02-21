@@ -121,7 +121,7 @@ public class OrderController {
         String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
         vo.setU_id(u_id);
 
-        orderService.orderProcess(vo, prod_ids, u_id, paymentMethod, deposit_name, account_info);
+        orderService.orderProcess(vo, prod_ids, u_id, paymentMethod, deposit_name, account_info, session);
 
         String p_method_info = paymentMethod + "/" + account_transfer + "/" + sender;
 

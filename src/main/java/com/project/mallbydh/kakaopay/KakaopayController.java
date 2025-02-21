@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -68,7 +65,8 @@ public class KakaopayController {
                 item_name,
                 quantity,
                 total_amount,
-                0  // tax_free_amount
+                0,  // tax_free_amount
+                session
         );
 
         entity = new ResponseEntity<ReadyResponse>(readyResponse, HttpStatus.OK);
@@ -77,13 +75,24 @@ public class KakaopayController {
     }
 
     @GetMapping("/approval")
-    public String approval(String pg_token, RedirectAttributes rttr, HttpSession session) {
-        String response = kakaopayService.approve(pg_token);
+    public String approval(@RequestParam("pg_token") String pg_token, RedirectAttributes rttr, HttpSession session) {
+
+        if (pg_token == null || pg_token.isEmpty()) {
+            throw new IllegalArgumentException("pg_token이 전달되지 않았습니다.");
+        } else {
+            log.info("pg_token:" + pg_token);
+        }
+
+        String tid = (String) session.getAttribute("tid");
+        String partner_order_id = (String) session.getAttribute("partner_order_id");
+        String partner_user_id = (String) session.getAttribute("partner_user_id");
+
+        String response = kakaopayService.approve(pg_token, tid, partner_order_id, partner_user_id);
 
         if(response.contains("aid")) {
             String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
 
-            orderService.orderProcess(this.order_info, this.prod_ids, u_id, "카카오페이", null, null);
+            orderService.orderProcess(this.order_info, this.prod_ids, u_id, "카카오페이", null, null, session);
         }
 
         rttr.addAttribute("ord_code", order_info.getOrd_code());
@@ -100,6 +109,16 @@ public class KakaopayController {
     public String fail(RedirectAttributes rttr) {
         rttr.addFlashAttribute("message", "결제에 실패하였습니다.");
         return "redirect:/order/order_form";
+    }
+
+    @PostMapping("/refund")
+    public ResponseEntity refund(@RequestParam("tid") String tid,
+                                 @RequestParam("cancel_amount") Integer cancel_amount,
+                                 @RequestParam("cancel_tax_free_amount") Integer cancel_tax_free_amount) {
+
+        KakaoCancelResponse kakaoCancelResponse = kakaopayService.kakaoCancel(tid, cancel_amount, cancel_tax_free_amount);
+
+        return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
     }
 
 }

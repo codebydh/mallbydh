@@ -9,6 +9,7 @@ import com.project.mallbydh.kakaopay.ReadyResponse;
 import com.project.mallbydh.payment.PaymentMapper;
 import com.project.mallbydh.payment.PaymentVO;
 import com.project.mallbydh.product.ProductMapper;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void orderProcess(OrderVO vo, List<Integer> prod_ids, String u_id, String paymentMethod, String deposit_name, String account_info) {
+    public void orderProcess(OrderVO vo, List<Integer> prod_ids, String u_id, String paymentMethod, String deposit_name, String account_info, HttpSession session) {
         // 1) 주문 테이블 DB에 추가
         List<Map<String, Object>> orderedItems = cartMapper.getCartDetailsByProdIds(prod_ids, u_id);
         String ord_name = generateOrderName(orderedItems);
@@ -79,7 +80,7 @@ public class OrderService {
             // 카카오페이 결제 준비 요청
             ReadyResponse readyResponse = kakaopayService.ready(
                     ord_code.toString(), u_id, vo.getOrd_name(),
-                    prod_ids.size(), vo.getOrd_price(), 0); // tax_free_amount는 필요에 따라 조정
+                    prod_ids.size(), vo.getOrd_price(), 0, session); // tax_free_amount는 필요에 따라 조정
 
             // TID 저장
             paymentVO.setTid(readyResponse.getTid()); // readyResponse에서 TID 가져오기

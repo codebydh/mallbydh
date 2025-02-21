@@ -74,7 +74,7 @@
             o.*,
             od.*, od.ordt_amount * od.ordt_price as subtotal,
             p.prod_name, p.prod_maker, p.prod_uploadfolder, p.prod_img,
-            pay.payment_method, pay.payment_price, pay.payment_date,
+            pay.payment_method, pay.payment_price, pay.payment_date, pay.tid,
             pay.account_info, pay.deposit_name,
             d.delivery_zipcode, d.delivery_addr, d.delivery_addr_detail, d.recipient_name, d.recipient_phone, d.delivery_message, d.tracking_number, d.carrier
         FROM order_tbl o
