@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="script">
+</th:block>
+
+<th:block layout:fragment="css">
+    <style>
+        .review-list {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .review-list th {
+            width: 10%;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        .review-list td {
+            text-align: left;
+        }
+
+        .review-list .d-flex select {
+            flex: 1; /* select-input 비율 설정 */
+        }
+
+        .review-list .d-flex input {
+            flex: 3; /* select-input 비율 설정 */
+        }
+
+        .review-list .d-flex {
+            gap: 10px; /* select-input 사이 간격 설정 */
+        }
+
+        .product-info {
+            padding: 10px;
+        }
+
+        .product-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            margin-right: 15px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .manufacturer {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .product-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div>
+        <h2 class="mb-4">리뷰 목록</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <p class="mb-2 font-weight-bold" style="font-size: 24px;">Search</p>
+
+                <form action="/admin/review/" method="get">
+                    <table class="table table-bordered review-list">
+                        <tbody>
+                        <tr>
+                            <th class="align-middle">검색어</th>
+                            <td class="align-middle">
+                                <div class="d-flex">
+                                    <select class="form-control" name="searchType">
+                                        <option selected th:selected="${''} == ${pageMaker.cri.searchType}">전체</option>
+                                        <option value="prod_name" th:selected="${'prod_name'} == ${pageMaker.cri.searchType}">상품명</option>
+                                        <option value="prod_id" th:selected="${'prod_id'} == ${pageMaker.cri.searchType}">상품코드</option>
+                                        <option value="rev_title" th:selected="${'rev_title'} == ${pageMaker.cri.searchType}">리뷰제목</option>
+                                        <option value="rev_content" th:selected="${'rev_content'} == ${pageMaker.cri.searchType}">리뷰내용</option>
+                                    </select>
+                                    <input class="form-control" type="search" aria-label="Search" name="keyword" th:value="${pageMaker.cri.keyword}">
+                                </div>
+                            </td>
+                            <th class="align-middle">평점</th>
+                            <td class="text-center align-middle">
+                                <div class="form-check form-check-inline mr-3">
+                                    <input class="form-check-input" type="radio" name="rev_rate" id="rev_rate_all" value="" th:checked="${''} == ${rev_rate}" checked>
+                                    <label class="form-check-label" for="rev_rate_all">전체</label>
+                                </div>
+                                <div class="form-check form-check-inline mr-3">
+                                    <input class="form-check-input" type="radio" name="rev_rate" id="rev_rate_1" value="1" th:checked="${'1'} == ${rev_rate}">
+                                    <label class="form-check-label" for="rev_rate_1">1점</label>
+                                </div>
+                                <div class="form-check form-check-inline mr-3">
+                                    <input class="form-check-input" type="radio" name="rev_rate" id="rev_rate_2" value="2" th:checked="${'2'} == ${rev_rate}">
+                                    <label class="form-check-label" for="rev_rate_2">2점</label>
+                                </div>
+                                <div class="form-check form-check-inline mr-3">
+                                    <input class="form-check-input" type="radio" name="rev_rate" id="rev_rate_3" value="3" th:checked="${'3'} == ${rev_rate}">
+                                    <label class="form-check-label" for="rev_rate_3">3점</label>
+                                </div>
+                                <div class="form-check form-check-inline mr-3">
+                                    <input class="form-check-input" type="radio" name="rev_rate" id="rev_rate_4" value="4" th:checked="${'4'} == ${rev_rate}">
+                                    <label class="form-check-label" for="rev_rate_4">4점</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="rev_rate" id="rev_rate_5" value="5" th:checked="${'5'} == ${rev_rate}">
+                                    <label class="form-check-label" for="rev_rate_5">5점</label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-dark">검색</button>
+                    </div>
+                </form>
+
+                <!-- 페이징 및 검색 파라미터 정보 -->
+                <form id="criteriaForm" action="/admin/review/" method="get">
+                    <input type="hidden" name="page" id="page" th:value="${pageMaker.cri.page}" />
+                    <input type="hidden" name="perPageNum" id="perPageNum" th:value="${pageMaker.cri.perPageNum}" />
+                    <input type="hidden" name="searchType" id="searchType" th:value="${pageMaker.cri.searchType}" />
+                    <input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}" />
+                    <input type="hidden" name="rev_rate" id="rev_rate" th:value="${rev_rate}"/>
+                    <input type="hidden" name="rev_code" id="rev_code">
+                </form>
+            </div>
+        </div>
+
+        <hr class="my-3">
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered" style="font-size: 14px;">
+                    <thead class="text-center">
+                    <tr>
+                        <th style="width: 3%"><input type="checkbox" id="checkAll"></th>
+                        <th style="width: 7%">No</th>
+                        <th style="width: 20%">상품정보</th>
+                        <th>평점/내용</th>
+                        <th style="width: 10%">작성자</th>
+                        <th style="width: 10%">작성일</th>
+                        <th style="width: 10%">관리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${reviewList}">
+                        <td class="text-center align-middle">
+                            <input type="checkbox" name="check">
+                        </td>
+                        <td class="text-center align-middle">
+                            <span th:text="${item.rev_code}"></span>
+                        </td>
+                        <td class="align-middle">
+                            <div class="product-container d-flex align-items-center">
+                                <div class="product-image me-3" style="width: 60px; height: 60px;">
+                                    <img th:src="${'/admin/review/image_display?dateFolderName=' + item.prod_uploadfolder + '&fileName=s_' + item.prod_img}"
+                                         alt="상품 이미지"
+                                         class="img-fluid rounded product-thumbnail">
+                                </div>
+                                <div class="product-details">
+                                    <p class="manufacturer mb-1"><small class="text-muted" th:text="'상품코드 : ' + ${item.prod_id}"></small></p>
+                                    <h4 class="product-name" th:text="${item.prod_name}"></h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <th:block th:each="i : ${#numbers.sequence(1, 5)}"><span th:text="${i <= item.rev_rate} ? '★' : '☆'" style="color: cornflowerblue;"></span></th:block>
+                            <p class="mb-0 font-weight-bold">"<span th:text="${item.rev_title}"></span>"</p>
+                            <p class="mb-0 text-muted" style="font-size: 12px;"
+                               th:text="'내용 : ' + (${#strings.length(item.rev_content)} > 50 ?
+                                ${#strings.substring(item.rev_content,0,50)} + '...' :
+                                ${item.rev_content})"></p>
+                        </td>
+                        <td class="text-center align-middle">
+                            <p class="mb-0" th:text="${item.u_name}"></p>
+                            <p class="text-muted mb-0" th:text="'(' + ${item.u_id} + ')'"></p>
+                        </td>
+                        <td class="text-center align-middle">
+                            <p class="mb-0" th:text="${#temporals.format(item.rev_regdate, 'yyyy-MM-dd')}"></p>
+                            <p class="text-muted mb-0" th:text="'(' + ${#temporals.format(item.rev_regdate, 'HH:mm:ss')} + ')'"></p>
+                        </td>
+                        <td class="text-center align-middle">
+                            <button type="button" class="btn btn-sm btn-warning" name="btnReviewEdit">수정</button>
+                            <button type="button" class="btn btn-sm btn-danger" name="btnReviewDelete">삭제</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- pagination -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <th:block th:if="${pageMaker.prev}">
+                        <li class="page-item"><a class="page-link movepage" th:href="${pageMaker.startPage - 1}">Previous</a></li>
+                    </th:block>
+
+                    <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                        <li class="page-item" th:classappend="${pageMaker.cri.page == num ? 'active' : ''}">
+                            <a class="page-link movepage" th:href="${num}" th:text="${num}"></a>
+                        </li>
+                    </th:block>
+
+                    <th:block th:if="${pageMaker.next}">
+                        <li class="page-item"><a class="page-link movepage" th:href="${pageMaker.endPage + 1}">Next</a></li>
+                    </th:block>
+                </ul>
+            </nav>x
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function() {
+
+            let criteriaForm = $("#criteriaForm");
+
+            $("a.movepage").on("click", function(e) {
+                e.preventDefault(); // <a>태그의 링크기능을 제거
+
+                criteriaForm.find("input[name='page']").val($(this).attr("href"));
+                criteriaForm.submit();
+            });
+
+            // 제목행 체크박스 클릭 시 전체 상품 선택
+            let isCheck = true;
+            $("#checkAll").on("click", function() {
+                $("input[name='check']").prop("checked", this.checked);
+                isCheck = this.checked;
+            });
+
+            // 체크박스가 모두 선택된 상태에서 한 개라도 체크를 해제할 경우 제목행 체크박스 선택도 해제
+            $("input[name='check']").on("click", function() {
+                $("#checkAll").prop("checked", this.checked);
+                $("input[name='check']").each(function() {
+                    if(!$(this).is(":checked")) {
+                        $("#checkAll").prop("checked", false);
+                    }
+                });
+            });
+        })
+    </script>
+</th:block>
+</html>
