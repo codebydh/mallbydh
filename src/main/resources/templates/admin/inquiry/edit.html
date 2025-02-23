@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="script">
+    <style>
+        .product-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            margin-right: 15px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .manufacturer {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .product-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .readonly-white {
+            background-color: #FFFFFF !important;
+            color: #495057 !important;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="css">
+    <style>
+        .member-info {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .member-info th {
+            width: 15%;
+            background-color: #f5f5f5;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .member-info td {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .fs-14 {
+            font-size: 14px;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="content">
+
+    <div>
+        <h2 class="mb-4">문의 수정</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <table class="table table-bordered member-info fs-14">
+                        <tr>
+                            <th>상품정보</th>
+                            <td>
+                                <div class="product-container d-flex align-items-center">
+                                    <div class="product-image me-3" style="width: 60px; height: 60px;">
+                                        <img th:src="${'/admin/inquiry/image_display?dateFolderName=' + inquiryContent.prod_uploadfolder + '&fileName=s_' + inquiryContent.prod_img}"
+                                             alt="상품 이미지"
+                                             class="img-fluid rounded product-thumbnail">
+                                    </div>
+                                    <div class="product-details">
+                                        <p class="manufacturer mb-1"><small class="text-muted" th:text="'상품코드 : ' + ${inquiryContent.prod_id}"></small></p>
+                                        <h4 class="product-name" th:text="${inquiryContent.prod_name}"></h4>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>작성자</th>
+                            <td>
+                                <input class="form-control readonly-white" type="text" name="u_id" id="u_id" th:value="${inquiryContent.u_id}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>문의제목</th>
+                            <td>
+                                <input class="form-control" type="text" name="inq_title" id="inq_title" th:value="${inquiryContent.inq_title}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>문의내용</th>
+                            <td>
+                                <textarea class="form-control" name="inq_content" id="inq_content" rows="5" th:text="${inquiryContent.inq_content}"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- 버튼 -->
+                <div class="text-center" style="margin: 36px 0 16px 0;">
+                    <button type="button" class="btn btn-danger mr-2 px-4" id="btnInquiryUpdate">수정</button>
+                    <input type="hidden" id="inq_code" name="inq_code" th:value="${inquiryContent.inq_code}">
+                    <button type="button" class="btn btn-light px-4" onclick="history.back()">뒤로</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function() {
+            $("#btnInquiryUpdate").on("click", function() {
+                let inq_code = $("#inq_code").val();
+                let inq_title = $("#inq_title").val();
+                let inq_content = $("#inq_content").val();
+
+                $.ajax({
+                   url: "/admin/inquiry/update",
+                   type: "post",
+                   data: {
+                       inq_code: inq_code,
+                       inq_title: inq_title,
+                       inq_content: inq_content
+                   },
+                    dataType: 'text',
+                    success: function(result) {
+                        alert("수정이 완료되었습니다.");
+                        location.href = "/admin/inquiry/";
+                    }
+                });
+            });
+        });
+    </script>
+</th:block>
+</html>

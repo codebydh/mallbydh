@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mallbydh.admin.inquiry.AdminInquiryMapper">
+
+    <select id="getInquiryList" resultType="java.util.Map" parameterType="com.project.mallbydh.common.utils.SearchCriteria">
+        select
+            i.inq_code, i.inq_title, i.inq_content, i.inq_regdate,
+            a.ans_code, a.admin_id, a.ans_content, a.ans_regdate,
+            u.u_id, u.u_name,
+            p.prod_id, p.prod_name, p.prod_uploadfolder, p.prod_img
+        from
+            inquiry_tbl i
+                left join answer_tbl a on i.inq_code = a.inq_code
+                inner join user_tbl u on i.u_id = u.u_id
+                inner join product_tbl p on i.prod_id = p.prod_id
+        where
+            1=1
+            <include refid="search"></include>
+            <include refid="ans_status"></include>
+        order by
+            i.inq_code desc
+        limit #{cri.pageStart}, #{cri.perPageNum}
+    </select>
+
+    <select id="getInquiryCount" resultType="int">
+        select
+            count(*)
+        from
+            inquiry_tbl i
+                left join answer_tbl a on i.inq_code = a.inq_code
+                inner join user_tbl u on i.u_id = u.u_id
+                inner join product_tbl p on i.prod_id = p.prod_id
+        where
+        1=1
+        <include refid="search"></include>
+        <include refid="ans_status"></include>
+    </select>
+
+    <select id="getInquiryContent" resultType="java.util.Map">
+        select
+            i.inq_code, i.inq_title, i.inq_content, i.inq_regdate,
+            u.u_id, u.u_name,
+            p.prod_id, p.prod_name, p.prod_uploadfolder, p.prod_img
+        from
+            inquiry_tbl i
+                inner join product_tbl p on i.prod_id = p.prod_id
+                inner join user_tbl u on i.u_id = u.u_id
+        where
+            i.inq_code = #{inq_code}
+    </select>
+
+    <delete id="inquiryDelete">
+        delete from inquiry_tbl where inq_code = #{inq_code}
+    </delete>
+
+    <update id="inquiryUpdate">
+        update
+            inquiry_tbl
+        set
+            inq_title = #{inq_title},
+            inq_content = #{inq_content}
+        where
+            inq_code = #{inq_code}
+    </update>
+
+    <sql id="search">
+        <if test="cri.searchType != null">
+            <if test="cri.searchType == 'prod_name'.toString()">
+                and p.prod_name like concat('%', #{cri.keyword}, '%')
+            </if>
+            <if test="cri.searchType == 'prod_id'.toString()">
+                and p.prod_id = #{cri.keyword}
+            </if>
+            <if test="cri.searchType == 'inq_title'.toString()">
+                and i.inq_title like concat('%', #{cri.keyword}, '%')
+            </if>
+            <if test="cri.searchType == 'inq_content'.toString()">
+                and i.inq_content like concat('%', #{cri.keyword}, '%')
+            </if>
+            <if test="cri.searchType == 'u_id'.toString()">
+                and u.u_id like concat('%', #{cri.keyword}, '%')
+            </if>
+            <if test="cri.searchType == 'u_name'.toString()">
+                and u.u_name like concat('%', #{cri.keyword}, '%')
+            </if>
+        </if>
+    </sql>
+
+    <sql id="ans_status">
+        <if test="ans_status != null and ans_status != ''">
+            <choose>
+                <when test="ans_status == '답변대기'">
+                    AND a.ans_code IS NULL
+                </when>
+                <when test="ans_status == '답변완료'">
+                    AND a.ans_code IS NOT NULL
+                </when>
+            </choose>
+        </if>
+    </sql>
+
+</mapper>

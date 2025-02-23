@@ -12,7 +12,7 @@ import java.util.Date;
 public class InquiryAnswerVO {
 
     // inquiry_tbl
-    private int inq_code;
+    private Integer inq_code;
     private String u_id;
     private int prod_id;
     private String inq_title;
@@ -20,7 +20,7 @@ public class InquiryAnswerVO {
     private Date inq_regdate;
 
     // answer_tbl
-    private int ans_code;
+    private Integer ans_code;
     private String admin_id;
     private String ans_content;
     private Date ans_regdate;
