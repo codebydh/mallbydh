@@ -2,15 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mallbydh.admin.inquiry.AdminInquiryMapper">
 
-    <select id="getInquiryList" resultType="java.util.Map" parameterType="com.project.mallbydh.common.utils.SearchCriteria">
+    <select id="getInquiryList" resultMap="InquiryWithAnswersMap">
         select
             i.inq_code, i.inq_title, i.inq_content, i.inq_regdate,
-            a.ans_code, a.admin_id, a.ans_content, a.ans_regdate,
+            a.ans_code, a.ans_content, a.ans_regdate,
+            ad.admin_id, ad.admin_name,
             u.u_id, u.u_name,
             p.prod_id, p.prod_name, p.prod_uploadfolder, p.prod_img
         from
             inquiry_tbl i
                 left join answer_tbl a on i.inq_code = a.inq_code
+                left join admin_tbl ad on a.admin_id = ad.admin_id
                 inner join user_tbl u on i.u_id = u.u_id
                 inner join product_tbl p on i.prod_id = p.prod_id
         where
@@ -21,6 +23,37 @@
             i.inq_code desc
         limit #{cri.pageStart}, #{cri.perPageNum}
     </select>
+
+    <resultMap id="InquiryWithAnswersMap" type="com.project.mallbydh.inquiry.InquiryAnswerVO">
+        <id property="inq_code" column="inq_code"/>
+        <result property="u_id" column="u_id"/>
+        <result property="prod_id" column="prod_id"/>
+        <result property="inq_title" column="inq_title"/>
+        <result property="inq_content" column="inq_content"/>
+        <result property="inq_regdate" column="inq_regdate"/>
+
+        <association property="user" javaType="com.project.mallbydh.member.MemberVO">
+            <id property="u_id" column="u_id"/>
+            <result property="u_name" column="u_name"/>
+        </association>
+
+        <association property="product" javaType="com.project.mallbydh.admin.product.ProductVO">
+            <id property="prod_id" column="prod_id"/>
+            <result property="prod_name" column="prod_name"/>
+            <result property="prod_uploadfolder" column="prod_uploadfolder"/>
+            <result property="prod_img" column="prod_img"/>
+        </association>
+
+        <collection property="answers" ofType="com.project.mallbydh.inquiry.AnswerVO" javaType="java.util.ArrayList">
+            <id property="ans_code" column="ans_code"/>
+            <result property="ans_content" column="ans_content"/>
+            <result property="ans_regdate" column="ans_regdate"/>
+            <association property="admin" javaType="com.project.mallbydh.admin.AdminDTO">
+                <id property="admin_id" column="admin_id"/>
+                <result property="admin_name" column="admin_name"/>
+            </association>
+        </collection>
+    </resultMap>
 
     <select id="getInquiryCount" resultType="int">
         select
@@ -62,6 +95,42 @@
         where
             inq_code = #{inq_code}
     </update>
+
+    <insert id="inquiryInsert">
+        insert into
+            answer_tbl (inq_code, ans_content, admin_id)
+        values
+            (#{inq_code}, #{vo.ans_content}, #{vo.admin_id})
+    </insert>
+
+    <select id="getAnswerContent" resultType="java.util.Map">
+        select
+            a.admin_id, a.ans_code, a.ans_content,
+            i.inq_code, i.inq_title, i.inq_content, i.inq_regdate,
+            u.u_id, u.u_name,
+            p.prod_id, p.prod_name, p.prod_uploadfolder, p.prod_img
+        from
+            answer_tbl a
+                inner join inquiry_tbl i on i.inq_code = a.inq_code
+                inner join product_tbl p on i.prod_id = p.prod_id
+                inner join user_tbl u on i.u_id = u.u_id
+        where
+            a.ans_code = #{ans_code}
+    </select>
+
+    <update id="updateAnswer">
+        update
+            answer_tbl
+        set
+            admin_id = #{admin_id},
+            ans_content = #{ans_content}
+        where
+            ans_code = #{ans_code}
+    </update>
+
+    <delete id="answerDelete">
+        delete from answer_tbl where ans_code = #{ans_code}
+    </delete>
 
     <sql id="search">
         <if test="cri.searchType != null">

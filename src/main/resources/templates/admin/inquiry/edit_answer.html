@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="script">
+    <style>
+        .product-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            margin-right: 15px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .manufacturer {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .product-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .readonly-white {
+            background-color: #FFFFFF !important;
+            color: #495057 !important;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="css">
+    <style>
+        .member-info {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .member-info th {
+            width: 15%;
+            background-color: #f5f5f5;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .member-info td {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .fs-14 {
+            font-size: 14px;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="content">
+
+    <div>
+        <h2 class="mb-4">답변 수정</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <!-- 문의내용 -->
+                <div class="mb-3">
+                    <p class="mb-2 font-weight-bold" style="font-size: 20px;">문의 내용</p>
+                    <table class="table table-bordered member-info fs-14">
+                        <tr>
+                            <th>상품정보</th>
+                            <td>
+                                <div class="product-container d-flex align-items-center">
+                                    <div class="product-image me-3" style="width: 60px; height: 60px;">
+                                        <img th:src="${'/admin/inquiry/image_display?dateFolderName=' + answerContent.prod_uploadfolder + '&fileName=s_' + answerContent.prod_img}"
+                                             alt="상품 이미지"
+                                             class="img-fluid rounded product-thumbnail">
+                                    </div>
+                                    <div class="product-details">
+                                        <p class="manufacturer mb-1"><small class="text-muted" th:text="'상품코드 : ' + ${answerContent.prod_id}"></small></p>
+                                        <h4 class="product-name" th:text="${answerContent.prod_name}"></h4>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>문의제목</th>
+                            <td>
+                                <span th:text="${answerContent.inq_title}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>문의내용</th>
+                            <td>
+                                <span th:text="${answerContent.inq_content}"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>작성자</th>
+                            <td>
+                                <span th:text="${answerContent.u_name} + '(' + ${answerContent.u_id} + ')'"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- 답변내용 -->
+                <div class="mb-3">
+                    <p class="mb-2 font-weight-bold" style="font-size: 20px;">답변 내용</p>
+                    <table class="table table-bordered member-info fs-14">
+                        <tr>
+                            <th>작성자</th>
+                            <td>
+                                <input class="form-control readonly-white" name="admin_id" id="admin_id" th:value="${admin_id}" readonly>
+                                <span class="text-muted"><small>- 수정 시 현재 로그인한 관리자로 담당자가 정해집니다.</small></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>답변내용</th>
+                            <td>
+                                <textarea class="form-control" name="ans_content" id="ans_content" rows="5" th:text="${answerContent.ans_content}"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- 버튼 -->
+                <div class="text-center" style="margin: 36px 0 16px 0;">
+                    <button type="button" class="btn btn-danger mr-2 px-4" id="btnModifyAnswer">수정</button>
+                    <input type="hidden" id="ans_code" name="ans_code" th:value="${answerContent.ans_code}">
+                    <button type="button" class="btn btn-light px-4" onclick="history.back()">뒤로</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function() {
+            $("#btnModifyAnswer").on("click", function() {
+                let ans_code = $("#ans_code").val();
+                let admin_id = $("#admin_id").val();
+                let ans_content = $("#ans_content").val();
+
+                $.ajax({
+                   url: "/admin/inquiry/answer_modify",
+                   type: "post",
+                   data: {
+                       ans_code: ans_code,
+                       admin_id: admin_id,
+                       ans_content: ans_content
+                   },
+                    dataType: 'text',
+                    success: function(result) {
+                        alert("답변이 수정되었습니다.");
+                        location.href = "/admin/inquiry/";
+                    }
+                });
+            });
+        });
+    </script>
+</th:block>
+</html>

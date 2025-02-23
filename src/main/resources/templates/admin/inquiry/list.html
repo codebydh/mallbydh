@@ -73,6 +73,15 @@
             background-color: cornflowerblue !important;
             color: white;
         }
+
+        .button-container .btn {
+            font-size: 12px;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .button-container .btn-primary {
+            width: 100%;
+        }
     </style>
 </th:block>
 
@@ -135,6 +144,7 @@
                     <input type="hidden" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}" />
                     <input type="hidden" name="ans_status" id="ans_status" th:value="${ans_status}"/>
                     <input type="hidden" name="inq_code" id="inq_code">
+                    <input type="hidden" name="ans_code" id="ans_code">
                 </form>
             </div>
         </div>
@@ -157,48 +167,69 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="item:${inquiryList}">
+                    <tr th:each="item : ${inquiryList}">
                         <td class="text-center align-middle">
                             <input type="checkbox" name="check">
                         </td>
+                        <td class="text-center align-middle" th:text="${item.inq_code}"></td>
                         <td class="text-center align-middle">
-                            <span th:text="${item.inq_code}"></span>
-                        </td>
-                        <td class="text-center align-middle">
-                            <span th:if="${item['ANS_CODE'] != null or item['ans_code'] != null}" class="badge bg-success">답변완료</span>
-                            <span th:unless="${item['ANS_CODE'] != null or item['ans_code'] != null}" class="badge bg-light">답변대기</span>
+                            <span th:class="${item.answers != null and not #lists.isEmpty(item.answers) ? 'badge bg-success' : 'badge bg-light'}"
+                                  th:text="${item.answers != null and not #lists.isEmpty(item.answers) ? '답변완료' : '답변대기'}"></span>
                         </td>
                         <td class="align-middle">
                             <div class="product-container d-flex align-items-center">
                                 <div class="product-image me-3" style="width: 60px; height: 60px;">
-                                    <img th:src="${'/admin/inquiry/image_display?dateFolderName=' + item.prod_uploadfolder + '&fileName=s_' + item.prod_img}"
+                                    <img th:src="@{'/admin/inquiry/image_display?dateFolderName=' + ${item.product.prod_uploadfolder} + '&fileName=s_' + ${item.product.prod_img}}"
                                          alt="상품 이미지"
                                          class="img-fluid rounded product-thumbnail">
                                 </div>
                                 <div class="product-details">
-                                    <p class="manufacturer mb-1"><small class="text-muted" th:text="'상품코드 : ' + ${item.prod_id}"></small></p>
-                                    <h4 class="product-name" th:text="${item.prod_name}"></h4>
+                                    <p class="manufacturer mb-1"><small class="text-muted" th:text="'상품코드 : ' + ${item.product.prod_id}"></small></p>
+                                    <h4 class="product-name" th:text="${item.product.prod_name}"></h4>
                                 </div>
                             </div>
                         </td>
                         <td class="align-middle">
-                            <p class="mb-0 font-weight-bold">"<span th:text="${item.inq_title}"></span>"</p>
-                            <p class="mb-0 text-muted" style="font-size: 12px;"
-                               th:text="'내용 : ' + (${#strings.length(item.inq_content)} > 50 ?
-                                ${#strings.substring(item.inq_content,0,50)} + '...' :
-                                ${item.inq_content})"></p>
+                            <!-- 문의내용 -->
+                            <div th:class="${item.answers != null and not #lists.isEmpty(item.answers) ? 'mb-2' : ''}">
+                                <p class="mb-0 font-weight-bold">"<span th:text="${item.inq_title}"></span>"</p>
+                                <p class="mb-0 text-muted" style="font-size: 12px;"
+                                   th:text="'내용 : ' + (${#strings.length(item.inq_content)} > 50 ? ${#strings.substring(item.inq_content,0,50)} + '...' : ${item.inq_content})"></p>
+                            </div>
+                            <!-- 답변내용 -->
+                            <div th:each="answer : ${item.answers}" class="card bg-light mb-1" style="font-size: 12px; box-shadow: none; border: 1px solid #d3d3d3;">
+                                <div class="card-body" style="padding: 8px;">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="mb-0 font-weight-bold" th:text="${answer.admin.admin_name} + '(' + ${answer.admin.admin_id} + ')'"></span>
+                                        <span class="mb-0 text-muted" th:text="${#dates.format(answer.ans_regdate, 'yyyy-MM-dd(HH:mm:ss)')}"></span>
+                                    </div>
+                                    <hr class="my-2">
+                                    <p class="mb-4" th:text="${answer.ans_content}"></p>
+                                    <div class="button-container">
+                                        <button type="button" class="btn btn-sm btn-dark me-2" th:data-ans_code="${answer.ans_code}" name="btnAnswerEdit">답변수정</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" th:data-ans_code="${answer.ans_code}" name="btnAnswerDelete">답변삭제</button>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                         <td class="text-center align-middle">
-                            <p class="mb-0" th:text="${item.u_name}"></p>
-                            <p class="text-muted mb-0" th:text="'(' + ${item.u_id} + ')'"></p>
+                            <p class="mb-0" th:text="${item.user.u_name}"></p>
+                            <p class="text-muted mb-0" th:text="'(' + ${item.user.u_id} + ')'"></p>
                         </td>
                         <td class="text-center align-middle">
-                            <p class="mb-0" th:text="${#temporals.format(item.inq_regdate, 'yyyy-MM-dd')}"></p>
-                            <p class="text-muted mb-0" th:text="'(' + ${#temporals.format(item.inq_regdate, 'HH:mm:ss')} + ')'"></p>
+                            <p class="mb-0" th:text="${#dates.format(item.inq_regdate, 'yyyy-MM-dd')}"></p>
+                            <p class="text-muted mb-0" th:text="'(' + ${#dates.format(item.inq_regdate, 'HH:mm:ss')} + ')'"></p>
                         </td>
                         <td class="text-center align-middle">
-                            <button type="button" class="btn btn-sm btn-warning" th:data-inq_code="${item.inq_code}" name="btnInquiryEdit">수정</button>
-                            <button type="button" class="btn btn-sm btn-danger" th:data-inq_code="${item.inq_code}" name="btnInquiryDelete">삭제</button>
+                            <div class="button-container" style="padding-left: 20px; padding-right: 20px;">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <button type="button" class="btn btn-sm btn-warning me-2" th:data-inq_code="${item.inq_code}" name="btnInquiryEdit">수정</button>
+                                    <button type="button" class="btn btn-sm btn-danger" th:data-inq_code="${item.inq_code}" name="btnInquiryDelete">삭제</button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-primary w-100" th:data-inq_code="${item.inq_code}" name="btnNewAnswer">답변등록</button>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
@@ -222,7 +253,7 @@
                         <li class="page-item"><a class="page-link movepage" th:href="${pageMaker.endPage + 1}">Next</a></li>
                     </th:block>
                 </ul>
-            </nav>x
+            </nav>
         </div>
     </div>
 </th:block>
@@ -257,9 +288,9 @@
                 });
             });
 
-            // 삭제버튼
+            // 문의삭제버튼
             $("button[name='btnInquiryDelete']").on("click", function() {
-                if(!confirm("해당 문의를 삭제하시겠습니까?")) return;
+                if(!confirm("해당 문의를 삭제시키시겠습니까?")) return;
 
                 let inq_code = $(this).data("inq_code");
                 $.ajax ({
@@ -280,6 +311,39 @@
                 $("#inq_code").val(inq_code);
                 criteriaForm.attr("action", "/admin/inquiry/edit");
                 criteriaForm.submit();
+            });
+
+            // 답변등록버튼
+            $("button[name='btnNewAnswer']").on("click", function() {
+                let inq_code = $(this).data("inq_code");
+                $("#inq_code").val(inq_code);
+                criteriaForm.attr("action", "/admin/inquiry/answer");
+                criteriaForm.submit();
+            });
+
+            // 답변수정버튼
+            $("button[name='btnAnswerEdit']").on("click", function() {
+                let ans_code = $(this).data("ans_code");
+                $("#ans_code").val(ans_code);
+                criteriaForm.attr("action", "/admin/inquiry/edit_answer");
+                criteriaForm.submit();
+            });
+
+            // 문의삭제버튼
+            $("button[name='btnAnswerDelete']").on("click", function() {
+                if(!confirm("해당 답변을 삭제하시겠습니까?")) return;
+
+                let ans_code = $(this).data("ans_code");
+                $.ajax ({
+                    url: '/admin/inquiry/delete_answer',
+                    type: 'post',
+                    data: {ans_code: ans_code},
+                    dataType: 'text',
+                    success: function(result) {
+                        alert("삭제가 완료되었습니다.");
+                        location.href = "/admin/inquiry/";
+                    }
+                });
             });
         })
     </script>

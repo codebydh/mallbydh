@@ -1,10 +1,13 @@
 package com.project.mallbydh.inquiry;
 
+import com.project.mallbydh.admin.product.ProductVO;
+import com.project.mallbydh.member.MemberVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,10 +23,8 @@ public class InquiryAnswerVO {
     private Date inq_regdate;
 
     // answer_tbl
-    private Integer ans_code;
-    private String admin_id;
-    private String ans_content;
-    private Date ans_regdate;
+    private List<AnswerVO> answers;
 
-    private String prod_name;
+    private MemberVO user;
+    private ProductVO product;
 }

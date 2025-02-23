@@ -1,6 +1,7 @@
 package com.project.mallbydh.admin.inquiry;
 
 import com.project.mallbydh.common.utils.SearchCriteria;
+import com.project.mallbydh.inquiry.AnswerVO;
 import com.project.mallbydh.inquiry.InquiryAnswerVO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,21 @@ public class AdminInquiryService {
 
     public void inquiryUpdate(InquiryAnswerVO vo) {
         adminInquiryService.inquiryUpdate(vo);
+    }
+
+    public void inquiryInsert(Integer inq_code, AnswerVO vo) {
+        adminInquiryService.inquiryInsert(inq_code, vo);
+    }
+
+    public Map<String, Object> getAnswerContent(Integer ans_code) {
+        return adminInquiryService.getAnswerContent(ans_code);
+    }
+
+    public void updateAnswer(AnswerVO vo) {
+        adminInquiryService.updateAnswer(vo);
+    }
+
+    public void answerDelete(Integer ans_code) {
+        adminInquiryService.answerDelete(ans_code);
     }
 }
