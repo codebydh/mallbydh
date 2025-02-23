@@ -4,6 +4,7 @@ import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.FileUtils;
 import com.project.mallbydh.common.utils.PageMaker;
 import com.project.mallbydh.common.utils.SearchCriteria;
+import com.project.mallbydh.review.ReviewVO;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,21 @@ public class AdminReviewController {
     public ResponseEntity<String> adminReviewDelete(@RequestParam("rev_code") Integer rev_code) throws Exception {
         ResponseEntity<String> entity = null;
         adminReviewService.reviewDelete(rev_code);
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+        return entity;
+    }
+
+    @GetMapping("/edit")
+    public String edit(@RequestParam("rev_code") Integer rev_code, Model model) {
+        Map<String, Object> reviewContent = adminReviewService.getReviewContent(rev_code);
+        model.addAttribute("reviewContent", reviewContent);
+        return "admin/review/edit";
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<String> adminReviewUpdate(ReviewVO vo) throws Exception {
+        ResponseEntity<String> entity = null;
+        adminReviewService.reviewUpdate(vo);
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }

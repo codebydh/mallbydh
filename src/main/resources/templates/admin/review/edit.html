@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layouts/ad_layout}">
+
+<th:block layout:fragment="script">
+    <style>
+        .product-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            margin-right: 15px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .manufacturer {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .product-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .readonly-white {
+            background-color: #FFFFFF !important;
+            color: #495057 !important;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="css">
+    <style>
+        .member-info {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .member-info th {
+            width: 15%;
+            background-color: #f5f5f5;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .member-info td {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .fs-14 {
+            font-size: 14px;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="content">
+
+    <div>
+        <h2 class="mb-4">리뷰 수정</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <table class="table table-bordered member-info fs-14">
+                        <tr>
+                            <th>상품정보</th>
+                            <td>
+                                <div class="product-container d-flex align-items-center">
+                                    <div class="product-image me-3" style="width: 60px; height: 60px;">
+                                        <img th:src="${'/admin/review/image_display?dateFolderName=' + reviewContent.prod_uploadfolder + '&fileName=s_' + reviewContent.prod_img}"
+                                             alt="상품 이미지"
+                                             class="img-fluid rounded product-thumbnail">
+                                    </div>
+                                    <div class="product-details">
+                                        <p class="manufacturer mb-1"><small class="text-muted" th:text="'상품코드 : ' + ${reviewContent.prod_id}"></small></p>
+                                        <h4 class="product-name" th:text="${reviewContent.prod_name}"></h4>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>작성자</th>
+                            <td>
+                                <input class="form-control readonly-white" type="text" name="u_id" id="u_id" th:value="${reviewContent.u_id}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>평점</th>
+                            <td>
+                                <select class="form-control" aria-label="Default select example" name="rev_rate" id="rev_rate">
+                                    <option value="1" th:selected="${reviewContent.rev_rate == 1}">1점</option>
+                                    <option value="2" th:selected="${reviewContent.rev_rate == 2}">2점</option>
+                                    <option value="3" th:selected="${reviewContent.rev_rate == 3}">3점</option>
+                                    <option value="4" th:selected="${reviewContent.rev_rate == 4}">4점</option>
+                                    <option value="5" th:selected="${reviewContent.rev_rate == 5}">5점</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>리뷰제목</th>
+                            <td>
+                                <input class="form-control" type="text" name="rev_title" id="rev_title" th:value="${reviewContent.rev_title}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>리뷰내용</th>
+                            <td>
+                                <textarea class="form-control" name="rev_content" id="rev_content" rows="5" th:text="${reviewContent.rev_content}"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- 버튼 -->
+                <div class="text-center" style="margin: 36px 0 16px 0;">
+                    <button type="button" class="btn btn-danger mr-2 px-4" id="btnReviewUpdate">수정</button>
+                    <input type="hidden" id="rev_code" name="rev_code" th:value="${reviewContent.rev_code}">
+                    <button type="button" class="btn btn-light px-4" onclick="history.back()">뒤로</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="script2">
+    <script>
+        $(document).ready(function() {
+            $("#btnReviewUpdate").on("click", function() {
+                let rev_code = $("#rev_code").val();
+                let rev_rate = $("#rev_rate").val();
+                let rev_title = $("#rev_title").val();
+                let rev_content = $("#rev_content").val();
+
+                $.ajax({
+                   url: "/admin/review/update",
+                   type: "post",
+                   data: {
+                       rev_code: rev_code,
+                       rev_rate: rev_rate,
+                       rev_title: rev_title,
+                       rev_content: rev_content
+                   },
+                    dataType: 'text',
+                    success: function(result) {
+                        alert("수정이 완료되었습니다.");
+                        location.href = "/admin/review/";
+                    }
+                });
+            });
+        });
+    </script>
+</th:block>
+</html>

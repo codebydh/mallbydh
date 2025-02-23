@@ -32,9 +32,33 @@
         <include refid="rev_rate"></include>
     </select>
 
+    <select id="getReviewContent" resultType="java.util.Map">
+        select
+            r.rev_code, r.rev_content, r.rev_title, r.rev_rate, r.rev_regdate, r.u_id, r.prod_id,
+            p.prod_img, p.prod_uploadfolder, p.prod_name,
+            u.u_name
+        from
+            review_tbl r
+                inner join product_tbl p on r.prod_id = p.prod_id
+                inner join user_tbl u on r.u_id = u.u_id
+        where
+            r.rev_code = #{rev_code}
+    </select>
+
     <delete id="reviewDelete">
         delete from review_tbl where rev_code = #{rev_code}
     </delete>
+
+    <update id="reviewUpdate">
+        update
+            review_tbl
+        set
+            rev_rate = #{rev_rate},
+            rev_title = #{rev_title},
+            rev_content = #{rev_content}
+        where
+            rev_code = #{rev_code}
+    </update>
 
     <sql id="search">
         <if test="cri.searchType != null">

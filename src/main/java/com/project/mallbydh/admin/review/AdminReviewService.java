@@ -1,6 +1,7 @@
 package com.project.mallbydh.admin.review;
 
 import com.project.mallbydh.common.utils.SearchCriteria;
+import com.project.mallbydh.review.ReviewVO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +24,13 @@ public class AdminReviewService {
 
     public void reviewDelete(Integer rev_code) {
         adminReviewMapper.reviewDelete(rev_code);
+    }
+
+    public Map<String, Object> getReviewContent(Integer rev_code) {
+        return adminReviewMapper.getReviewContent(rev_code);
+    }
+
+    public void reviewUpdate(ReviewVO vo) {
+        adminReviewMapper.reviewUpdate(vo);
     }
 }
