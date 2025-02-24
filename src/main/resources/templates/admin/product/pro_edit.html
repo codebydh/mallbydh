@@ -224,8 +224,8 @@
                 if (prod_priority !== "") {
                     let priorityNum = parseInt(prod_priority);
 
-                    if (isNaN(priorityNum) || priorityNum < 1 || priorityNum > 8 || prod_priority.includes('.')) {
-                        alert("올바르지 않은 우선순위 값입니다. 1부터 8까지의 정수를 입력하거나 광고 해제를 원할 경우 비워두세요.");
+                    if (isNaN(priorityNum) || priorityNum < 1 || (priorityNum > 8 && priorityNum !== 999) || prod_priority.includes('.')) {
+                        alert("올바르지 않은 우선순위 값입니다. 1부터 8까지의 정수 또는 999를 입력하거나 광고 해제를 원할 경우 비워두세요.");
                         $("#prod_priority").focus();
                         return;
                     }
