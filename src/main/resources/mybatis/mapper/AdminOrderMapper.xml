@@ -53,7 +53,7 @@
             <if test="delivery_zipcode != null">delivery_zipcode = #{delivery_zipcode},</if>
             <if test="delivery_addr != null">delivery_addr = #{delivery_addr},</if>
             <if test="delivery_addr_detail != null">delivery_addr_detail = #{delivery_addr_detail},</if>
-            <if test="delivery_message != null">delivery_message = #{delivery_message},</if>
+            <if test="delivery_message != null">delivery_message = #{delivery_message}</if>
         </set>
         where ord_code = #{ord_code}
     </update>
@@ -62,7 +62,7 @@
         update payment_tbl
         <set>
             <if test="account_info != null">account_info = #{account_info},</if>
-            <if test="deposit_name != null">deposit_name = #{deposit_name},</if>
+            <if test="deposit_name != null">deposit_name = #{deposit_name}</if>
         </set>
         where ord_code = #{ord_code}
     </update>
@@ -78,7 +78,7 @@
             <if test="delivery_addr_detail != null">delivery_addr_detail = #{delivery_addr_detail},</if>
             <if test="delivery_message != null">delivery_message = #{delivery_message},</if>
             <if test="tracking_number != null">tracking_number = #{tracking_number},</if>
-            <if test="carrier != null">carrier = #{carrier},</if>
+            <if test="carrier != null">carrier = #{carrier}</if>
         </set>
         where ord_code = #{ord_code}
     </update>

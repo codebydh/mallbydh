@@ -29,8 +29,15 @@ public class AdminOrderService {
     @Transactional
     public void updateOrderInfo(OrderUpdateDTO dto) {
         adminordermapper.updateOrder(dto);
-        adminordermapper.updatePayment(dto);
+        if (isAccountTransfer(dto)) {
+            adminordermapper.updatePayment(dto);
+        }
         adminordermapper.updateDelivery(dto);
+    }
+
+    // 무통장입금일 경우에만 payment_tbl update 시행
+    private boolean isAccountTransfer(OrderUpdateDTO dto) {
+        return dto.getAccount_info() != null || dto.getDeposit_name() != null;
     }
 
 }
