@@ -58,7 +58,7 @@
                             <tr>
                                 <th>성함</th>
                                 <td>
-                                    <input type="text" class="form-control" th:value="${memberVO.u_name}">
+                                    <input type="text" class="form-control" id="u_name" name="u_name" th:value="${memberVO.u_name}">
                                 </td>
                                 <th>성별</th>
                                 <td>
@@ -75,7 +75,7 @@
                             <tr>
                                 <th>연락처</th>
                                 <td>
-                                    <input type="text" class="form-control mb-2" th:value="${memberVO.u_phone}">
+                                    <input type="text" class="form-control mb-2" name="u_phone" th:value="${memberVO.u_phone}">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="u_smsreceive" id="u_smsreceive_yes" value="Y" th:checked="${memberVO.u_smsreceive == 'Y'}">
                                         <label class="form-check-label" for="u_smsreceive_yes">수신허용</label>
@@ -87,7 +87,7 @@
                                 </td>
                                 <th>이메일</th>
                                 <td>
-                                    <input type="email" class="form-control mb-2" th:value="${memberVO.u_email}">
+                                    <input type="email" class="form-control mb-2" id="u_email" name="u_email" th:value="${memberVO.u_email}">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="u_emailreceive" id="u_emailreceive_yes" value="Y" th:checked="${memberVO.u_emailreceive == 'Y'}">
                                         <label class="form-check-label" for="u_emailreceive_yes">수신허용</label>
@@ -105,7 +105,7 @@
                                 </td>
                                 <th>비밀번호</th>
                                 <td>
-                                    <input type="password" class="form-control mb-2" id="u_pw" placeholder="바꿀 비밀번호">
+                                    <input type="password" class="form-control mb-2" id="u_pw" name="u_pw" placeholder="바꿀 비밀번호">
                                     <input type="password" class="form-control mb-1" id="u_pwConfirm" placeholder="비밀번호 확인">
                                     <p class="text-danger mb-0" style="font-size: 14px;">★ 비밀번호를 수정하실 경우에만 입력하세요.</p>
                                 </td>

@@ -54,6 +54,9 @@
 			user_tbl
 	    <set>
 	        u_updatedate = now(),
+			<if test="u_name != null">
+				u_name = #{u_name},
+			</if>
 	        <if test="u_phone != null">
 	            u_phone = #{u_phone},
 	        </if>
