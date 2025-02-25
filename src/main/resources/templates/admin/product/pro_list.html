@@ -105,7 +105,7 @@
                                         <div class="product-details">
                                             <h4 class="product-name mb-1">[[${productVO.prod_name}]]</h4>
                                             <p class="manufacturer mb-2"><small class="text-muted">BRAND : [[${productVO.prod_maker}]]</small></p>
-                                            <button class="btn btn-sm btn-outline-primary">상품페이지</button>
+                                            <button class="btn btn-sm btn-outline-primary product-page-btn" th:data-prod-id="${productVO.prod_id}">상품페이지</button>
                                         </div>
                                     </div>
                                 </td>
@@ -160,6 +160,13 @@
 <th:block layout:fragment="script2">
     <script>
         $(document).ready(function() {
+            // 상품페이지 이동 버튼
+            $('.product-page-btn').on('click', function() {
+                let prodId = $(this).data('prod-id');
+                let url = `/product/detail?prod_id=${prodId}`;
+                window.open(url, '_blank'); // 새 창으로 열기
+            });
+
             // 제목행 체크박스 클릭 시 전체 상품 선택
             let isCheck = true;
             $("#checkAll").on("click", function() {
