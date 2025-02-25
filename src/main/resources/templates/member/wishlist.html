@@ -76,7 +76,9 @@
                                 </div>
                                 <!-- 삭제 아이콘 -->
                                 <div class="col-2 d-flex align-items-center justify-content-end">
-                                    <i class="bi bi-bag-x fs-4 text-secondary" id="removeWish"></i>
+                                    <button class="btn btn-link p-0 removeWish" th:data-prod-id="${item.prod_id}">
+                                        <i class="bi bi-bag-x fs-4 text-secondary"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -94,24 +96,24 @@
 <th:block layout:fragment="script2">
     <script>
         $(document).ready(function() {
-           $("#removeWish"). on("click", function () {
-               let prod_id = $(".get-prod-id").data("prod-id");
+            $(document).on("click", ".removeWish", function () {
+                let prod_id = $(this).data("prod-id");
 
-               if (confirm('찜 목록에서 삭제하시겠습니까?')) {
-                   $.ajax({
-                       url: '/wish/remove',
-                       type: 'POST',
-                       data: { prod_id : prod_id },
-                       success: function() {
-                           alert('삭제가 완료되었습니다.');
-                           window.location.href = '/member/wishlist';
-                       },
-                       error: function() {
-                           alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
-                       }
-                   });
-               }
-           });
+                if (confirm('찜 목록에서 삭제하시겠습니까?')) {
+                    $.ajax({
+                        url: '/wish/remove',
+                        type: 'POST',
+                        data: { prod_id : prod_id },
+                        success: function() {
+                            alert('삭제가 완료되었습니다.');
+                            window.location.href = '/member/wishlist';
+                        },
+                        error: function() {
+                            alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+                        }
+                    });
+                }
+            });
         });
     </script>
 </th:block>
