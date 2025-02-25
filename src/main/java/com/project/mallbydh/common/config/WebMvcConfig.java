@@ -22,6 +22,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(adminInterceptor)
                 .addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/", "/admin/adLoginPass");
+                .excludePathPatterns("/admin/", "/admin/adLoginPass", "/admin/product/display/**");
     }
 }
