@@ -37,7 +37,15 @@ public class AdminInquiryController {
     public String inquiryList(@ModelAttribute("cri") SearchCriteria cri, @RequestParam(value = "ans_status", required = false) String ans_status, Model model) {
         cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
 
-        List<Map<String, Object>> inquiryList = adminInquiryService.getInquiryList(cri, ans_status);
+        List<InquiryAnswerVO> inquiryList = adminInquiryService.getInquiryList(cri, ans_status);
+
+        inquiryList.forEach(vo -> {
+            String uploadFolder = vo.getProduct().getProd_uploadfolder();
+            if (uploadFolder != null) {
+                vo.getProduct().setProd_uploadfolder(uploadFolder.replace("\\", "/"));
+            }
+        });
+
         model.addAttribute("inquiryList", inquiryList);
 
         // 페이징 정보

@@ -35,6 +35,14 @@ public class AdminReviewController {
         cri.setPerPageNum(Constants.ADMIN_PRODUCT_LIST_COUNT);
 
         List<Map<String, Object>> reviewList = adminReviewService.getReviewList(cri, rev_rate);
+
+        reviewList.forEach(vo -> {
+            String uploadFolder = (String) vo.get("prod_uploadfolder");
+            if (uploadFolder != null) {
+                vo.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
+            }
+        });
+
         model.addAttribute("reviewList", reviewList);
 
         // 페이징 정보

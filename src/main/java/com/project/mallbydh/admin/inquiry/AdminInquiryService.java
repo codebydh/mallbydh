@@ -15,7 +15,7 @@ public class AdminInquiryService {
 
     private final AdminInquiryMapper adminInquiryService;
 
-    public List<Map<String, Object>> getInquiryList(SearchCriteria cri, String ans_status) {
+    public List<InquiryAnswerVO> getInquiryList(SearchCriteria cri, String ans_status) {
         return adminInquiryService.getInquiryList(cri, ans_status);
     }
 

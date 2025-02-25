@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface AdminInquiryMapper {
 
-    List<Map<String, Object>> getInquiryList(@Param("cri") SearchCriteria cri, @Param("ans_status") String ans_status);
+    List<InquiryAnswerVO> getInquiryList(@Param("cri") SearchCriteria cri, @Param("ans_status") String ans_status);
 
     int getInquiryCount(@Param("cri") SearchCriteria cri, @Param("ans_status") String ans_status);
 
