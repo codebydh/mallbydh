@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mallbydh.inquiry.InquiryMapper">
 
-    <select id="inq_list" resultType="com.project.mallbydh.inquiry.InquiryAnswerVO" parameterType="map">
+    <select id="inq_list" resultMap="InquiryAnswerMap" parameterType="map">
         select
             i.inq_code, i.u_id, i.prod_id, i.inq_title, i.inq_content, i.inq_regdate,
             a.ans_code, a.admin_id, a.ans_content, a.ans_regdate
@@ -13,10 +13,25 @@
         where
             i.prod_id = #{prod_id}
         order by
-            i.inq_regdate desc
+            i.inq_regdate desc, a.ans_regdate asc
         limit
             #{cri.pageStart}, #{cri.perPageNum}
     </select>
+
+    <resultMap id="InquiryAnswerMap" type="com.project.mallbydh.inquiry.InquiryAnswerVO">
+        <id property="inq_code" column="inq_code"/>
+        <result property="u_id" column="u_id"/>
+        <result property="prod_id" column="prod_id"/>
+        <result property="inq_title" column="inq_title"/>
+        <result property="inq_content" column="inq_content"/>
+        <result property="inq_regdate" column="inq_regdate"/>
+        <collection property="answers" ofType="com.project.mallbydh.inquiry.AnswerVO">
+            <id property="ans_code" column="ans_code"/>
+            <result property="admin_id" column="admin_id"/>
+            <result property="ans_content" column="ans_content"/>
+            <result property="ans_regdate" column="ans_regdate"/>
+        </collection>
+    </resultMap>
 
     <select id="getInquiryCountByProdId" resultType="int" parameterType="Integer">
         select
@@ -34,24 +49,42 @@
             (#{u_id}, #{prod_id}, #{inq_title}, #{inq_content})
     </insert>
 
-    <select id="getInquiryListByUserId" resultType="com.project.mallbydh.inquiry.InquiryAnswerVO">
-        select
-            i.inq_code, i.u_id, i.inq_title, i.inq_content, i.inq_regdate,
-            a.ans_code, a.ans_content, a.ans_regdate,
+    <select id="getInquiryListByUserId" resultMap="inquiryAnswerResultMap">
+        SELECT
+            i.inq_code, i.u_id, i.prod_id, i.inq_title, i.inq_content, i.inq_regdate,
+            a.ans_code, a.ans_content, a.ans_regdate, a.admin_id,
             p.prod_name
-        from
+        FROM
             inquiry_tbl i
-                left join
-            answer_tbl a on i.inq_code = a.inq_code
-                left join
-            product_tbl p on i.prod_id = p.prod_id
-        where
+                LEFT JOIN
+            answer_tbl a ON i.inq_code = a.inq_code
+                LEFT JOIN
+            product_tbl p ON i.prod_id = p.prod_id
+        WHERE
             i.u_id = #{u_id}
-        order by
-            inq_code desc
-        limit
+        ORDER BY
+            i.inq_code DESC, a.ans_code ASC
+        LIMIT
             #{cri.pageStart}, #{cri.perPageNum}
     </select>
+
+    <resultMap id="inquiryAnswerResultMap" type="com.project.mallbydh.inquiry.InquiryAnswerVO">
+        <id property="inq_code" column="inq_code"/>
+        <result property="u_id" column="u_id"/>
+        <result property="prod_id" column="prod_id"/>
+        <result property="inq_title" column="inq_title"/>
+        <result property="inq_content" column="inq_content"/>
+        <result property="inq_regdate" column="inq_regdate"/>
+        <association property="product" javaType="com.project.mallbydh.admin.product.ProductVO">
+            <result property="prod_name" column="prod_name"/>
+        </association>
+        <collection property="answers" ofType="com.project.mallbydh.inquiry.AnswerVO">
+            <id property="ans_code" column="ans_code"/>
+            <result property="ans_content" column="ans_content"/>
+            <result property="ans_regdate" column="ans_regdate"/>
+            <result property="admin_id" column="admin_id"/>
+        </collection>
+    </resultMap>
 
     <select id="getInquiryCountByUserId" resultType="int">
         SELECT

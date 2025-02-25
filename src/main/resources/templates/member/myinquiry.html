@@ -78,7 +78,6 @@
                 <div class="mb-4">
                     <h4 class="mb-0 border-bottom pb-2 border-dark">나의 상품문의</h4>
                 </div>
-
                 <div>
                     <table class="table" th:if="${not #lists.isEmpty(myInquiryList)}">
                         <tbody>
@@ -88,17 +87,15 @@
                                     th:text="${myInquiryList.size() - iterStat.index}">3
                                 </td>
                                 <td style="width: 10%">
-                        <span th:if="${item.ans_content != null and !item.ans_content.isEmpty()}"
-                              class="badge bg-success d-inline-flex align-items-center justify-content-center">답변완료
-                        </span>
-                                    <span th:unless="${item.ans_content != null and !item.ans_content.isEmpty()}"
-                                          class="badge bg-secondary d-inline-flex align-items-center justify-content-center">답변대기
-                        </span>
+                                    <span th:if="${not #lists.isEmpty(item.answers)}"
+                                        class="badge bg-success d-inline-flex align-items-center justify-content-center">답변완료</span>
+                                    <span th:if="${#lists.isEmpty(item.answers)}"
+                                          class="badge bg-secondary d-inline-flex align-items-center justify-content-center">답변대기</span>
                                 </td>
                                 <td th:id="'inquiry-title-' + ${item.inq_code}">
                                     <p class="inquiry-title mb-0" th:text="${item.inq_title}">리뷰제목</p>
                                     <p class="mb-0"><small class="text-muted" style="font-size: 13px;"
-                                                           th:text="'상품명 : ' + ${item.prod_name}">상품명</small></p>
+                                                           th:text="'상품명 : ' + ${item.product.prod_name}">상품명</small></p>
                                 </td>
                                 <td style="width: 15%" class="inquiry-regdate"
                                     th:text="${#dates.format(item.inq_regdate, 'yyyy.MM.dd')}">작성일
@@ -115,12 +112,18 @@
                                     </div>
                                 </td>
                             </tr>
+                            <!-- 답변 내용 -->
                             <tr class="inquiry-answer" th:id="'inquiry-answer-' + ${item.inq_code}" style="display: none;">
                                 <td colspan="4" class="pt-0">
-                                    <div class="card w-100">
+                                    <div class="card w-100 mb-1" th:each="answer : ${item.answers}">
                                         <div class="card-body answer-content">
-                                            <p class="answer-content m-0 text-center"
-                                               th:text="${item.ans_content != null and !item.ans_content.isEmpty()} ? ${item.ans_content} : '답변이 아직 등록되지 않았습니다.'"></p>
+                                            <p class="answer-content m-0 text-center" th:text="${answer.ans_content}"></p>
+                                            <p class="text-muted text-end mb-0"><small th:text="${#dates.format(answer.ans_regdate, 'yyyy.MM.dd')}"></small></p>
+                                        </div>
+                                    </div>
+                                    <div class="card w-100" th:if="${#lists.isEmpty(item.answers)}">
+                                        <div class="card-body answer-content">
+                                            <p class="answer-content m-0 text-center">답변이 아직 등록되지 않았습니다.</p>
                                         </div>
                                     </div>
                                 </td>
