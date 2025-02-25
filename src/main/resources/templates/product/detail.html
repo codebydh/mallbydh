@@ -84,6 +84,11 @@
             margin: 10px 0;
         }
 
+        .inquiry-detail-box {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
         .review-content td {
             background-color: #f8f9fa;
         }
@@ -94,13 +99,6 @@
 
         .inquiry-answer td {
             background-color: lightyellow;
-        }
-
-        .answer-detail-box {
-            padding: 15px;
-            background-color: lightyellow;
-            border-radius: 4px;
-            margin: 10px 0;
         }
 
         #star-rating a.rev_rate {
@@ -143,9 +141,8 @@
         <table class="table" id="reviewTable">
             <thead>
             <tr>
-                <th style="width: 5%">번호</th>
                 <th style="width: 15%">평점</th>
-                <th style="width: 60%">제목</th>
+                <th style="width: 65%">제목</th>
                 <th style="width: 10%">작성자</th>
                 <th style="width: 10%">작성일</th>
             </tr>
@@ -153,14 +150,13 @@
             <tbody>
             {{#each .}}
             <tr class="review-row">
-                <td>{{rev_code}}</td>
                 <td>{{rateToStar rev_rate}}</td>
                 <td>{{rev_title}}</td>
                 <td>{{u_id}}</td>
                 <td>{{convertDate rev_regdate}}</td>
             </tr>
             <tr class="review-content" id="review-content-{{rev_code}}" style="display: none;">
-                <td colspan="5">
+                <td colspan="4">
                     <div class="review-detail-box">
                         {{rev_content}}
                     </div>
@@ -175,8 +171,6 @@
             <span class="mb-3">아직 작성된 리뷰가 없습니다.</span>
             <button type="button" class="btn btn-outline-success btn-sm" style="padding: 6px 12px 6px 12px;" data-bs-toggle="modal" data-bs-target="#reviewModal">리뷰 작성하기</button>
         </div>
-
-
         {{/if}}
     </script>
 
@@ -207,9 +201,8 @@
         <table class="table" id="inquiryTable">
             <thead>
             <tr>
-                <th style="width: 5%">번호</th>
                 <th style="width: 15%">답변여부</th>
-                <th style="width: 60%">제목</th>
+                <th style="width: 65%">제목</th>
                 <th style="width: 10%">작성자</th>
                 <th style="width: 10%">작성일</th>
             </tr>
@@ -217,30 +210,37 @@
             <tbody>
             {{#each .}}
             <tr class="inquiry-row">
-                <td>{{inq_code}}</td>
-                <td class="{{#if ans_content}}text-danger fw-bold{{else}}text-secondary{{/if}}">
-                    {{#if ans_content}}답변완료{{else}}답변대기{{/if}}
+                <td class="{{#if answers.length}}text-primary fw-bold{{else}}text-secondary{{/if}}">
+                    {{#if answers.length}}답변완료{{else}}답변대기{{/if}}
                 </td>
                 <td>{{inq_title}}</td>
                 <td>{{u_id}}</td>
                 <td>{{convertDate inq_regdate}}</td>
             </tr>
             <tr class="inquiry-content" id="inquiry-content-{{inq_code}}" style="display: none;">
-                <td colspan="5">
-                    <div class="review-detail-box">
+                <td colspan="4">
+                    <!-- 문의내용 -->
+                    <div class="inquiry-detail-box p-4">
                         {{inq_content}}
                     </div>
-                </td>
-            </tr>
-            <tr class="inquiry-answer" id="inquiry-answer-{{inq_code}}" style="display: none;">
-                <td colspan="5">
-                    <div class="answer-detail-box">
-                        {{#if ans_content}}
-                        <strong>{{ans_content}}</strong>
-                        {{else}}
-                        <span>답변이 아직 등록되지 않았습니다.</span>
-                        {{/if}}
+                    <!-- 답변내용 -->
+                    {{#if answers.length}}
+                    {{#each answers}}
+                    <div class="card py-4 mb-1" style="font-size: 12px; background-color: #E6F0FF; box-shadow: none; border: 1px solid cornflowerblue;">
+                        <div class="answer">
+                            <div class="mb-1">
+                                <span>관리자 답변</span>
+                                <span class="text-muted">({{convertDate ans_regdate}})</span>
+                            </div>
+                            <p class="mb-0 fw-bold">{{ans_content}}</p>
+                        </div>
                     </div>
+                    {{/each}}
+                    {{else}}
+                    <div class="card p-4" style="font-size: 12px; background-color: #E6F0FF; box-shadow: none; border: 1px solid cornflowerblue;">
+                        <span>답변이 아직 등록되지 않았습니다.</span>
+                    </div>
+                    {{/if}}
                 </td>
             </tr>
             {{/each}}
@@ -715,7 +715,7 @@
 
             // 상품후기 - 클릭 시 내용 표시 관련
             $(document).on('click', '.review-row', function() {
-                const reviewCode = $(this).find('td:first').text();
+                const reviewCode = $(this).next('.review-content').attr('id').split('-').pop();
                 const contentRow = $(`#review-content-${reviewCode}`);
                 $('.review-content').not(contentRow).hide();
                 contentRow.toggle();
@@ -874,13 +874,11 @@
             });
 
             $(document).on('click', '.inquiry-row', function() {
-                const inquiryCode = $(this).find('td:first').text();
+                const inquiryCode = $(this).next('.inquiry-content').attr('id').split('-').pop();
                 const contentRow = $(`#inquiry-content-${inquiryCode}`);
-                const answerRow = $(`#inquiry-answer-${inquiryCode}`);
 
-                $('.inquiry-content, .inquiry-answer').not(contentRow).not(answerRow).hide();
+                $('.inquiry-content').not(contentRow).hide();
                 contentRow.toggle();
-                answerRow.toggle();
             });
 
             $(document).on('click', '#btnInquirySave', function() {
