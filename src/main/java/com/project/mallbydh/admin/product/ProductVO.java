@@ -28,4 +28,7 @@ public class ProductVO {
     private int prod_inquirycount;
     private Integer prod_priority;
     private Integer prod_ordercount;
+
+    // 재고관리에 사용
+    private int cart_amount;
 }

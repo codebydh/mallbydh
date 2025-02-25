@@ -27,4 +27,8 @@ public interface ProductMapper {
     // 메인페이지에서 활용
     List<ProductVO> getLatestProducts();
     List<ProductVO> getPromotionProducts();
+
+    // 주문 시 진행되는 작업 (현재 재고에서 차감 및 판매량 반영)
+    void subtractProdAmount(ProductVO vo);
+    void addProdOrderCount(ProductVO vo);
 }

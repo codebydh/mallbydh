@@ -1,5 +1,6 @@
 package com.project.mallbydh.order;
 
+import com.project.mallbydh.admin.product.ProductVO;
 import com.project.mallbydh.cart.CartMapper;
 import com.project.mallbydh.common.utils.SearchCriteria;
 import com.project.mallbydh.delivery.DeliveryMapper;
@@ -27,6 +28,7 @@ public class OrderService {
     private final PaymentMapper paymentMapper;
     private final DeliveryMapper deliveryMapper;
     private final KakaopayService kakaopayService;
+    private final ProductMapper productMapper;
 
     public String generateOrderName(List<Map<String, Object>> orderedItems) {
         List<String> prod_names = new ArrayList<>();
@@ -66,7 +68,16 @@ public class OrderService {
             orderMapper.insertOrderDetail(detailVO);
         }
 
-        // 3) 결제 테이블 DB에 추가
+        // 3) 재고 반영 및 누적판매량 추가
+        for(Map<String, Object> item : orderedItems) {
+            ProductVO productVO = new ProductVO();
+            productVO.setProd_id((Integer) item.get("prod_id"));
+            productVO.setProd_amount((int) item.get("cart_amount"));
+            productMapper.subtractProdAmount(productVO);
+            productMapper.addProdOrderCount(productVO);
+        }
+
+        // 4) 결제 테이블 DB에 추가
         PaymentVO paymentVO = new PaymentVO();
         paymentVO.setOrd_code(ord_code);
         paymentVO.setU_id(u_id);
@@ -88,10 +99,10 @@ public class OrderService {
 
         paymentMapper.insertPayment(paymentVO);
 
-        // 4) 결제한 상품 장바구니에서 제거
+        // 5) 결제한 상품 장바구니에서 제거
         cartMapper.deleteOrderedItems(prod_ids, u_id);
 
-        // 5) 배송 테이블 DB에 추가
+        // 6) 배송 테이블 DB에 추가
         DeliveryVO deliveryVO = new DeliveryVO();
         deliveryVO.setOrd_code(ord_code);
         deliveryVO.setDelivery_zipcode(vo.getDelivery_zipcode());

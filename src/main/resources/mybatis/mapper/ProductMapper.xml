@@ -150,5 +150,23 @@
         LIMIT 8
     </select>
 
+    <update id="subtractProdAmount">
+        update
+            product_tbl
+        set
+            prod_amount = prod_amount - #{prod_amount}
+        where
+            prod_id = #{prod_id}
+    </update>
+
+    <update id="addProdOrderCount">
+        update
+            product_tbl
+        set
+            prod_ordercount = prod_ordercount + #{prod_amount}
+        where
+            prod_id = #{prod_id}
+    </update>
+
 
 </mapper>
