@@ -14,7 +14,7 @@
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="font-weight-bolder mb-5">상품페이지</h1>
             </div>
-            <img src="/temp_img/top_nintendo.jpg" class="d-block w-100 img-fluid object-fit-cover" alt="IMG2">
+            <img id="categoryImage" src="/temp_img/top_nintendo.jpg" class="d-block w-100 img-fluid object-fit-cover" alt="Category Image">
         </div>
     </section>
 
@@ -110,6 +110,27 @@
 <th:block layout:fragment="script2">
     <script th:inline="javascript">
         $(document).ready(function() {
+
+            // 상단 배너 설정
+            function updateImageSource() {
+                let urlParams = new URLSearchParams(window.location.search);
+                let parentId = urlParams.get('parent_id');
+                let cateId = urlParams.get('cate_id');
+
+                if (parentId === '1' || cateId === '5' || cateId === '6' || cateId === '7') {
+                    $('#categoryImage').attr('src', "/temp_img/top_nintendo.jpg");
+                } else if (parentId === '2' || cateId === '8' || cateId === '9' || cateId === '10') {
+                    $('#categoryImage').attr('src', "/temp_img/top_playstation.jpg");
+                } else if (parentId === '3' || cateId === '11' || cateId === '12' || cateId === '13') {
+                    $('#categoryImage').attr('src', "/temp_img/top_xbox.jpg");
+                } else if (parentId === '4' || cateId === '14' || cateId === '15' || cateId === '16' || cateId === '17' || cateId === '18' ) {
+                    $('#categoryImage').attr('src', "/temp_img/top_etc.jpg");
+                }
+            }
+
+            updateImageSource();
+
+
             // 상품리스트 - 장바구니 아이콘 클릭 시 추가
             $("button[name='addToCart']").on("click", function() {
                let prod_id = $(this).data("prod_id");
