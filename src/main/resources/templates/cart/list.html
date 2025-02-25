@@ -200,7 +200,7 @@
                     return;
                 }
 
-                let checkedItems = $("input[name='check']:checked");
+                let checkedItems = $("input[type='checkbox']:checked");
                 let prod_ids = checkedItems.map(function() {
                     return $(this).val();
                 }).get();
@@ -213,7 +213,7 @@
             // 장바구니 - 전체상품주문 클릭 시
             $("button#btnOrderAll").on("click", function() {
                 // 장바구니가 비어있는지 확인
-                if($("input[name='check']").length === 0) {
+                if($("input[type='checkbox']").length === 0) {
                     alert("장바구니가 비어있습니다.");
                     return;
                 }

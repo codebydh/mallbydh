@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,10 +33,11 @@ public class OrderController {
     @GetMapping("/order_form")
     public String orderForm(@RequestParam(required = false) Integer prod_id,
                             @RequestParam(required = false) Integer cart_amount,
-                            @RequestParam(required = false) List<Integer> prod_ids,
+                            @RequestParam(required = false) List<String> prod_ids,
                             @RequestParam(required = false) Boolean mergeCart, String type, HttpSession session, Model model) {
 
         String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
+
         List<Map<String, Object>> orderCartDetails;
 
         if(type.equals("direct")) {
@@ -62,9 +64,12 @@ public class OrderController {
                 cartService.cart_add(newItem);
             }
             orderCartDetails = cartService.getCartDetailsByProdId(prod_id, u_id);
-        } else if(type.equals("selected")) {
+        } else if("selected".equals(type) && prod_ids != null && !prod_ids.isEmpty()) {
             // 장바구니에서 선택 상품 주문 시
-            orderCartDetails = cartService.getCartDetailsByProdIds(prod_ids, u_id);
+            List<Integer> prodIdList = prod_ids.stream()
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            orderCartDetails = cartService.getCartDetailsByProdIds(prodIdList, u_id);
         } else {
             // 장바구니 상품 전체 주문
             orderCartDetails = cartService.getCartDetailsByUserId(u_id);
