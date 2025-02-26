@@ -1,5 +1,6 @@
 package com.project.mallbydh.review;
 
+import com.project.mallbydh.admin.review.AdminReviewService;
 import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.PageMaker;
 import com.project.mallbydh.common.utils.SearchCriteria;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final AdminReviewService adminReviewService;
 
     // 상품 후기 목록 작업
     @GetMapping("/rev_list/{prod_id}/{page}")
@@ -58,6 +60,14 @@ public class ReviewController {
         vo.setU_id(u_id);
         reviewService.reviewSave(vo);
 
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+        return entity;
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> userReviewDelete(Integer rev_code, Integer prod_id) throws Exception {
+        ResponseEntity<String> entity = null;
+        adminReviewService.reviewDelete(rev_code, prod_id);
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }

@@ -168,5 +168,23 @@
             prod_id = #{prod_id}
     </update>
 
+    <update id="subtractReviewCount">
+        update
+            product_tbl
+        set
+            prod_reviewcount = prod_reviewcount - 1
+        where
+            prod_id = #{prod_id}
+    </update>
+
+    <update id="subtractWishCount">
+        update
+            product_tbl
+        set
+            prod_wishcount = prod_wishcount - 1
+        where
+            prod_id = #{prod_id}
+    </update>
+
 
 </mapper>

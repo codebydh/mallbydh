@@ -31,4 +31,8 @@ public interface ProductMapper {
     // 주문 시 진행되는 작업 (현재 재고에서 차감 및 판매량 반영)
     void subtractProdAmount(ProductVO vo);
     void addProdOrderCount(ProductVO vo);
+
+    // 리뷰, 질문 개수 차감
+    void subtractReviewCount(Integer prod_id);
+    void subtractWishCount(Integer prod_id);
 }

@@ -63,7 +63,7 @@
                 <!-- Cards Container -->
                 <div class="row g-3">
                     <div th:if="${not #lists.isEmpty(myReviewList)}">
-                        <div class="row"> <!-- 새로운 row 추가 -->
+                        <div class="row">
                             <div class="col-md-6" th:each="item : ${myReviewList}">
                                 <div class="card mb-3"> <!-- mb-1을 mb-3으로 변경하여 카드 간 간격 조정 -->
                                     <div class="row g-0">
@@ -77,20 +77,31 @@
                                         <div class="col-md-7">
                                             <div class="card-body">
                                                 <!-- 리뷰 평점 -->
-                                                <p class="card-regstars mb-2" th:text="${item.rev_rate_stars}"></p>
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <p class="card-regstars mb-0" th:text="${item.rev_rate_stars}"></p>
+                                                </div>
                                                 <!-- 리뷰 제목 -->
                                                 <p class="card-title font-weight-bold mb-0" th:text="${item.rev_title}"></p>
                                                 <!-- 리뷰 내용 -->
                                                 <p class="card-text mb-2" th:text="${item.rev_content}"></p>
                                                 <!-- 등록 날짜 -->
                                                 <p class="card-text mb-0">
-                                                    <small class="text-muted" th:text="'작성일 : ' + ${#temporals.format(item.rev_regdate, 'yyyy.MM.dd HH:mm:ss')}"></small>
+                                                    <small class="text-muted" th:text="'작성일 : ' + ${#temporals.format(item.rev_regdate, 'yyyy.MM.dd(HH:mm:ss)')}"></small>
                                                 </p>
                                                 <!-- 상품명 -->
                                                 <p class="card-text mb-0">
-                                                    <small class="text-muted" th:text="'상품명 : ' + ${item.prod_name}"></small>
+                                                    <small class="text-muted" th:text="'상품명 : ' + (${item.prod_name.length() > 21} ? ${#strings.abbreviate(item.prod_name, 21)} : ${item.prod_name})"></small>
                                                 </p>
                                             </div>
+                                        </div>
+                                        <!-- 버튼 그룹 -->
+                                        <div style="position: absolute; top: 0; right: 0; width: 50px; height: 100%; background-color: #E6F0FF; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <button class="btn btn-link p-0 mb-2" name="btnEditMyReview" th:data-rev_code="${item.rev_code}">
+                                                <i class="bi bi-pencil text-secondary fw-bold"></i>
+                                            </button>
+                                            <button class="btn btn-link p-0" name="btnDeleteMyReview" th:data-rev_code="${item.rev_code}" th:data-prod_id="${item.prod_id}">
+                                                <i class="bi bi-trash text-secondary fw-bold"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -138,9 +149,32 @@
             </div>
         </div>
     </div>
-</th:block>
-<th:block layout:fragment="layout2">
+
     <script>
+        $(document).ready(function() {
+            // 삭제버튼
+            $("button[name='btnDeleteMyReview']").on("click", function() {
+                if(!confirm("해당 리뷰를 삭제하시겠습니까?")) return;
+
+                let rev_code = $(this).data("rev_code");
+                let prod_id = $(this).data("prod_id");
+                console.log(rev_code, prod_id);
+
+                $.ajax ({
+                    url: '/review/delete',
+                    type: 'post',
+                    data: {
+                        rev_code: rev_code,
+                        prod_id: prod_id
+                    },
+                    dataType: 'text',
+                    success: function(result) {
+                        alert("삭제가 완료되었습니다.");
+                        location.href = "/member/myreview";
+                    }
+                });
+            });
+        })
     </script>
 </th:block>
 </html>

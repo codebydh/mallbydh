@@ -56,9 +56,9 @@ public class AdminReviewController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> adminReviewDelete(@RequestParam("rev_code") Integer rev_code) throws Exception {
+    public ResponseEntity<String> adminReviewDelete(@RequestParam("rev_code") Integer rev_code, Integer prod_id) throws Exception {
         ResponseEntity<String> entity = null;
-        adminReviewService.reviewDelete(rev_code);
+        adminReviewService.reviewDelete(rev_code, prod_id);
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }

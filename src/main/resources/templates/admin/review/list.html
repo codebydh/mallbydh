@@ -194,7 +194,7 @@
                         </td>
                         <td class="text-center align-middle">
                             <button type="button" class="btn btn-sm btn-warning" th:data-rev_code="${item.rev_code}" name="btnReviewEdit">수정</button>
-                            <button type="button" class="btn btn-sm btn-danger" th:data-rev_code="${item.rev_code}" name="btnReviewDelete">삭제</button>
+                            <button type="button" class="btn btn-sm btn-danger" th:data-rev_code="${item.rev_code}" th:data-prod_id="${item.prod_id}" name="btnReviewDelete">삭제</button>
                         </td>
                     </tr>
                     </tbody>
@@ -258,10 +258,16 @@
                 if(!confirm("해당 리뷰를 삭제하시겠습니까?")) return;
 
                 let rev_code = $(this).data("rev_code");
+                let prod_id = $(this).data("prod_id");
+                console.log(rev_code, prod_id);
+
                 $.ajax ({
                     url: '/admin/review/delete',
                     type: 'post',
-                    data: {rev_code: rev_code},
+                    data: {
+                        rev_code: rev_code,
+                        prod_id: prod_id
+                    },
                     dataType: 'text',
                     success: function(result) {
                         alert("삭제가 완료되었습니다.");
