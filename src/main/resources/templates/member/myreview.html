@@ -8,30 +8,45 @@
             border: 1px solid #ddd;
             border-radius: 8px;
         }
+
         .card img {
             object-fit: cover;
             height: 100%;
         }
+
         .card-regstars {
             font-size: 13px;
             color: cornflowerblue; /* 강조 색상 */
         }
+
         .card-title {
             font-size: 15px;
             color: #333;
             font-weight: bold;
         }
+
         .card-text {
             font-size: 13px;
             color: #333;
         }
+
         .text-muted {
             font-size: 0.8rem;
         }
+
         .product-thumbnail {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        #star-rating a.rev_rate {
+            font-size: 28px;
+            color: lightgrey;
+        }
+
+        #star-rating a.rev_rate.on {
+            color: cornflowerblue;
         }
     </style>
 </th:block>
@@ -96,7 +111,12 @@
                                         </div>
                                         <!-- 버튼 그룹 -->
                                         <div style="position: absolute; top: 0; right: 0; width: 50px; height: 100%; background-color: #E6F0FF; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <button class="btn btn-link p-0 mb-2" name="btnEditMyReview" th:data-rev_code="${item.rev_code}">
+                                            <button class="btn btn-link p-0 mb-2" name="btnEditMyReview"
+                                                    th:data-rev_code="${item.rev_code}"
+                                                    th:data-rev_rate="${item.rev_rate}"
+                                                    th:data-rev_title="${item.rev_title}"
+                                                    th:data-rev_content="${item.rev_content}"
+                                                    data-bs-toggle="modal" data-bs-target="#reviewModal">
                                                 <i class="bi bi-pencil text-secondary fw-bold"></i>
                                             </button>
                                             <button class="btn btn-link p-0" name="btnDeleteMyReview" th:data-rev_code="${item.rev_code}" th:data-prod_id="${item.prod_id}">
@@ -146,6 +166,43 @@
                         </th:block>
                     </ul>
                 </nav>
+
+                <!-- 리뷰 작성 모달 -->
+                <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" style="font-size: 16px;" id="reviewModalLabel">상품리뷰 수정하기</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 별점 선택 -->
+                                <div class="text-center mb-4">
+                                    <div id="star-rating">
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                        <a class="rev_rate"><i class="bi bi-star-fill"></i></a>
+                                    </div>
+                                    <div class="text-muted small">별을 클릭하면 선택한 점수로 선택됩니다.</div>
+                                </div>
+                                <!-- 리뷰 제목 -->
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="reviewTitle" placeholder="제목을 입력해주세요.">
+                                </div>
+                                <!-- 리뷰 내용 -->
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="6" id="reviewContent" placeholder="내용을 입력해주세요."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal" style="padding: 6px 12px 6px 12px;">취소하기</button>
+                                <button type="button" class="btn btn-dark btn-sm" style="padding: 6px 12px 6px 12px;" id="btnReviewEdit">수정하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -172,6 +229,87 @@
                         alert("삭제가 완료되었습니다.");
                         location.href = "/member/myreview";
                     }
+                });
+            });
+
+            // 리뷰 수정 모달에 내용 불러오기
+            $('#reviewModal').on('show.bs.modal', function(event) {
+                let button = $(event.relatedTarget);
+                let revCode = button.data('rev_code');
+                let revRate = button.data('rev_rate');
+                let revTitle = button.data('rev_title');
+                let revContent = button.data('rev_content');
+
+                // 모달 내용 업데이트
+                let modal = $(this);
+                modal.find('#reviewTitle').val(revTitle);
+                modal.find('#reviewContent').val(revContent);
+
+                // 별점 설정
+                setStarRating(revRate);
+
+                // 리뷰 코드 저장 (수정 시 필요)
+                modal.find('#btnReviewEdit').data('rev_code', revCode);
+            });
+
+            // 모달이 열릴 때 별점 설정
+            $('#reviewModal').on('show.bs.modal', function(event) {
+                let button = $(event.relatedTarget);
+                let revRate = button.data('rev_rate');
+
+                // 별점 설정 함수 호출
+                setStarRating(revRate);
+            });
+
+            // 별점 클릭 이벤트
+            $(document).on("click", "div#star-rating a.rev_rate", function(e) {
+                e.preventDefault();
+                let clickedIndex = $(this).index();
+                setStarRating(clickedIndex + 1);
+            });
+
+            // 별점 설정 함수
+            function setStarRating(rating) {
+                $("#star-rating a.rev_rate").removeClass("on");
+                $("#star-rating a.rev_rate").each(function(index) {
+                    if (index < rating) {
+                        $(this).addClass("on");
+                    }
+                });
+            }
+
+            // 상품후기 수정(모달창 수정하기 클릭 시)
+            $('#btnReviewEdit').on('click', function() {
+                let rev_code = $(this).data('rev_code');
+                let rev_rate = $("#star-rating .rev_rate.on").length;
+                let rev_title = $("#reviewTitle").val();
+                let rev_content = $("#reviewContent").val();
+
+                if(rev_title == "") {
+                    alert("제목을 입력해 주세요.");
+                    return;
+                }
+
+                if(rev_content == "") {
+                    alert("내용을 입력해 주세요.");
+                    return;
+                }
+
+                $.ajax({
+                   url: '/review/update',
+                   method: 'post',
+                   data: {
+                       rev_code: rev_code,
+                       rev_rate: rev_rate,
+                       rev_title: rev_title,
+                       rev_content: rev_content
+                   },
+                   success: function(result) {
+                       if(result === "success") {
+                           alert("수정이 완료되었습니다.");
+                           location.reload();
+                       }
+                   }
                 });
             });
         })

@@ -71,4 +71,12 @@ public class ReviewController {
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<String> reviewUpdate(ReviewVO vo) throws Exception {
+        ResponseEntity<String> entity = null;
+        adminReviewService.reviewUpdate(vo);
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+        return entity;
+    }
 }
