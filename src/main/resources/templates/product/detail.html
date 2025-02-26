@@ -637,17 +637,19 @@
             // 상품페이지 - 구매 버튼 클릭 시
             $("#btnDirectBuy").on("click", function() {
                 let prod_id = $(this).data("prod_id");
-                let cart_amount = $("#quantity").val();
-                let prod_amount = $("#prod_amount").val();
-
-                if (cart_amount > prod_amount) {
-                    alert(`재고가 부족합니다. 현재 ${prod_amount}개 만큼 구매 가능합니다.`);
-                    $("#quantity").val(prod_amount).focus();
-                    return;
-                }
+                let cart_amount = parseInt($("#quantity").val());
+                let prod_amount = parseInt($("#prod_amount").val());
 
                 // 먼저 장바구니 확인 요청
                 $.get(`/order/check_cart?prod_id=${prod_id}&cart_amount=${cart_amount}`, function(response) {
+                    let totalAmount = cart_amount + response.existingAmount;
+
+                    if (totalAmount > prod_amount) {
+                        alert(`재고가 부족합니다. 현재 장바구니에 ${response.existingAmount}개가 있으며, 추가로 ${prod_amount - response.existingAmount}개 만큼 구매 가능합니다.`);
+                        $("#quantity").val(prod_amount - response.existingAmount).focus();
+                        return;
+                    }
+
                     if (response.existingAmount > 0) {
                         // 장바구니에 이미 상품이 있는 경우
                         if (confirm(`동일 상품이 장바구니에 ${response.existingAmount}개 있습니다. 함께 구매하시겠습니까? 취소를 누를 경우 현재 선택한 수량만 구매됩니다.`)) {
@@ -661,6 +663,7 @@
                     }
                 });
             });
+
 
             // 상품페이지 - 장바구니 버튼 클릭 시
             $("button[name='btnAddToCart']").on("click", function () {
