@@ -66,9 +66,17 @@ public class OrderController {
             orderCartDetails = cartService.getCartDetailsByProdId(prod_id, u_id);
         } else if("selected".equals(type) && prod_ids != null && !prod_ids.isEmpty()) {
             // 장바구니에서 선택 상품 주문 시
-            List<Integer> prodIdList = prod_ids.stream()
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
+            List<Integer> prodIdList = new ArrayList<>();
+            for (String id : prod_ids) {
+                if (!id.equals("on")) {
+                    try {
+                        prodIdList.add(Integer.parseInt(id));
+                    } catch (NumberFormatException e) {
+                        // 유효하지 않은 ID는 무시
+                        System.out.println("유효하지 않은 제품 ID: " + id);
+                    }
+                }
+            }
             orderCartDetails = cartService.getCartDetailsByProdIds(prodIdList, u_id);
         } else {
             // 장바구니 상품 전체 주문

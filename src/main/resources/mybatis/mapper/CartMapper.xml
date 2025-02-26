@@ -13,7 +13,8 @@
 
     <select id="cart_list" resultType="HashMap" parameterType="String">
         select
-            c.prod_id, c.u_id, c.cart_amount, p.prod_name, p.prod_maker, p.prod_price, p.prod_uploadfolder, p.prod_img,
+            c.prod_id, c.u_id, c.cart_amount,
+            p.prod_name, p.prod_maker, p.prod_price, p.prod_uploadfolder, p.prod_img, p.prod_amount,
             c.cart_amount * p.prod_price as subtotal
         from
             cart_tbl c
