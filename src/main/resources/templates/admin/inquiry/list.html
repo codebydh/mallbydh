@@ -224,7 +224,7 @@
                             <div class="button-container" style="padding-left: 20px; padding-right: 20px;">
                                 <div class="d-flex justify-content-between mb-2">
                                     <button type="button" class="btn btn-sm btn-warning me-2" th:data-inq_code="${item.inq_code}" name="btnInquiryEdit">수정</button>
-                                    <button type="button" class="btn btn-sm btn-danger" th:data-inq_code="${item.inq_code}" name="btnInquiryDelete">삭제</button>
+                                    <button type="button" class="btn btn-sm btn-danger" th:data-inq_code="${item.inq_code}" th:data-prod_id="${item.prod_id}" name="btnInquiryDelete">삭제</button>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-sm btn-primary w-100" th:data-inq_code="${item.inq_code}" name="btnNewAnswer">답변등록</button>
@@ -293,10 +293,14 @@
                 if(!confirm("해당 문의를 삭제시키시겠습니까?")) return;
 
                 let inq_code = $(this).data("inq_code");
+                let prod_id = $(this).data("prod_id");
                 $.ajax ({
                     url: '/admin/inquiry/delete',
                     type: 'post',
-                    data: {inq_code: inq_code},
+                    data: {
+                        inq_code: inq_code,
+                        prod_id: prod_id
+                    },
                     dataType: 'text',
                     success: function(result) {
                         alert("삭제가 완료되었습니다.");

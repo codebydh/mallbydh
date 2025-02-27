@@ -83,22 +83,27 @@
                         <tbody>
                         <th:block th:each="item, iterStat : ${myInquiryList}">
                             <tr class="align-middle text-center">
-                                <td style="width: 10%" class="inquiry-count"
-                                    th:text="${myInquiryList.size() - iterStat.index}">3
-                                </td>
-                                <td style="width: 10%">
+                                <td class="text-center" style="width: 15%">
                                     <span th:if="${not #lists.isEmpty(item.answers)}"
                                         class="badge bg-success d-inline-flex align-items-center justify-content-center">답변완료</span>
                                     <span th:if="${#lists.isEmpty(item.answers)}"
                                           class="badge bg-secondary d-inline-flex align-items-center justify-content-center">답변대기</span>
                                 </td>
-                                <td th:id="'inquiry-title-' + ${item.inq_code}">
+                                <td th:id="'inquiry-title-' + ${item.inq_code}" style="width: 60%">
                                     <p class="inquiry-title mb-0" th:text="${item.inq_title}">리뷰제목</p>
                                     <p class="mb-0"><small class="text-muted" style="font-size: 13px;"
                                                            th:text="'상품명 : ' + ${item.product.prod_name}">상품명</small></p>
                                 </td>
-                                <td style="width: 15%" class="inquiry-regdate"
+                                <td style="width: 10%" class="inquiry-regdate"
                                     th:text="${#dates.format(item.inq_regdate, 'yyyy.MM.dd')}">작성일
+                                </td>
+                                <td style="width: 15%">
+                                    <button class="btn btn-link p-0" style="margin-right: 5px; display: inline-block;" name="btnEditMyInquiry">
+                                        <i class="bi bi-pencil text-secondary fw-bold"></i>
+                                    </button>
+                                    <button class="btn btn-link p-0" name="btnDeleteMyInquiry" th:data-inq_code="${item.inq_code}" th:data-prod_id="${item.prod_id}">
+                                        <i class="bi bi-trash text-secondary fw-bold"></i>
+                                    </button>
                                 </td>
                             </tr>
                             <!-- 문의 내용 -->
@@ -180,6 +185,28 @@
                 let inquiryCode = $(this).attr('id').split('-')[2];
                 $('#inquiry-content-' + inquiryCode).toggle();
                 $('#inquiry-answer-' + inquiryCode).toggle();
+            });
+
+            // 삭제버튼
+            $("button[name='btnDeleteMyInquiry']").on("click", function() {
+                if(!confirm("해당 문의를 삭제하시겠습니까?")) return;
+
+                let inq_code = $(this).data("inq_code");
+                let prod_id = $(this).data("prod_id");
+
+                $.ajax ({
+                    url: '/inquiry/delete',
+                    type: 'post',
+                    data: {
+                        inq_code: inq_code,
+                        prod_id: prod_id
+                    },
+                    dataType: 'text',
+                    success: function(result) {
+                        alert("삭제가 완료되었습니다.");
+                        location.href = "/member/myinquiry";
+                    }
+                });
             });
         });
     </script>

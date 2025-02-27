@@ -1,9 +1,11 @@
 package com.project.mallbydh.inquiry;
 
+import com.project.mallbydh.admin.inquiry.AdminInquiryService;
 import com.project.mallbydh.common.constants.Constants;
 import com.project.mallbydh.common.utils.PageMaker;
 import com.project.mallbydh.common.utils.SearchCriteria;
 import com.project.mallbydh.member.MemberVO;
+import com.project.mallbydh.product.ProductService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,8 @@ import java.util.Map;
 public class InquiryController {
 
     private final InquiryService inquiryService;
+    private final AdminInquiryService adminInquiryService;
+    private final ProductService productService;
 
     @GetMapping("/inq_list/{prod_id}/{page}")
     public ResponseEntity<Map<String, Object>> inq_list(@PathVariable("prod_id") Integer prod_id, @PathVariable("page") int page) throws Exception {
@@ -57,6 +61,14 @@ public class InquiryController {
         vo.setU_id(u_id);
         inquiryService.inquirySave(vo);
 
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+        return entity;
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> userInquiryDelete(Integer inq_code, Integer prod_id) throws Exception {
+        ResponseEntity<String> entity = null;
+        adminInquiryService.inquiryDelete(inq_code, prod_id);;
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }

@@ -186,5 +186,14 @@
             prod_id = #{prod_id}
     </update>
 
+    <update id="subtractInquiryCount">
+        update
+            product_tbl
+        set
+            prod_inquirycount = prod_inquirycount - 1
+        where
+            prod_id = #{prod_id}
+    </update>
+
 
 </mapper>

@@ -59,9 +59,9 @@ public class AdminInquiryController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> adminInquiryDelete(@RequestParam("inq_code") Integer inq_code) throws Exception {
+    public ResponseEntity<String> adminInquiryDelete(@RequestParam("inq_code") Integer inq_code, Integer prod_id) throws Exception {
         ResponseEntity<String> entity = null;
-        adminInquiryService.inquiryDelete(inq_code);
+        adminInquiryService.inquiryDelete(inq_code, prod_id);
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }

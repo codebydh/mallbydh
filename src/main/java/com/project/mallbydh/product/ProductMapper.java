@@ -35,4 +35,5 @@ public interface ProductMapper {
     // 리뷰, 질문 개수 차감
     void subtractReviewCount(Integer prod_id);
     void subtractWishCount(Integer prod_id);
+    void subtractInquiryCount(Integer prod_id);
 }
