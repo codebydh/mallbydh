@@ -399,7 +399,8 @@ public class MemberController {
 	@GetMapping("/myinquiry")
 	public void myinquiry(HttpSession session, Model model, SearchCriteria cri) throws Exception {
 		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
-		cri.setPerPageNum(Constants.MYPAGE_REVIEW_LIST_COUNT);
+//		cri.setPerPageNum(Constants.MYPAGE_REVIEW_LIST_COUNT);
+		cri.setPerPageNum(9);
 
 		List<InquiryAnswerVO> myInquiryList = inquiryService.getInquiryListByUserId(u_id, cri);
 		model.addAttribute("myInquiryList", myInquiryList);

@@ -6,6 +6,7 @@ import com.project.mallbydh.common.utils.PageMaker;
 import com.project.mallbydh.common.utils.SearchCriteria;
 import com.project.mallbydh.member.MemberVO;
 import com.project.mallbydh.product.ProductService;
+import com.project.mallbydh.review.ReviewVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,6 +70,14 @@ public class InquiryController {
     public ResponseEntity<String> userInquiryDelete(Integer inq_code, Integer prod_id) throws Exception {
         ResponseEntity<String> entity = null;
         adminInquiryService.inquiryDelete(inq_code, prod_id);;
+        entity = new ResponseEntity<String>("success", HttpStatus.OK);
+        return entity;
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<String> reviewInquiry(InquiryAnswerVO vo) throws Exception {
+        ResponseEntity<String> entity = null;
+        adminInquiryService.inquiryUpdate(vo);
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }

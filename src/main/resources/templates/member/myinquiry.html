@@ -98,7 +98,11 @@
                                     th:text="${#dates.format(item.inq_regdate, 'yyyy.MM.dd')}">작성일
                                 </td>
                                 <td style="width: 15%">
-                                    <button class="btn btn-link p-0" style="margin-right: 5px; display: inline-block;" name="btnEditMyInquiry">
+                                    <button class="btn btn-link p-0" style="margin-right: 5px; display:inline-block;" name="btnEditMyInquiry"
+                                            th:data-inq_code="${item.inq_code}"
+                                            th:data-inq_title="${item.inq_title}"
+                                            th:data-inq_content="${item.inq_content}"
+                                            data-bs-toggle="modal" data-bs-target="#inquiryModal">
                                         <i class="bi bi-pencil text-secondary fw-bold"></i>
                                     </button>
                                     <button class="btn btn-link p-0" name="btnDeleteMyInquiry" th:data-inq_code="${item.inq_code}" th:data-prod_id="${item.prod_id}">
@@ -174,6 +178,33 @@
                         </th:block>
                     </ul>
                 </nav>
+
+                <!-- 문의 수정 모달 -->
+                <div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" style="font-size: 16px;" id="inquiryModalLabel">상품문의 수정하기</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 별점 선택 -->
+                                <!-- 리뷰 제목 -->
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="inquiryTitle" placeholder="제목을 입력해주세요.">
+                                </div>
+                                <!-- 리뷰 내용 -->
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="6" id="inquiryContent" placeholder="내용을 입력해주세요."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-outline-dark btn-sm" data-bs-dismiss="modal" style="padding: 6px 12px 6px 12px;">취소하기</button>
+                                <button type="button" class="btn btn-dark btn-sm" style="padding: 6px 12px 6px 12px;" id="btnInquiryEdit">수정하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -208,6 +239,64 @@
                     }
                 });
             });
+
+            // 리뷰 수정 모달에 내용 불러오기
+            $('#inquiryModal').on('show.bs.modal', function(event) {
+                let button = $(event.relatedTarget);
+                let inqCode = button.data('inq_code');
+                let inqTitle = button.data('inq_title');
+                let inqContent = button.data('inq_content');
+
+                // 답변 여부 확인(답변여부 배지가 '답변완료' 여부인지 체크함)
+                let hasAnswers = button.closest('tr').find('.badge.bg-success').length > 0;
+
+                if (hasAnswers) {
+                    alert('답변이 등록된 질문은 수정할 수 없습니다.');
+                    return event.preventDefault(); // 모달 열기 취소
+                }
+
+                // 모달 내용 업데이트
+                let modal = $(this);
+                modal.find('#inquiryTitle').val(inqTitle);
+                modal.find('#inquiryContent').val(inqContent);
+
+                // 리뷰 코드 저장 (수정 시 필요)
+                modal.find('#btnInquiryEdit').data('inq_code', inqCode);
+            });
+
+            // 상품문의 수정(모달창 수정하기 클릭 시)
+            $('#btnInquiryEdit').on('click', function() {
+                let inq_code = $(this).data('inq_code');
+                let inq_title = $("#inquiryTitle").val();
+                let inq_content = $("#inquiryContent").val();
+
+                if(inq_title == "") {
+                    alert("제목을 입력해 주세요.");
+                    return;
+                }
+
+                if(inq_content == "") {
+                    alert("내용을 입력해 주세요.");
+                    return;
+                }
+
+                $.ajax({
+                    url: '/inquiry/update',
+                    method: 'post',
+                    data: {
+                        inq_code: inq_code,
+                        inq_title: inq_title,
+                        inq_content: inq_content
+                    },
+                    success: function(result) {
+                        if(result === "success") {
+                            alert("수정이 완료되었습니다.");
+                            location.reload();
+                        }
+                    }
+                });
+            });
+
         });
     </script>
 </th:block>
