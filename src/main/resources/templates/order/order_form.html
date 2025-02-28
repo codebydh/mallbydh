@@ -218,8 +218,7 @@
                                 <label for="account_info" class="col-sm-2 col-form-label font-weight-bold">입금은행 선택</label>
                                 <div class="col-sm-10">
                                     <select class="form-select" aria-label="Default select example" id="account_info" name="account_info">
-                                        <option selected>입금하실 계좌를 선택해주세요.</option>
-                                        <option value="[농협] 0000000-00-000000 몰바이디에이치">[농협] 0000000-00-000000 몰바이디에이치</option>
+                                        <option value="[농협] 0000000-00-000000 몰바이디에이치" selected>[농협] 0000000-00-000000 몰바이디에이치</option>
                                         <option value="[국민] 111-11-111111 몰바이디에이치">[국민] 111-11-111111 몰바이디에이치</option>
                                         <option value="[기업] 222222-22-222222 몰바이디에이치">[기업] 222222-22-222222 몰바이디에이치</option>
                                     </select>
@@ -473,8 +472,88 @@
             };
 
            // 결제하기 버튼 클릭 시
-            $("#btnOrderSubmit").on("click", function() {
+            $("#btnOrderSubmit").on("click", function(e) {
+                e.preventDefault();
+
+                // 주문 form 검증 시작
+
+                if(!$("#name").val().trim()) {
+                    alert('주문자 성함을 입력해 주세요.');
+                    return;
+                }
+
+                if(!$("#phone").val().trim()) {
+                    alert('주문자 연락처를 입력해 주세요.');
+                    return;
+                }
+
+                if(!$("#email").val().trim()) {
+                    alert('주문자 이메일을 입력해 주세요.');
+                    return;
+                }
+
+                if(!$("#recipient_name").val().trim()) {
+                    alert('받는 분 성함을 입력해 주세요.');
+                    return;
+                }
+
+                if(!$("#recipient_phone").val().trim()) {
+                    alert('받는 분 연락처를 입력해 주세요.');
+                    return;
+                }
+
+                if(!$("#sample2_postcode").val().trim()) {
+                    alert('배송지의 우편번호를 입력해 주세요.');
+                    return;
+                }
+
+                if(!$("#sample2_address").val().trim()) {
+                    alert('배송지 주소를 입력해 주세요.');
+                    return;
+                }
+
+                if(!$("#sample2_detailAddress").val().trim()) {
+                    alert('배송지 상세주소를 입력해 주세요.');
+                    return;
+                }
+
+                let deliveryMessage = $("#delivery_message").val();
+                if (deliveryMessage === "manual") {
+                    deliveryMessage = $("#customMessage").val().trim();
+                    if (!deliveryMessage) {
+                        alert("배송 메시지를 입력해주세요.");
+                        return;
+                    }
+                } else if (!deliveryMessage) {
+                    alert("배송 메시지를 선택해주세요.");
+                    return;
+                }
+
                 let paymentMethod = $("button[name='btnPaymentMethod'][data-selected='true']").val();
+
+                if (!paymentMethod) {
+                    alert('결제 방식을 선택해 주세요.');
+                    return;
+                }
+
+                if (paymentMethod === "bank") {
+                    if (!$("#account_info").val()) {
+                        alert('입금은행을 선택해 주세요.');
+                        return;
+                    }
+                    if (!$("#deposit_name").val().trim()) {
+                        alert('입금자명을 입력해 주세요.');
+                        return;
+                    }
+                }
+
+                // 구매 동의 검증
+                if (!$("#terms").is(":checked")) {
+                    alert('상품정보 확인 및 구매동의에 체크해 주세요.');
+                    return;
+                }
+
+                // 주문 form 검증 끝
 
                 let prod_ids = [];
                 $("input[name='prod_ids']").each(function() {
