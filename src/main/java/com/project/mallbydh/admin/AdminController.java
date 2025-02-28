@@ -41,7 +41,7 @@ public class AdminController {
 			} else if(passwordEncoder.matches(dto.getAdmin_pw(), db_vo.getAdmin_pw())) {
 				session.setAttribute("admin_auth", db_vo);
 				adminService.updateAdminLastLogin(admin_id);
-				url = "/admin/menu";
+				url = "/admin/order/";
 			} else {
 				status = "pwFail";
 				url = "/admin/";
