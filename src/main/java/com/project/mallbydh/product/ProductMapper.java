@@ -34,6 +34,11 @@ public interface ProductMapper {
 
     // 리뷰, 질문 개수 차감
     void subtractReviewCount(Integer prod_id);
-    void subtractWishCount(Integer prod_id);
     void subtractInquiryCount(Integer prod_id);
+
+    // 주문 취소 시 누적주문량 차감
+    void subtractProductOrderCount(Integer prod_id, Integer ordt_amount);
+
+    // 주문 취소 시 재고 복구
+    void addProductStock(Integer prod_id, Integer ordt_amount);
 }

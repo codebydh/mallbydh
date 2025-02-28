@@ -24,4 +24,7 @@ public interface OrderMapper {
 
     Integer userTotalAmount(String u_id) throws Exception;
 
+    // 주문취소 시 누적판매량 차감 - 주문번호로 orderdetail_tbl 정보 불러오기
+    List<OrderDetailVO> getOrderDetailsByOrdCode(Integer ord_code);
+
 }

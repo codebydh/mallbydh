@@ -365,43 +365,21 @@
             $("button[name='btnOrderDirectCancel']").on("click", function() {
                 if(!confirm("해당 주문을 취소하시겠습니까?")) return;
                 let ord_code = $(this).data("ord_code");
-                let ord_price = $("#ord_price").val();
-                let tid = $("#tid").val();
-                let payment_method = $("#payment_method").val();
 
-                if(payment_method == "카카오페이") {
-                    $.ajax ({
-                        url: '/kakao/refund',
-                        type: 'post',
-                        data: {
-                            tid: tid,
-                            cancel_amount: ord_price,
-                            cancel_tax_free_amount: 0
-                        },
-                        success: function(response) {
-                            if (response.status == "CANCEL_PAYMENT") {
-                                alert("주문이 취소되었습니다.");
-                                location.href = "/admin/order/";
-                            }
-                        }
-                    })
-                } else {
-                    $.ajax ({
-                        url: '/admin/order/direct_cancel',
-                        type: 'post',
-                        data: {ord_code: ord_code},
-                        dataType: 'text',
-                        success: function(result) {
-                            alert("주문이 취소되었습니다.");
-                            location.href = "/admin/order/";
-                        }
-                    });
-                }
+                $.ajax ({
+                    url: '/admin/order/direct_cancel',
+                    type: 'post',
+                    data: {ord_code: ord_code},
+                    dataType: 'text',
+                    success: function(result) {
+                        alert("주문이 취소되었습니다.");
+                        location.href = "/admin/order/";
+                    }
+                });
+
             });
 
             $("#btnOrderUpdate").on("click", function() {
-                if(!confirm("주문을 수정하시겠습니까?")) return;
-
                 let ord_code = $(this).data("ord_code");
                 let ord_status = $("#ord_status").val();
                 let carrier = $("#carrier").val();
@@ -415,31 +393,47 @@
                 let delivery_addr_detail = $("#sample2_detailAddress").val();
                 let delivery_message = $("#delivery_message").val();
 
-                $.ajax ({
-                    url: '/admin/order/update',
-                    type: 'post',
-                    data: {
-                        ord_code: ord_code,
-                        ord_status: ord_status,
-                        carrier: carrier,
-                        tracking_number: tracking_number,
-                        account_info: account_info,
-                        deposit_name: deposit_name,
-                        recipient_name: recipient_name,
-                        recipient_phone: recipient_phone,
-                        delivery_zipcode: delivery_zipcode,
-                        delivery_addr: delivery_addr,
-                        delivery_addr_detail: delivery_addr_detail,
-                        delivery_message: delivery_message
-                    },
-                    dataType: 'text',
-                    success: function(result) {
-                        alert("주문이 수정되었습니다.");
-                        location.href = "/admin/order/";
-                    }
-                });
-            });
+                if(ord_status == '주문취소') {
+                    if(!confirm("주문진행상태를 '주문취소'로 변경하셨습니다. 주문을 취소하시겠습니까?")) return;
 
+                    $.ajax ({
+                        url: '/admin/order/direct_cancel',
+                        type: 'post',
+                        data: {ord_code: ord_code},
+                        dataType: 'text',
+                        success: function(result) {
+                            alert("주문이 취소되었습니다.");
+                            location.href = "/admin/order/";
+                        }
+                    });
+                } else {
+                    if(!confirm("주문을 수정하시겠습니까?")) return;
+
+                    $.ajax ({
+                        url: '/admin/order/update',
+                        type: 'post',
+                        data: {
+                            ord_code: ord_code,
+                            ord_status: ord_status,
+                            carrier: carrier,
+                            tracking_number: tracking_number,
+                            account_info: account_info,
+                            deposit_name: deposit_name,
+                            recipient_name: recipient_name,
+                            recipient_phone: recipient_phone,
+                            delivery_zipcode: delivery_zipcode,
+                            delivery_addr: delivery_addr,
+                            delivery_addr_detail: delivery_addr_detail,
+                            delivery_message: delivery_message
+                        },
+                        dataType: 'text',
+                        success: function(result) {
+                            alert("주문이 수정되었습니다.");
+                            location.href = "/admin/order/";
+                        }
+                    });
+                }
+            });
         })
     </script>
 </th:block>

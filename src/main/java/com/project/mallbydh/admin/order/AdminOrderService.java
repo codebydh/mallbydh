@@ -1,6 +1,8 @@
 package com.project.mallbydh.admin.order;
 
 import com.project.mallbydh.common.utils.AdminOrderSearchCriteria;
+import com.project.mallbydh.order.OrderMapper;
+import com.project.mallbydh.product.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +22,6 @@ public class AdminOrderService {
 
     public int getTotalOrderCount(AdminOrderSearchCriteria cri) {
         return adminordermapper.getTotalOrderCount(cri);
-    }
-
-    public void orderDirectCancel(Integer ord_code) {
-        adminordermapper.orderDirectCancel(ord_code);
     }
 
     @Transactional

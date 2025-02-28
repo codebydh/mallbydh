@@ -80,7 +80,7 @@ public class AdminOrderController {
     @PostMapping("/direct_cancel")
     public ResponseEntity<String> orderDirectCancel(Integer ord_code) throws Exception {
         ResponseEntity<String> entity = null;
-        adminOrderService.orderDirectCancel(ord_code);
+        orderService.cancelOrder(ord_code);
         entity = new ResponseEntity<String>("success", HttpStatus.OK);
         return entity;
     }

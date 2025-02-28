@@ -104,4 +104,10 @@
             and ord_status NOT IN ('주문취소', '입금대기')
     </select>
 
+    <select id="getOrderDetailsByOrdCode" resultType="com.project.mallbydh.order.OrderDetailVO">
+        SELECT prod_id, ordt_amount
+        FROM orderdetail_tbl
+        WHERE ord_code = #{ord_code}
+    </select>
+
 </mapper>

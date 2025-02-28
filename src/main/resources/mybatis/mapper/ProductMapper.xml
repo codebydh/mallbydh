@@ -195,5 +195,23 @@
             prod_id = #{prod_id}
     </update>
 
+    <update id="subtractProductOrderCount">
+        UPDATE
+            product_tbl
+        SET
+            prod_ordercount = prod_ordercount - #{ordt_amount}
+        WHERE
+            prod_id = #{prod_id}
+    </update>
+
+    <update id="addProductStock">
+        UPDATE
+            product_tbl
+        SET
+            prod_amount = prod_amount + #{ordt_amount}
+        WHERE
+            prod_id = #{prod_id}
+    </update>
+
 
 </mapper>

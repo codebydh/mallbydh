@@ -131,8 +131,22 @@ public class OrderService {
         return orderMapper.getOrderDetailInfo(ord_code);
     }
 
+    @Transactional
     public void cancelOrder(Integer ord_code) {
+        // 1. 주문상태를 '주문취소'로 변경
         orderMapper.cancelOrder(ord_code);
+
+        // 2. 취소된 주문의 상품 정보 조회
+        List<OrderDetailVO> cancelledItems = orderMapper.getOrderDetailsByOrdCode(ord_code);
+
+
+        for (OrderDetailVO item : cancelledItems) {
+            // 3. 누적주문량(prod_ordercount) 차감
+            productMapper.subtractProductOrderCount(item.getProd_id(), item.getOrdt_amount());
+
+            // 4. 재고(prod_amount) 복구
+            productMapper.addProductStock(item.getProd_id(), item.getOrdt_amount());
+        }
     }
 
     public Integer userTotalAmount(String u_id) throws Exception {

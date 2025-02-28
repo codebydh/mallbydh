@@ -208,7 +208,20 @@
 
                             <!-- 버튼 -->
                             <button class="btn btn-outline-secondary w-100" style="padding: 12px 0 12px 0;" id="btnList">목록으로</button>
-                            <button class="btn btn-outline-danger w-100 mt-2" style="padding: 12px 0 12px 0;" id="btnCancelOrder" th:value="${orderInfo[0].ORD_CODE}">전체 주문취소</button>
+                            <button th:if="${orderInfo[0].ord_status != '주문취소'}"
+                                    class="btn btn-outline-danger w-100 mt-2"
+                                    style="padding: 12px 0 12px 0;"
+                                    id="btnCancelOrder"
+                                    th:value="${orderInfo[0].ORD_CODE}">
+                                전체 주문취소
+                            </button>
+
+                            <button th:unless="${orderInfo[0].ord_status != '주문취소'}"
+                                    class="btn btn-outline-danger w-100 mt-2"
+                                    style="padding: 12px 0 12px 0;"
+                                    disabled>
+                                취소된 주문입니다
+                            </button>
                         </div>
                     </div>
                 </div>
