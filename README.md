@@ -76,232 +76,231 @@
 
 ## 프로젝트 구조
 ```
-📦src
- ┣ 📂main
- ┃ ┣ 📂java
- ┃ ┃ ┗ 📂com
- ┃ ┃ ┃ ┗ 📂project
- ┃ ┃ ┃ ┃ ┗ 📂mallbydh
- ┃ ┃ ┃ ┃ ┃ ┣ 📂admin
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂category
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdCategoryController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdCategoryMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdCategoryService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CategoryVO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂inquiry
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminInquiryController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminInquiryMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜AdminInquiryService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂manager
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminVO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ManagerController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ManagerMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ManagerService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂member
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminMemberController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminMemberMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜AdminMemberService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂order
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminOrderController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminOrderMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminOrderService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜OrderUpdateDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂product
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdProductController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdProductMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdProductService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProductVO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂review
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminReviewController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminReviewMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜AdminReviewService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜AdminService.java
- ┃ ┃ ┃ ┃ ┃ ┣ 📂cart
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CartController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CartMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CartService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CartVO.java
- ┃ ┃ ┃ ┃ ┃ ┣ 📂common
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂config
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜EmailConfig.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MultipartConfig.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜SecurityConfig.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜WebMvcConfig.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂constants
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Constants.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂interceptor
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminInterceptor.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜LoginInterceptor.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂utils
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminOrderSearchCriteria.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Criteria.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜FileUtils.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PageMaker.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜SearchCriteria.java
- ┃ ┃ ┃ ┃ ┃ ┣ 📂delivery
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DeliveryMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DeliveryService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜DeliveryVO.java
- ┃ ┃ ┃ ┃ ┃ ┣ 📂header
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜HeaderController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜HeaderMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜HeaderService.java
+📦main
+ ┣ 📂java
+ ┃ ┗ 📂com
+ ┃ ┃ ┗ 📂project
+ ┃ ┃ ┃ ┗ 📂mallbydh
+ ┃ ┃ ┃ ┃ ┣ 📂admin
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂category
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdCategoryController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdCategoryMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdCategoryService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CategoryVO.java
  ┃ ┃ ┃ ┃ ┃ ┣ 📂inquiry
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AnswerVO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquiryAnswerVO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquiryController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquiryMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜InquiryService.java
- ┃ ┃ ┃ ┃ ┃ ┣ 📂kakaopay
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Amount.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ApprovedCancelAmount.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ApproveRequest.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ApproveResponse.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CancelAvailableAmount.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CanceledAmount.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CardInfo.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaoCancelRequest.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaoCancelResponse.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaopayController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaopayProperties.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaopayService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReadyRequest.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReadyResponse.java
- ┃ ┃ ┃ ┃ ┃ ┣ 📂mail
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜EmailController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜EmailDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜EmailService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminInquiryController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminInquiryMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜AdminInquiryService.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂manager
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminVO.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ManagerController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ManagerMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ManagerService.java
  ┃ ┃ ┃ ┃ ┃ ┣ 📂member
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜LoginDTO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜MemberVO.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminMemberController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminMemberMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜AdminMemberService.java
  ┃ ┃ ┃ ┃ ┃ ┣ 📂order
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜OrderController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜OrderDetailVO.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜OrderMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜OrderService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜OrderVO.java
- ┃ ┃ ┃ ┃ ┃ ┣ 📂payment
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PaymentController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PaymentMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PaymentService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜PaymentVO.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminOrderController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminOrderMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminOrderService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜OrderUpdateDTO.java
  ┃ ┃ ┃ ┃ ┃ ┣ 📂product
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProductController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProductMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProductService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdProductController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdProductMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdProductService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProductVO.java
  ┃ ┃ ┃ ┃ ┃ ┣ 📂review
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReviewController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReviewMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReviewService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReviewVO.java
- ┃ ┃ ┃ ┃ ┃ ┣ 📂wish
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜WishController.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜WishMapper.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜WishService.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜WishVO.java
- ┃ ┃ ┃ ┃ ┃ ┣ 📜HomeController.java
- ┃ ┃ ┃ ┃ ┃ ┗ 📜MallbydhApplication.java
- ┃ ┗ 📂resources
- ┃ ┃ ┣ 📂kakaopay
- ┃ ┃ ┃ ┗ 📜kakaopay.properties
- ┃ ┃ ┣ 📂mail
- ┃ ┃ ┃ ┗ 📜email.properties
- ┃ ┃ ┣ 📂mybatis
- ┃ ┃ ┃ ┗ 📂mapper
- ┃ ┃ ┃ ┃ ┣ 📜AdCategoryMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜AdminInquiryMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜AdminMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜AdminMemberMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜AdminOrderMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜AdminReviewMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜AdProductMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜CartMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜DeliveryMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜HeaderMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜InquiryMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜ManagerMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜MemberMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜OrderMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜PaymentMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜ProductMapper.xml
- ┃ ┃ ┃ ┃ ┣ 📜ReviewMapper.xml
- ┃ ┃ ┃ ┃ ┗ 📜WishMapper.xml
- ┃ ┃ ┣ 📂templates
- ┃ ┃ ┃ ┣ 📂admin
- ┃ ┃ ┃ ┃ ┣ 📂fragments
- ┃ ┃ ┃ ┃ ┃ ┣ 📜aside.html
- ┃ ┃ ┃ ┃ ┃ ┣ 📜footer.html
- ┃ ┃ ┃ ┃ ┃ ┣ 📜nav.html
- ┃ ┃ ┃ ┃ ┃ ┣ 📜plugin_1.html
- ┃ ┃ ┃ ┃ ┃ ┗ 📜plugin_2.html
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminReviewController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminReviewMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜AdminReviewService.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminDTO.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜AdminService.java
+ ┃ ┃ ┃ ┃ ┣ 📂cart
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CartController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CartMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CartService.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜CartVO.java
+ ┃ ┃ ┃ ┃ ┣ 📂common
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂config
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜EmailConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MultipartConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜SecurityConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜WebMvcConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂constants
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Constants.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂interceptor
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminInterceptor.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜LoginInterceptor.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂utils
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AdminOrderSearchCriteria.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Criteria.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜FileUtils.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PageMaker.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜SearchCriteria.java
+ ┃ ┃ ┃ ┃ ┣ 📂delivery
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜DeliveryMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜DeliveryService.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜DeliveryVO.java
+ ┃ ┃ ┃ ┃ ┣ 📂header
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜HeaderController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜HeaderMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜HeaderService.java
  ┃ ┃ ┃ ┃ ┣ 📂inquiry
- ┃ ┃ ┃ ┃ ┃ ┣ 📜answer.html
- ┃ ┃ ┃ ┃ ┃ ┣ 📜edit.html
- ┃ ┃ ┃ ┃ ┃ ┣ 📜edit_answer.html
- ┃ ┃ ┃ ┃ ┃ ┗ 📜list.html
- ┃ ┃ ┃ ┃ ┣ 📂layouts
- ┃ ┃ ┃ ┃ ┃ ┗ 📜ad_layout.html
- ┃ ┃ ┃ ┃ ┣ 📂manager
- ┃ ┃ ┃ ┃ ┃ ┣ 📜edit.html
- ┃ ┃ ┃ ┃ ┃ ┗ 📜list.html
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜AnswerVO.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquiryAnswerVO.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquiryController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquiryMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜InquiryService.java
+ ┃ ┃ ┃ ┃ ┣ 📂kakaopay
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Amount.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ApprovedCancelAmount.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ApproveRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ApproveResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CancelAvailableAmount.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CanceledAmount.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CardInfo.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaoCancelRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaoCancelResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaopayController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaopayProperties.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaopayService.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReadyRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReadyResponse.java
+ ┃ ┃ ┃ ┃ ┣ 📂mail
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EmailController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EmailDTO.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜EmailService.java
  ┃ ┃ ┃ ┃ ┣ 📂member
- ┃ ┃ ┃ ┃ ┃ ┣ 📜edit.html
- ┃ ┃ ┃ ┃ ┃ ┗ 📜member.html
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜LoginDTO.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberService.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜MemberVO.java
  ┃ ┃ ┃ ┃ ┣ 📂order
- ┃ ┃ ┃ ┃ ┃ ┣ 📜detail.html
- ┃ ┃ ┃ ┃ ┃ ┗ 📜list.html
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜OrderController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜OrderDetailVO.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜OrderMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜OrderService.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜OrderVO.java
+ ┃ ┃ ┃ ┃ ┣ 📂payment
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜PaymentController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜PaymentMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜PaymentService.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜PaymentVO.java
  ┃ ┃ ┃ ┃ ┣ 📂product
- ┃ ┃ ┃ ┃ ┃ ┣ 📜pro_edit.html
- ┃ ┃ ┃ ┃ ┃ ┣ 📜pro_insert.html
- ┃ ┃ ┃ ┃ ┃ ┗ 📜pro_list.html
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProductController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProductMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProductService.java
  ┃ ┃ ┃ ┃ ┣ 📂review
- ┃ ┃ ┃ ┃ ┃ ┣ 📜edit.html
- ┃ ┃ ┃ ┃ ┃ ┗ 📜list.html
- ┃ ┃ ┃ ┃ ┣ 📜adLogin.html
- ┃ ┃ ┃ ┃ ┣ 📜adMenu.html
- ┃ ┃ ┃ ┃ ┗ 📜adMenu_backup.html
- ┃ ┃ ┃ ┣ 📂cart
- ┃ ┃ ┃ ┃ ┗ 📜list.html
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReviewController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReviewMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReviewService.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReviewVO.java
+ ┃ ┃ ┃ ┃ ┣ 📂wish
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜WishController.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜WishMapper.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜WishService.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜WishVO.java
+ ┃ ┃ ┃ ┃ ┣ 📜HomeController.java
+ ┃ ┃ ┃ ┃ ┗ 📜MallbydhApplication.java
+ ┗ 📂resources
+ ┃ ┣ 📂kakaopay
+ ┃ ┃ ┗ 📜kakaopay.properties
+ ┃ ┣ 📂mail
+ ┃ ┃ ┗ 📜email.properties
+ ┃ ┣ 📂mybatis
+ ┃ ┃ ┗ 📂mapper
+ ┃ ┃ ┃ ┣ 📜AdCategoryMapper.xml
+ ┃ ┃ ┃ ┣ 📜AdminInquiryMapper.xml
+ ┃ ┃ ┃ ┣ 📜AdminMapper.xml
+ ┃ ┃ ┃ ┣ 📜AdminMemberMapper.xml
+ ┃ ┃ ┃ ┣ 📜AdminOrderMapper.xml
+ ┃ ┃ ┃ ┣ 📜AdminReviewMapper.xml
+ ┃ ┃ ┃ ┣ 📜AdProductMapper.xml
+ ┃ ┃ ┃ ┣ 📜CartMapper.xml
+ ┃ ┃ ┃ ┣ 📜DeliveryMapper.xml
+ ┃ ┃ ┃ ┣ 📜HeaderMapper.xml
+ ┃ ┃ ┃ ┣ 📜InquiryMapper.xml
+ ┃ ┃ ┃ ┣ 📜ManagerMapper.xml
+ ┃ ┃ ┃ ┣ 📜MemberMapper.xml
+ ┃ ┃ ┃ ┣ 📜OrderMapper.xml
+ ┃ ┃ ┃ ┣ 📜PaymentMapper.xml
+ ┃ ┃ ┃ ┣ 📜ProductMapper.xml
+ ┃ ┃ ┃ ┣ 📜ReviewMapper.xml
+ ┃ ┃ ┃ ┗ 📜WishMapper.xml
+ ┃ ┣ 📂templates
+ ┃ ┃ ┣ 📂admin
  ┃ ┃ ┃ ┣ 📂fragments
+ ┃ ┃ ┃ ┃ ┣ 📜aside.html
  ┃ ┃ ┃ ┃ ┣ 📜footer.html
- ┃ ┃ ┃ ┃ ┗ 📜header.html
+ ┃ ┃ ┃ ┃ ┣ 📜nav.html
+ ┃ ┃ ┃ ┃ ┣ 📜plugin_1.html
+ ┃ ┃ ┃ ┃ ┗ 📜plugin_2.html
+ ┃ ┃ ┃ ┣ 📂inquiry
+ ┃ ┃ ┃ ┃ ┣ 📜answer.html
+ ┃ ┃ ┃ ┃ ┣ 📜edit.html
+ ┃ ┃ ┃ ┃ ┣ 📜edit_answer.html
+ ┃ ┃ ┃ ┃ ┗ 📜list.html
  ┃ ┃ ┃ ┣ 📂layouts
- ┃ ┃ ┃ ┃ ┣ 📜layout.html
- ┃ ┃ ┃ ┃ ┗ 📜layout_no_header_footer.html
- ┃ ┃ ┃ ┣ 📂mail
- ┃ ┃ ┃ ┃ ┣ 📜authcode.html
- ┃ ┃ ┃ ┃ ┣ 📜idsearch.html
- ┃ ┃ ┃ ┃ ┣ 📜pwchange.html
- ┃ ┃ ┃ ┃ ┗ 📜pwtemp.html
+ ┃ ┃ ┃ ┃ ┗ 📜ad_layout.html
+ ┃ ┃ ┃ ┣ 📂manager
+ ┃ ┃ ┃ ┃ ┣ 📜edit.html
+ ┃ ┃ ┃ ┃ ┗ 📜list.html
  ┃ ┃ ┃ ┣ 📂member
- ┃ ┃ ┃ ┃ ┣ 📂order
- ┃ ┃ ┃ ┃ ┃ ┗ 📜detail.html
- ┃ ┃ ┃ ┃ ┣ 📜delete.html
- ┃ ┃ ┃ ┃ ┣ 📜join.html
- ┃ ┃ ┃ ┃ ┣ 📜login.html
- ┃ ┃ ┃ ┃ ┣ 📜lostpass.html
- ┃ ┃ ┃ ┃ ┣ 📜modify.html
- ┃ ┃ ┃ ┃ ┣ 📜myinquiry.html
- ┃ ┃ ┃ ┃ ┣ 📜myreview.html
- ┃ ┃ ┃ ┃ ┣ 📜order.html
- ┃ ┃ ┃ ┃ ┣ 📜pwchange.html
- ┃ ┃ ┃ ┃ ┗ 📜wishlist.html
+ ┃ ┃ ┃ ┃ ┣ 📜edit.html
+ ┃ ┃ ┃ ┃ ┗ 📜member.html
  ┃ ┃ ┃ ┣ 📂order
- ┃ ┃ ┃ ┃ ┣ 📜order_form.html
- ┃ ┃ ┃ ┃ ┗ 📜order_result.html
- ┃ ┃ ┃ ┣ 📂product
  ┃ ┃ ┃ ┃ ┣ 📜detail.html
  ┃ ┃ ┃ ┃ ┗ 📜list.html
- ┃ ┃ ┃ ┗ 📜index.html
- ┃ ┃ ┣ 📜application.properties
- ┃ ┃ ┣ 📜log4jdbc.log4j2.properties
- ┃ ┃ ┗ 📜logback-spring.xml
+ ┃ ┃ ┃ ┣ 📂product
+ ┃ ┃ ┃ ┃ ┣ 📜pro_edit.html
+ ┃ ┃ ┃ ┃ ┣ 📜pro_insert.html
+ ┃ ┃ ┃ ┃ ┗ 📜pro_list.html
+ ┃ ┃ ┃ ┣ 📂review
+ ┃ ┃ ┃ ┃ ┣ 📜edit.html
+ ┃ ┃ ┃ ┃ ┗ 📜list.html
+ ┃ ┃ ┃ ┣ 📜adLogin.html
+ ┃ ┃ ┃ ┣ 📜adMenu.html
+ ┃ ┃ ┃ ┗ 📜adMenu_backup.html
+ ┃ ┃ ┣ 📂cart
+ ┃ ┃ ┃ ┗ 📜list.html
+ ┃ ┃ ┣ 📂fragments
+ ┃ ┃ ┃ ┣ 📜footer.html
+ ┃ ┃ ┃ ┗ 📜header.html
+ ┃ ┃ ┣ 📂layouts
+ ┃ ┃ ┃ ┣ 📜layout.html
+ ┃ ┃ ┃ ┗ 📜layout_no_header_footer.html
+ ┃ ┃ ┣ 📂mail
+ ┃ ┃ ┃ ┣ 📜authcode.html
+ ┃ ┃ ┃ ┣ 📜idsearch.html
+ ┃ ┃ ┃ ┣ 📜pwchange.html
+ ┃ ┃ ┃ ┗ 📜pwtemp.html
+ ┃ ┃ ┣ 📂member
+ ┃ ┃ ┃ ┣ 📂order
+ ┃ ┃ ┃ ┃ ┗ 📜detail.html
+ ┃ ┃ ┃ ┣ 📜delete.html
+ ┃ ┃ ┃ ┣ 📜join.html
+ ┃ ┃ ┃ ┣ 📜login.html
+ ┃ ┃ ┃ ┣ 📜lostpass.html
+ ┃ ┃ ┃ ┣ 📜modify.html
+ ┃ ┃ ┃ ┣ 📜myinquiry.html
+ ┃ ┃ ┃ ┣ 📜myreview.html
+ ┃ ┃ ┃ ┣ 📜order.html
+ ┃ ┃ ┃ ┣ 📜pwchange.html
+ ┃ ┃ ┃ ┗ 📜wishlist.html
+ ┃ ┃ ┣ 📂order
+ ┃ ┃ ┃ ┣ 📜order_form.html
+ ┃ ┃ ┃ ┗ 📜order_result.html
+ ┃ ┃ ┣ 📂product
+ ┃ ┃ ┃ ┣ 📜detail.html
+ ┃ ┃ ┃ ┗ 📜list.html
+ ┃ ┃ ┗ 📜index.html
+ ┃ ┣ 📜application.properties
+ ┃ ┣ 📜log4jdbc.log4j2.properties
+ ┃ ┗ 📜logback-spring.xml
 ```
 
 ## ERD
