@@ -15,7 +15,7 @@
 - 회원 가입 시 이메일 인증 작업을 거치고 있습니다.
 - 로그인 시 해당 계정의 상태에 따라 로그인을 통과시키거나, 막을 수 있습니다.
 - 상단 검색바를 통해 전체 상품에 대한 검색을 수행할 수 있습니다.
-- 상품은 각 카테고리 별로 조회가 가능하며, 하단의 버튼을 통해 즉시 장바구니에 담거나 찜 목록에 추가할 수 있습니다.
+- 상품은 각 카테고리 별로 조회가 가능하며, 버튼을 통해 즉시 장바구니에 담거나 찜 목록에 추가할 수 있습니다.
 - 개별 상품에 대해 구매 후기 및 문의를 작성·수정·삭제할 수 있습니다.
 - 현재 재고를 파악하여 상품의 구매가 자동으로 비활성화되며, 재고 이상으로 구매 시도 시 경고를 발생시킵니다.
 - 결제 방식은 카카오페이 단건결제 및 무통장입금 두 가지를 지원하고 있습니다.
@@ -48,7 +48,7 @@
   <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> 
   <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
   <img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jQuery&logoColor=white"> 
-  <img src="https://img.shields.io/badge/bootstrap5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"> 
+  <img src="https://img.shields.io/badge/bootstrap5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"> <br>
   <img src="https://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white"> 
   <img src="https://img.shields.io/badge/handlebarsdotjs-000000?style=for-the-badge&logo=handlebarsdotjs&logoColor=white"> 
 </div>
