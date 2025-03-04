@@ -306,7 +306,7 @@
 <br>
 
 ## ERD
-![Image](https://github.com/user-attachments/assets/e1436fe6-9ae0-4d15-9023-96df0357b989)
+![Image](https://github.com/user-attachments/assets/314c4861-22b0-454b-967f-5c24461a9417)
 
 <br>
 
