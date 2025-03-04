@@ -1,5 +1,5 @@
 # 🎮 mallbydh - 게임 콘솔 및 PC 용품 판매 전문 쇼핑몰
-(그림)
+![Image](https://github.com/user-attachments/assets/c43dc3da-c576-4779-9e8d-8be628439e6f)
 
 <br>
 
@@ -303,7 +303,11 @@
  ┃ ┗ 📜logback-spring.xml
 ```
 
-## ERD
-(그림)
+<br>
 
-## 주요 기능
+## ERD
+![Image](https://github.com/user-attachments/assets/e1436fe6-9ae0-4d15-9023-96df0357b989)
+
+<br>
+
+## 페이지별 기능 소개
