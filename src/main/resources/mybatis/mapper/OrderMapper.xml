@@ -47,7 +47,7 @@
             AND o.ord_date >= #{cri.startDate}
         </if>
         <if test="cri.endDate != null and cri.endDate != ''">
-            AND o.ord_date &lt;= #{cri.endDate}
+            AND DATE(o.ord_date) &lt;= #{cri.endDate}
         </if>
         ORDER BY o.ord_date DESC
         LIMIT #{cri.pageStart}, #{cri.perPageNum}
