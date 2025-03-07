@@ -69,6 +69,9 @@ public class AdminInquiryController {
     @GetMapping("/edit")
     public String edit(@RequestParam("inq_code") Integer inq_code, Model model) {
         Map<String, Object> inquiryContent = adminInquiryService.getInquiryContent(inq_code);
+        // 경로의 역슬래시를 슬래시로 전환
+        String uploadFolder = ((String) inquiryContent.get("prod_uploadfolder")).replace("\\", "/");
+        inquiryContent.put("prod_uploadfolder", uploadFolder);
         model.addAttribute("inquiryContent", inquiryContent);
         return "admin/inquiry/edit";
     }
@@ -84,6 +87,9 @@ public class AdminInquiryController {
     @GetMapping("/answer")
     public String answerPage(@RequestParam("inq_code") Integer inq_code, HttpSession session, Model model) {
         Map<String, Object> inquiryContent = adminInquiryService.getInquiryContent(inq_code);
+        // 경로의 역슬래시를 슬래시로 전환
+        String uploadFolder = ((String) inquiryContent.get("prod_uploadfolder")).replace("\\", "/");
+        inquiryContent.put("prod_uploadfolder", uploadFolder);
         model.addAttribute("inquiryContent", inquiryContent);
 
         String admin_id = ((AdminDTO)session.getAttribute("admin_auth")).getAdmin_id();

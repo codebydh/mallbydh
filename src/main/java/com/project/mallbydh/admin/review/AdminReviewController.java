@@ -66,6 +66,11 @@ public class AdminReviewController {
     @GetMapping("/edit")
     public String edit(@RequestParam("rev_code") Integer rev_code, Model model) {
         Map<String, Object> reviewContent = adminReviewService.getReviewContent(rev_code);
+
+        // 경로의 역슬래시를 슬래시로 전환
+        String uploadFolder = ((String) reviewContent.get("prod_uploadfolder")).replace("\\", "/");
+        reviewContent.put("prod_uploadfolder", uploadFolder);
+
         model.addAttribute("reviewContent", reviewContent);
         return "admin/review/edit";
     }
