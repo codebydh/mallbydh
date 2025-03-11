@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -80,7 +81,7 @@ public class AdProductController {
             byte[] bytes = upload.getBytes(); // 업로드하는 파일(abc.gif)을 나타내는 바이트배열
 
             // C:\\Dev\\upload\\ckeditor\\abc.gif
-            String ckUploadPath = uploadCKPath + "\\" + fileName;
+            String ckUploadPath = uploadCKPath + File.separator + fileName;
 
             //스트림 out객체생성이 되면, 해당 경로에 파일은 생성된다. 파일크기는 0byte
             out = new FileOutputStream(ckUploadPath);
