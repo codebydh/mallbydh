@@ -40,10 +40,10 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
     <!-- Navbar -->
-    <nav th:replace="~{/admin/fragments/nav}"></nav>
+    <nav th:insert="~{/admin/fragments/nav}"></nav>
     <!-- /.navbar -->
     <!-- Main Sidebar Container -->
-    <aside th:replace="~{/admin/fragments/aside}"></aside>
+    <aside th:insert="~{/admin/fragments/aside}"></aside>
     <!-- /.main Sidebar Container -->
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -54,7 +54,7 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <th:block th:replace="~{/admin/fragments/footer}"></th:block>
+    <th:block th:insert="~{/admin/fragments/footer}"></th:block>
 </div>
 <th:block th:replace="~{/admin/fragments/plugin_2}"></th:block>
 <th:block layout:fragment="script2"></th:block>
