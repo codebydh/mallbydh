@@ -39,7 +39,7 @@ public class AdminMemberController {
         pageMaker.setTotalCount(adminMemberService.getTotalCount(cri, u_status, u_gender, u_emailreceive, u_smsreceive));
         model.addAttribute("pageMaker", pageMaker);
 
-        return "/admin/member/member";
+        return "admin/member/member";
     }
 
     @GetMapping("/edit")
@@ -51,7 +51,7 @@ public class AdminMemberController {
         Integer totalAmount = orderService.userTotalAmount(u_id);
         model.addAttribute("totalAmount", totalAmount);
 
-        return "/admin/member/edit";
+        return "admin/member/edit";
     }
 
     @PostMapping("/update")

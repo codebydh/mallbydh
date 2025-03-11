@@ -67,7 +67,7 @@ public class ManagerController {
         AdminVO adminVO = managerService.managerEditView(admin_id);
         model.addAttribute("adminVO", adminVO);
 
-        return "/admin/manager/edit";
+        return "admin/manager/edit";
     }
 
     @PostMapping("/update")

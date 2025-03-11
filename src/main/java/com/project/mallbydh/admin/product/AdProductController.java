@@ -45,7 +45,7 @@ public class AdProductController {
     public String pro_insert(Model model) {
         model.addAttribute("currentPage", "pro_insert");
         model.addAttribute("cate_list", adCategoryService.getFirstCategoryList());
-        return "/admin/product/pro_insert";
+        return "admin/product/pro_insert";
     }
 
     // 상품등록 기능 (POST)
@@ -220,7 +220,7 @@ public class AdProductController {
         int firstCategory = categoryVO.getCate_parentid();
         model.addAttribute("secondCategoryVO", adCategoryService.getSecondCategoryList(firstCategory));
 
-        return "/admin/product/pro_edit";
+        return "admin/product/pro_edit";
     }
 
     // 상품 수정 - 완료 폼
