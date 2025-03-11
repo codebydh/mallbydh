@@ -36,7 +36,7 @@ public class ManagerController {
         pageMaker.setTotalCount(managerService.getManagerTotalCount(cri, admin_status));
         model.addAttribute("pageMaker", pageMaker);
 
-        return "/admin/manager/list";
+        return "admin/manager/list";
     }
 
     @PostMapping("/new")
