@@ -5,7 +5,9 @@
 
 ## 프로젝트 소개
 - 학습한 내용을 가장 잘 녹일 수 있는 쇼핑몰에, 제 취미 중 하나인 게임을 담아 만든 개인 프로젝트입니다.
-- 개발기간 : 2024.12.02 ~ 2025.02.28
+- 개발기간 : 2024.12.02 ~ 2025.03.11
+- [사용자 페이지 바로가기](http://3.39.129.187/) (ID : admin / PW : 1234)
+- [관리자 페이지 바로가기](http://3.39.129.187/admin/) (ID : admin / PW : 1234)
 
 <br>
 
@@ -59,6 +61,11 @@
   <img src="https://img.shields.io/badge/openjdk17-000000?style=for-the-badge&logo=openjdk&logoColor=white"> 
   <img src="https://img.shields.io/badge/mysql8.0.17-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
   <img src="https://img.shields.io/badge/MyBatis-000000?style=for-the-badge&logo=MyBatis&logoColor=white">
+</div>
+
+### 배포
+<div>
+  <img src="https://img.shields.io/badge/amazon_web_services-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white">
 </div>
 
 ### 버전관리
