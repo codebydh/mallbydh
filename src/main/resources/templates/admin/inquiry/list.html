@@ -201,7 +201,7 @@
                                 <div class="card-body" style="padding: 8px;">
                                     <div class="d-flex justify-content-between">
                                         <span class="mb-0 font-weight-bold" th:text="${answer.admin.admin_name} + '(' + ${answer.admin.admin_id} + ')'"></span>
-                                        <span class="mb-0 text-muted" th:text="${#dates.format(answer.ans_regdate, 'yyyy-MM-dd(HH:mm:ss)')}"></span>
+                                        <span class="mb-0 text-muted" th:text="${#temporals.format(answer.ans_regdate, 'yyyy-MM-dd(HH:mm:ss)')}"></span>
                                     </div>
                                     <hr class="my-2">
                                     <p class="mb-4" th:text="${answer.ans_content}"></p>
@@ -217,8 +217,8 @@
                             <p class="text-muted mb-0" th:text="'(' + ${item.user.u_id} + ')'"></p>
                         </td>
                         <td class="text-center align-middle">
-                            <p class="mb-0" th:text="${#dates.format(item.inq_regdate, 'yyyy-MM-dd')}"></p>
-                            <p class="text-muted mb-0" th:text="'(' + ${#dates.format(item.inq_regdate, 'HH:mm:ss')} + ')'"></p>
+                            <p class="mb-0" th:text="${#temporals.format(item.inq_regdate, 'yyyy-MM-dd')}"></p>
+                            <p class="text-muted mb-0" th:text="'(' + ${#temporals.format(item.inq_regdate, 'HH:mm:ss')} + ')'"></p>
                         </td>
                         <td class="text-center align-middle">
                             <div class="button-container" style="padding-left: 20px; padding-right: 20px;">
