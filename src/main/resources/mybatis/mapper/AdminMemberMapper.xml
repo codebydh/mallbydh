@@ -41,6 +41,51 @@
             u_id = #{u_id}
     </update>
 
+    <update id="adminUserUpdate" parameterType="com.project.mallbydh.member.MemberVO">
+        update user_tbl
+        <set>
+            u_updatedate = now(),
+            <if test="u_name != null">
+                u_name = #{u_name},
+            </if>
+            <if test="u_phone != null">
+                u_phone = #{u_phone},
+            </if>
+            <if test="u_email != null">
+                u_email = #{u_email},
+            </if>
+            <if test="u_zipcode != null">
+                u_zipcode = #{u_zipcode},
+            </if>
+            <if test="u_addr != null">
+                u_addr = #{u_addr},
+            </if>
+            <if test="u_addr_detail != null">
+                u_addr_detail = #{u_addr_detail},
+            </if>
+            <if test="u_pw != null">
+                u_pw = #{u_pw},
+            </if>
+            <if test="u_smsreceive != null">
+                u_smsreceive = #{u_smsreceive},
+            </if>
+            <if test="u_emailreceive != null">
+                u_emailreceive = #{u_emailreceive},
+            </if>
+            <if test="u_gender != null">
+                u_gender = #{u_gender},
+            </if>
+            <if test="u_birth != null">
+                u_birth = #{u_birth},
+            </if>
+            <if test="u_status != null">
+                u_status = #{u_status}
+            </if>
+        </set>
+        where u_id = #{u_id}
+    </update>
+
+
     <sql id="search">
         <if test="cri.searchType != null">
             <if test="cri.searchType == 'id'.toString()">

@@ -27,4 +27,8 @@ public class AdminMemberService {
         adminmembermapper.memberSuspend(u_id);
     }
 
+    public void adminUserUpdate(MemberVO vo) {
+        adminmembermapper.adminUserUpdate(vo);
+    }
+
 }

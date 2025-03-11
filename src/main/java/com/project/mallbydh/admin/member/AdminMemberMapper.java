@@ -18,4 +18,6 @@ public interface AdminMemberMapper {
                       @Param("u_smsreceive") String u_smsreceive);
 
     void memberSuspend(String u_id);
+
+    void adminUserUpdate(MemberVO vo);
 }

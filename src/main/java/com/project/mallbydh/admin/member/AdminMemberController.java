@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class AdminMemberController {
     private final AdminMemberService adminMemberService;
     private final MemberService memberService;
     private final OrderService orderService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String adminMember(@ModelAttribute("cri") SearchCriteria cri, @ModelAttribute("u_status") String u_status,
@@ -57,7 +59,15 @@ public class AdminMemberController {
     @PostMapping("/update")
     public String memberUpdate(MemberVO vo) throws Exception {
 
-        memberService.modifySave(vo);
+        // 비밀번호가 입력된 경우에만 암호화 처리
+        if (vo.getU_pw() != null && !vo.getU_pw().isEmpty()) {
+            String encodedPassword = passwordEncoder.encode(vo.getU_pw()); // 비밀번호 암호화
+            vo.setU_pw(encodedPassword);
+        } else {
+            vo.setU_pw(null);
+        }
+
+        adminMemberService.adminUserUpdate(vo);
 
         return "redirect:/admin/member/";
     }
