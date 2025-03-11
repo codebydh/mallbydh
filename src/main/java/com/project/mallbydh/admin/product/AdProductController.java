@@ -143,10 +143,10 @@ public class AdProductController {
         // DB에서 불러오기 작업을 한 다음 Model에 추가
         List<ProductVO> pro_list = adProductService.pro_list(cri);
 
-        // 날짜폴더 경로의 \를 /로 변환
-        pro_list.forEach(vo -> {
-            vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
-        });
+//        // 날짜폴더 경로의 \를 /로 변환
+//        pro_list.forEach(vo -> {
+//            vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+//        });
 
         model.addAttribute("pro_list", pro_list);
         
@@ -161,7 +161,7 @@ public class AdProductController {
     // 상품 목록에 이미지 출력
     @GetMapping("/image_display")
     public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
-        return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+        return fileUtils.getFile(uploadPath + File.separator + dateFolderName, fileName);
     }
 
     // 체크박스에 선택된 상품 삭제
@@ -209,8 +209,8 @@ public class AdProductController {
         // 1차 카테고리 목록
         model.addAttribute("cate_list", adCategoryService.getFirstCategoryList());
         ProductVO productVO = adProductService.pro_edit(prod_id);
-        // 경로의 역슬래시(\)를 /로 치환
-        productVO.setProd_uploadfolder(productVO.getProd_uploadfolder().replace("\\", "/"));
+//        // 경로의 역슬래시(\)를 /로 치환
+//        productVO.setProd_uploadfolder(productVO.getProd_uploadfolder().replace("\\", "/"));
         model.addAttribute("productVO", productVO);
 
         // 2차 카테고리 정보
@@ -247,7 +247,6 @@ public class AdProductController {
         rttr.addAttribute("searchType", cri.getSearchType());
         rttr.addAttribute("keyword", cri.getKeyword());
 
-        // http://localhost:8888/admin/product/pro_edit?page=2&perPageNum=2&searchType=n&keyword=테스트&pro_num=13
         return "redirect:/admin/product/pro_list";
     }
 }

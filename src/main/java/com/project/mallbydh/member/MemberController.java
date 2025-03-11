@@ -29,6 +29,7 @@ import com.project.mallbydh.mail.EmailService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,10 +156,10 @@ public class MemberController {
 
 		List<OrderVO> orderList = orderService.getOrdersByUserId(u_id, cri);
 
-		// 경로의 역슬래시를 슬래시로 변환
-		orderList.forEach(vo -> {
-			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
-		});
+//		// 경로의 역슬래시를 슬래시로 변환
+//		orderList.forEach(vo -> {
+//			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+//		});
 
 		model.addAttribute("orderList", orderList);
 
@@ -179,9 +180,9 @@ public class MemberController {
 
 		List<OrderVO> orderList = orderService.getOrdersByUserId(u_id, cri);
 
-		orderList.forEach(vo -> {
-			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
-		});
+//		orderList.forEach(vo -> {
+//			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+//		});
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setDisplayPageNum(Constants.ADMIN_PRODUCT_LIST_PAGESIZE);
@@ -202,11 +203,11 @@ public class MemberController {
 		// 주문정보 삽입
 		List<Map<String, Object>> orderInfo = orderService.getOrderDetailInfo(ord_code);
 
-		// 이미지 경로 : 역슬래시 - 슬래시로 변환
-		orderInfo.forEach(map -> {
-			String uploadFolder = (String) map.get("prod_uploadfolder");
-			map.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
-		});
+//		// 이미지 경로 : 역슬래시 - 슬래시로 변환
+//		orderInfo.forEach(map -> {
+//			String uploadFolder = (String) map.get("prod_uploadfolder");
+//			map.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
+//		});
 
 		model.addAttribute("orderInfo", orderInfo);
 
@@ -352,12 +353,12 @@ public class MemberController {
 		String u_id = ((MemberVO) session.getAttribute("login_auth")).getU_id();
 		List<Map<String, Object>> wishList = wishService.getUserWishList(u_id);
 
-		wishList.forEach(vo -> {
-			String uploadFolder = (String) vo.get("prod_uploadfolder");
-			if (uploadFolder != null) {
-				vo.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
-			}
-		});
+//		wishList.forEach(vo -> {
+//			String uploadFolder = (String) vo.get("prod_uploadfolder");
+//			if (uploadFolder != null) {
+//				vo.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
+//			}
+//		});
 
 		model.addAttribute("wishList", wishList);
 		return "member/wishlist";
@@ -372,8 +373,8 @@ public class MemberController {
 		List<ReviewVO> myReviewList = reviewService.getReviewByUserId(u_id, cri);
 
 		myReviewList.forEach(vo -> {
-			// 경로의 역슬래시를 슬래시로 변환
-			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+//			// 경로의 역슬래시를 슬래시로 변환
+//			vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
 
 			// 별점을 숫자에서 별로 변환
 			vo.setRev_rate_stars(convertToStars(vo.getRev_rate()));
@@ -444,7 +445,7 @@ public class MemberController {
 	@GetMapping("/image_display")
 	public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
 
-		return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+		return fileUtils.getFile(uploadPath + File.separator + dateFolderName, fileName);
 	}
 	
 

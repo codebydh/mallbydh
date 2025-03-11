@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -36,12 +37,12 @@ public class AdminReviewController {
 
         List<Map<String, Object>> reviewList = adminReviewService.getReviewList(cri, rev_rate);
 
-        reviewList.forEach(vo -> {
-            String uploadFolder = (String) vo.get("prod_uploadfolder");
-            if (uploadFolder != null) {
-                vo.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
-            }
-        });
+//        reviewList.forEach(vo -> {
+//            String uploadFolder = (String) vo.get("prod_uploadfolder");
+//            if (uploadFolder != null) {
+//                vo.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
+//            }
+//        });
 
         model.addAttribute("reviewList", reviewList);
 
@@ -67,9 +68,9 @@ public class AdminReviewController {
     public String edit(@RequestParam("rev_code") Integer rev_code, Model model) {
         Map<String, Object> reviewContent = adminReviewService.getReviewContent(rev_code);
 
-        // 경로의 역슬래시를 슬래시로 전환
-        String uploadFolder = ((String) reviewContent.get("prod_uploadfolder")).replace("\\", "/");
-        reviewContent.put("prod_uploadfolder", uploadFolder);
+//        // 경로의 역슬래시를 슬래시로 전환
+//        String uploadFolder = ((String) reviewContent.get("prod_uploadfolder")).replace("\\", "/");
+//        reviewContent.put("prod_uploadfolder", uploadFolder);
 
         model.addAttribute("reviewContent", reviewContent);
         return "admin/review/edit";
@@ -85,6 +86,6 @@ public class AdminReviewController {
 
     @GetMapping("/image_display")
     public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
-        return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+        return fileUtils.getFile(uploadPath + File.separator + dateFolderName, fileName);
     }
 }

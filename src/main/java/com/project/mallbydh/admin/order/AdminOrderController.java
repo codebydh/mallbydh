@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -66,11 +67,11 @@ public class AdminOrderController {
         // 주문정보 삽입
         List<Map<String, Object>> orderInfo = orderService.getOrderDetailInfo(ord_code);
 
-        // 이미지 경로 : 역슬래시 - 슬래시로 변환
-        orderInfo.forEach(map -> {
-            String uploadFolder = (String) map.get("prod_uploadfolder");
-            map.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
-        });
+//        // 이미지 경로 : 역슬래시 - 슬래시로 변환
+//        orderInfo.forEach(map -> {
+//            String uploadFolder = (String) map.get("prod_uploadfolder");
+//            map.put("prod_uploadfolder", uploadFolder.replace("\\", "/"));
+//        });
 
         model.addAttribute("orderInfo", orderInfo);
 
@@ -96,7 +97,7 @@ public class AdminOrderController {
     @GetMapping("/image_display")
     public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
 
-        return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+        return fileUtils.getFile(uploadPath + File.separator + dateFolderName, fileName);
     }
 
 }

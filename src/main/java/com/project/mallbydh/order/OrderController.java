@@ -83,10 +83,10 @@ public class OrderController {
             orderCartDetails = cartService.getCartDetailsByUserId(u_id);
         }
 
-        // 상품 정보 - 사진 업로드 경로의 역슬래시를 슬래시로 변경
-        orderCartDetails.forEach(cartVO -> {
-            cartVO.put("prod_uploadfolder", cartVO.get("prod_uploadfolder").toString().replace("\\", "/"));
-        });
+//        // 상품 정보 - 사진 업로드 경로의 역슬래시를 슬래시로 변경 (리눅스에서는 불필요)
+//        orderCartDetails.forEach(cartVO -> {
+//            cartVO.put("prod_uploadfolder", cartVO.get("prod_uploadfolder").toString().replace("\\", "/"));
+//        });
 
         model.addAttribute("orderCartDetails", orderCartDetails);
 

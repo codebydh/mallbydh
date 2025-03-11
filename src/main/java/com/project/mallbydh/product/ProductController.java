@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.File;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -61,9 +62,9 @@ public class ProductController {
             totalCount = productService.getTotalCount(cri);
         }
 
-        productList.forEach(vo -> {
-            vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
-        });
+//        productList.forEach(vo -> {
+//            vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
+//        });
 
         model.addAttribute("productList", productList);
         model.addAttribute("categories", AdCategoryService.getAllCategories());
@@ -100,13 +101,13 @@ public class ProductController {
     // 이미지 출력
     @GetMapping("/image_display")
     public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
-        return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+        return fileUtils.getFile(uploadPath + File.separator + dateFolderName, fileName);
     }
 
     @GetMapping("/detail")
     public String getProductDetail(Integer prod_id, Model model) {
         ProductVO productVO = productService.getProductById(prod_id);
-        productVO.setProd_uploadfolder(productVO.getProd_uploadfolder().replace("\\", "/"));
+//        productVO.setProd_uploadfolder(productVO.getProd_uploadfolder().replace("\\", "/"));
         model.addAttribute("productVO", productVO);
         return "product/detail";
     }
