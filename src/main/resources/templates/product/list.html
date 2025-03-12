@@ -20,14 +20,14 @@
 
     <div th:if="${not #lists.isEmpty(productList)}">
         <div>
-            <h5 th:text="'총 ' + ${#lists.size(productList)} + '개 제품'"></h5>
+            <h5 th:text="'총 ' + ${totalCount} + '개 제품'"></h5>
         </div>
 
         <div class="my-4">
             <hr>
         </div>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-5">
             <div class="card border-0" th:each="product : ${productList}">
                 <div class="ratio ratio-1x1">
                     <a th:href="|/product/detail?prod_id=${product.prod_id}|">

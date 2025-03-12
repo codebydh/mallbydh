@@ -66,6 +66,7 @@ public class ProductController {
 //            vo.setProd_uploadfolder(vo.getProd_uploadfolder().replace("\\", "/"));
 //        });
 
+        model.addAttribute("totalCount", totalCount);
         model.addAttribute("productList", productList);
         model.addAttribute("categories", AdCategoryService.getAllCategories());
 
