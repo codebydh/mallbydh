@@ -22,6 +22,7 @@ public class AdminInterceptor implements HandlerInterceptor {
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write("{\"message\":\"Unauthorized\",\"redirectUrl\":\"/admin/\"}");
             } else {
+                saveTargetUrl(request);
                 response.sendRedirect("/admin/");
             }
             return false;
@@ -32,5 +33,18 @@ public class AdminInterceptor implements HandlerInterceptor {
     private boolean isAjaxRequest(HttpServletRequest request) {
         String header = request.getHeader("AJAX");
         return header != null && header.equals("true");
+    }
+
+    private void saveTargetUrl(HttpServletRequest request) {
+        if (!"GET".equalsIgnoreCase(request.getMethod())) return;
+
+        String uri = request.getRequestURI();
+        String query = request.getQueryString();
+
+        if (query != null && !"null".equals(query)) {
+            uri += "?" + query;
+        }
+
+        request.getSession().setAttribute("targetUrl", uri);
     }
 }

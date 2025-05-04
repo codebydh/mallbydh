@@ -33,6 +33,7 @@ public class AdminController {
 
 		String url = "";
 		String status = "";
+
 		if(db_vo != null) {
 			log.info("상태 : {}", db_vo.getAdmin_status());
 			if("정지".equals(db_vo.getAdmin_status())) {
@@ -49,6 +50,10 @@ public class AdminController {
 		} else {
 			status = "idFail";
 			url = "/admin/";
+		}
+
+		if(session.getAttribute("targetUrl") != null) { // 이전주소가 존재하면
+			url = (String) session.getAttribute("targetUrl");
 		}
 
 		rttr.addFlashAttribute("status", status); // 타임리프파일에서 자바스크립트로 참조
