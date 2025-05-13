@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +36,9 @@ public class CartController {
         String u_id = ((MemberVO)session.getAttribute("login_auth")).getU_id();
 
         List<Map<String, Object>> cart_list = cartService.cart_list(u_id);
-        cart_list.forEach(cartVO -> {
-            cartVO.put("prod_uploadfolder", cartVO.get("prod_uploadfolder").toString().replace("\\", "/"));
-        });
+//        cart_list.forEach(cartVO -> {
+//            cartVO.put("prod_uploadfolder", cartVO.get("prod_uploadfolder").toString().replace("\\", "/"));
+//        });
         model.addAttribute("cart_list", cart_list);
 
         return "cart/list";
@@ -79,7 +80,7 @@ public class CartController {
     @GetMapping("/image_display")
     public ResponseEntity<byte[]> image_display(String dateFolderName, String fileName) throws Exception {
 
-        return fileUtils.getFile(uploadPath + "\\" + dateFolderName, fileName);
+        return fileUtils.getFile(uploadPath + File.separator + dateFolderName, fileName);
     }
 
     @PostMapping("/cart_update")
