@@ -210,9 +210,10 @@
                 }
 
                 let checkedItems = $("input[type='checkbox']:checked");
-                let prod_ids = checkedItems.map(function() {
-                    return $(this).val();
-                    }).get().filter(id => id !== "on");
+                // let prod_ids = checkedItems.map(function() {
+                //     return $(this).val();
+                //     }).get().filter(id => id !== "on");
+                let prod_ids = [];
                 let outOfStockItems = [];
 
                 checkedItems.each(function() {
